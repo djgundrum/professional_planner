@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ScholarLinQ</title>
+    <link rel="stylesheet" href="../css/cover.css" />
+    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+    <script type="text/javascript" src="../js/jquery.js"></script>
+  </head>
+  <body style="background-color: #f0ffff;">
+    <div class="login" id="login">
+      <button
+        class="exit"
+        onclick="document.getElementById('login').style.display = 'none';"
+      >
+        <img
+          src="../pictures/exit_window.png"
+          alt="exit"
+          height="10"
+          width="10"
+        />
+      </button>
+      <h1>Login</h1>
+      <div class="creds">
+        <input
+          class="form-control"
+          type="text"
+          id="email"
+          placeholder="Email"
+        />
+        <input
+          class="form-control"
+          type="password"
+          id="password"
+          placeholder="Password"
+        />
+        <button class="login-button" onclick="login()">
+          Login to ScholarLinQ
+        </button>
+        <div>
+          <a href="/forgot_password" class="forgot-password">
+            Forgot your password?
+          </a>
+        </div>
+        <div>
+          <a href="/signup" class="forgot-password"
+            >Don't have an account yet?</a
+          >
+        </div>
+
+        <div style="width: 100%">
+          <span class="terms">
+            By continuing here, you acknowledge and agree to our
+            <a href="/terms_of_service">Terms of Service</a> and
+            <a href="/privacy_policy">Privacy Policy</a>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="top">
+      <div class="top-thing">
+        <div>
+          <h3 style="margin: 0">ScholarLinQ</h3>
+        </div>
+        <div style="display: flex; width: 80%; margin-left: 10%">
+          <a
+            href="#"
+            onclick="document.getElementById('login').style.display = 'block';"
+            class="top-button"
+            >Login</a
+          >
+          <a href="/signUp" class="top-button">Sign-up!</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="bgimg">
+      <div class="first">
+        <div class="first-text">
+          <h1 style="padding-bottom: 40px; padding-top: 20px;"><b>Applications With Confidence.</b></h1>
+          <h2 style="padding-bottom: 40px;">
+            Learn to write incredible scholarship and college essays and how to find the best scholarships.
+          </h2>
+        </div>
+        <h2><a href="/signUp" class="first-button"><b>Sign-up for Free!</b></a></h2>
+      </div>
+    </div>
+
+    <br><br>
+
+    <div class="second">
+      <div class="second-text-block">
+        <h2>ScholarLinQ was built alongside the top college admissions and scholarship evaluators, navigators, and essay writers.</h2>
+      </div>
+      <div class="second-video-block">
+        <div style="width: 70%; margin: auto;">
+          <div class="iframe-container">
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/j6K6Z2_2ZYE?autoplay=0&fs=0&iv_load_policy=3&showinfo=0&rel=0&cc_load_policy=0&start=0&end=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+        </div>
+
+      </div>
+        
+    </div>
+    <div class="third">
+      <div class="second-text-block">
+        <h2>By students. For students.</h2>
+        <br>
+      </div>
+      <div class="third-block">
+        <div class="third-note">
+          <div class="third-note-text">
+            <h4>Simple steps.</h4>
+            <p>
+              We have broken down every part of the process into simple,
+              smaller components. Each section has a short video that explains
+              exactly what students need to do with a workstation along-side each video.
+          
+            </p>
+          </div>
+        </div>
+
+        <div class="third-note">
+          <div class="third-note-text">
+            <h4>Save and reuse.</h4>
+            <p>
+              We keep everything organized so students you don't have to. Anytime you
+              have a new idea or essay section. just save a new note.
+
+              Save your hard-work and reuse it on as many
+              applications as possible.
+            </p>
+          </div>
+        </div>
+
+        <div class="third-note">
+          <div class="third-note-text">
+            <h4>We teach differently.</h4>
+            <p>
+              Our content was rebuilt 13 times and counting.  It isn't about overloading students with information, it is about focusing on what gets them results.  Students never have to guess on what you have to do.
+            </p>
+          </div>
+        </div>
+
+        <div class="third-note">
+          <div class="third-note-text">
+            <h4>Your timing is right.</h4>
+            <p>
+              We extend the impact of your incredible teachers because students have our step-by-step support all day, every day. Let's tackle the equity problem together, right now.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+<!--     
+    <div class="fourth">
+      <div class="second-text-block">
+        <h2>
+          Let's get started on your future together. <br />Try it now for free.
+        </h2>
+      </div>
+      <div class="calendar">
+        <div class="calendar-section">
+          <h5>Day 1</h5>
+          <div class="stick-holder">
+            <div class="circle"></div>
+            <div class="line"></div>
+          </div>
+          <p>Get access to all of our content for FREE and hit the ground running.</p>
+        </div>
+        <div class="calendar-section">
+          <h5>Day 7</h5>
+          <div class="stick-holder">
+            <div class="circle"></div>
+            <div class="line"></div>
+          </div>
+          <p>Trial ends.</p>
+        </div>
+        <div class="calendar-section">
+          <h5>...</h5>
+          <div class="stick-holder">
+            <div class="circle"></div>
+          </div>
+          <p>Continue growing and applying!</p>
+        </div>
+      </div>
+    </div> -->
+
+    <script>
+      window.onload = function () {
+        let now = new Date(Date.now());
+        let thing = "" + now.getMonth() + " " + now.getDate();
+        document.getElementById("now").innerHTML = thing;
+
+        now.setDate(now.getDate() + 7);
+        thing = "" + now.getMonth() + " " + now.getDate();
+        document.getElementById("then").innerHTML = thing;
+      };
+
+      function login() {
+        console.log("being called");
+        let email = document.getElementById("email").value;
+        let password = document.getElementById("password").value;
+
+        if (email == null || password == null) {
+          // Error message
+          // TODO
+        } else {
+          let url = "/api/signin";
+          let data = { email: email, password: password };
+
+          $.post(url, data, (response) => {
+            console.log(response);
+            if (response.valid == false) {
+              // Error message
+              // TODO
+            } else {
+              window.location.href = response.url;
+            }
+          });
+        }
+      }
+    </script>
+  </body>
+</html>
