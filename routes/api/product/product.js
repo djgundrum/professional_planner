@@ -59,13 +59,15 @@ router.post("/new", (req, res) => {
   let photo_url = req.body.photo_url;
   let section = req.body.section;
   let price = req.body.price;
+  let available = req.body.available;
 
   if (
     isEmpty(name) ||
     isEmpty(price) ||
     isEmpty(description) ||
     isEmpty(photo_url) ||
-    isEmpty(section)
+    isEmpty(section) ||
+    isEmpty(available)
   ) {
     return res.send({
       valid: false,
@@ -75,8 +77,8 @@ router.post("/new", (req, res) => {
     });
   } else {
     let sql =
-      "insert into products (name, description, photo_url, section, price) values (?, ?, ?, ?, ?)";
-    let p = [name, description, photo_url, section, price];
+      "insert into products (name, description, photo_url, section, price, available) values (?, ?, ?, ?, ?, ?)";
+    let p = [name, description, photo_url, section, price, available];
 
     query(sql, p, true, false).then(
       () => {
