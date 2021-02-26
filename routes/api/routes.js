@@ -60,7 +60,14 @@ let routes = {
       },
     },
     product: {
-      post: {},
+      post: {
+        // Create a new product in the database
+        //p: name, description, photo_url, section, price
+        new_product: "/api/product/new",
+
+        // Update an existing product
+        //p: id, name, description, photo_url, section, price, available
+      },
       get: {
         //This will return the specified product given in the url
         //p: product_id (id of the product you are tring to search)
