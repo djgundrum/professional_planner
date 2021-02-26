@@ -16,11 +16,22 @@ let routes = {
         // Create a new order, returns if successful
         //p: time, products, price (products are id of products separated by commas)
         create_new_order: "/api/order/new_order",
+
+        // Set an existing order to completed
+        //p: id (id of the completed order)
+        complete_order: "/api/order/done",
       },
       get: {
         // Returns array of order objects, all are not completed
         //p: no parameters
         get_current_unfinished_orders: "/api/order/all",
+      },
+    },
+    menu: {
+      post: {},
+      get: {
+        // Get all the products in the
+        get_all_products: "/api/menu/all",
       },
     },
   },

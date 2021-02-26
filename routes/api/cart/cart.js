@@ -3,6 +3,43 @@ var router = express.Router();
 
 const query = require("../global/query");
 
+router.post("/done", (req, res) => {
+  let id = req.body.id;
+
+  if (id === undefined || id === null) {
+    return res.send({
+      valid: false,
+      body: {
+        message: "There was not a valid id provided",
+        error: "invalid_id",
+      },
+    });
+  } else {
+    let sql = "update orders set completed = 1 where id = ?";
+    let p = [id];
+
+    query(sql, p, true, false).then(
+      () => {
+        return res.send({
+          valid: true,
+          body: {
+            message: "Successfully updated your order.",
+          },
+        });
+      },
+      (err) => {
+        return res.send({
+          valid: false,
+          body: {
+            message: "There was an error updating the order. Please try again.",
+            error: err.message,
+          },
+        });
+      }
+    );
+  }
+});
+
 router.post("/new_order", (req, res) => {
   let time = req.body.time;
   let products = req.body.products;
