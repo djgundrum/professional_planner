@@ -3,6 +3,49 @@ var router = express.Router();
 
 const query = require("../global/query");
 
+router.post("/set_priority", (req, res) => {
+  let id = req.body.id;
+  let priority = req.body.priority;
+
+  if (
+    id === undefined ||
+    id === null ||
+    priority === undefined ||
+    priority === null
+  ) {
+    return res.send({
+      valid: false,
+      body: {
+        message: "The user is not defined, they need to login first",
+        error: "invalid_id",
+      },
+    });
+  } else {
+    let sql = "update orders set priority = ? where id = ?";
+    let p = [priority, id];
+
+    query(sql, p, true, false).then(
+      () => {
+        return res.send({
+          valid: true,
+          body: {
+            message: `Successfully updated the priority for order ${id}.`,
+          },
+        });
+      },
+      (err) => {
+        return res.send({
+          valid: false,
+          body: {
+            message: "There was an error updating the order. Please try again.",
+            error: err.message,
+          },
+        });
+      }
+    );
+  }
+});
+
 router.get("/order_history", (req, res) => {
   //let id = req.session.user.id;
   let id = 1;
@@ -193,7 +236,7 @@ router.get("/all", (req, res) => {
 });
 
 function isEmpty(str) {
-  return str === null || str === undefuned || str === "";
+  return str === null || str === undefined || str === "";
 }
 
 module.exports = router;

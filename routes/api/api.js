@@ -8,6 +8,7 @@ let menu_router = require("./menu/menu");
 let staff_router = require("./staff/staff");
 let cart_router = require("./cart/cart");
 let product_router = require("./product/product");
+let messages_router = require("./messages/messages");
 
 router.use("/account", account_router);
 router.use("/admin", admin_router);
@@ -16,5 +17,6 @@ router.use("/menu", menu_router);
 router.use("/staff", staff_router);
 router.use("/cart", cart_router);
 router.use("/product", product_router);
+router.use("/messages", messages_router);
 
 module.exports = router;
