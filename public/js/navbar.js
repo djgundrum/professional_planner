@@ -1,3 +1,4 @@
+var currentUsersRole = ""
 window.onload = function(){
     resize()
 }

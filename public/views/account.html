@@ -12,11 +12,20 @@
         <img src="../images/pencil.png" alt="" id="yEdit" class="hoverClass">
         <hr class="yLine">
         <div id="accountInfo2">
-          <p id="yName" class="loginText">Name:</p>
-          <p id="yEmail" class="loginText">Email:</p>
-          <p id="yPassword" class="loginText">Password:</p>
-          <p id="yPhone" class="loginText">Phone Number:</p>
-          <p id="yAddress" class="loginText">Address:</p>
+          <p id="yName" class="yText">Name:</p>
+          <input type="text" id="yNameInput" class="yInput">
+
+          <p id="yEmail" class="yText">Email:</p>
+          <input type="text" id="yEmailInput" class="yInput">
+
+          <p id="yPassword" class="yText">Password:</p>
+          <input type="text" id="yPasswordInput" class="yInput">
+
+          <p id="yPhone" class="yText">Phone Number:</p>
+          <input type="text" id="yPhoneInput" class="yInput">
+
+          <p id="yAddress" class="yText">Address:</p>
+          <input type="text" id="yAddressInput" class="yInput">
         </div>
         
       </div>
@@ -25,9 +34,10 @@
         <hr class="yLine">
       </div>
       <div id="logoutDiv">
-        <div id="logoutButton" class="hoverClass">Log Out</div>
+        <div id="logoutButton" class="hoverClass logoutButtons">Log Out</div>
+        <div id="saveEditButton" class="hoverClass logoutButtons">Save</div>
       </div>
-    </div>
+    </div>  
     <div id="loginBox">
       <p class="loginText">Email</p>
       <input type="text" id="emailInput" class="accountInput" />
@@ -58,6 +68,7 @@
       </div>
     </div>
   </body>
+  <script src="../js/jquery.js"></script>
   <script src="../js/account.js"></script>
   <script src="../js/navbar.js"></script>
 </html>
