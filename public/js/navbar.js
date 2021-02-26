@@ -37,7 +37,7 @@ if (userRole == "admin" || userRole == "staff"){
     navbarItems = ["HOME", "LOG OUT"]
 }
 else /* customers */ {
-    navbarItems = ["MENU", "SPECIALS", "CART", "ACCOUNT"]
+    navbarItems = ["MENU", "CART", "ACCOUNT"]
 }
 
 var navUL = document.createElement("ul")
