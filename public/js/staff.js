@@ -10,6 +10,7 @@ function getOrders() {
       for (let row of rows) {
         let tr = document.createElement("tr");
         tr.classList.add("table_row");
+        tr.style.borderTop = "1px solid #717171;";
 
         let priority = document.createElement("td");
 
@@ -30,7 +31,7 @@ function getOrders() {
         done.innerHTML = "mark as complete";
         done.classList.add("order_table_button");
         done.onclick = () => {
-          complete_order(row.id, done);
+          complete_order(row.id, tr);
         };
 
         tr.appendChild(priority);
@@ -71,17 +72,15 @@ function make_receipt(order_number, price, products, time) {
 
       doc.setFontType("normal");
       let offset = 90;
-      for (let current in result) {
-        console.log("For loop through the things");
-        console.log(current);
-        let text = `Item: ${current.name}, Price: ${current.price}`;
+      for (let i = 0; i < result.length; ++i) {
+        let text = `Item: ${result[i].name}, Price: ${result[i].price}`;
         doc.text(20, offset, text);
         offset += 10;
       }
 
       offset += 20;
       doc.setFontType("bold");
-      doc.text(20, offset, "\n\nTotal Price:");
+      doc.text(20, offset, "Total Price:");
 
       offset += 10;
       doc.setFontType("normal");
@@ -125,7 +124,7 @@ function complete_order(id, div) {
   $.post(url, data, (result) => {
     console.log(result);
     if (result.valid === true) {
-      div = null;
+      div.parentNode.removeChild(div);
     }
   });
 }
