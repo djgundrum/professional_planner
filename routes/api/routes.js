@@ -25,3 +25,44 @@ let routes = {
     },
   },
 };
+
+/* 
+
+Database Schema
+
+cart: {
+    id: int (unique)
+    user_id: int (id of the user that is ordering it)
+    product_id: int (id of the food item)
+    quantity: int (amount of that item)
+}
+
+orders: {
+    id: int (unique)
+    time: varchar(255) (time that the order was placed)
+    completed: int (0 if not done, 1 if completed)
+    products: varchar(500) (A list of the products in that order, each product it separated by a comma)
+    price: varchar(255) (Total price of the order)
+}
+
+user: {
+    id: int (unique)
+    name: varchar(255) (Name of the user)
+    email: varchar(255) (Email of the user)
+    password: varchar(255) (Password of the user)
+    phone: varchar(255) (Phone number of the user)
+    address: varchar(255) (Address of the user)
+    role: varchar(255) (Role of the user)
+}
+
+products {
+    id: int (unique)
+    name: varchar(255) (Name of the product)
+    description: varchar(500) (Description of the product)
+    photo_url: varchar(500) (Online url to the image)
+    section: varchar(255) (Entre or dessert etc.)
+    price: varchar(255) (Price of the product)
+    available: int (Whether or not product can be purchased)
+}
+
+*/
