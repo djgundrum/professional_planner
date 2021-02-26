@@ -137,7 +137,7 @@ router.post("/signin", (req, res) => {
           });
         } else {
           let row = result[0];
-          let user = (req.session.user = new user(
+          req.session.user = new user(
             row.id,
             row.name,
             row.email,
@@ -145,9 +145,9 @@ router.post("/signin", (req, res) => {
             row.phone,
             row.address,
             row.role
-          ));
+          );
 
-          return res.send({ valid: true, body: { user: user } });
+          return res.send({ valid: true, body: { user: req.session.user } });
         }
       },
       (err) => {
