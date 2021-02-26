@@ -168,10 +168,11 @@ for (i=0; i<response.product.length; i++) {
     addMenuItem(response.product[i].name,
         response.product[i].section,
         response.product[i].price,
-        response.product[i].photo_url)
+        response.product[i].photo_url,
+        response.product[i].description)
 }
 
-function addMenuItem(pName, pSection, pPrice, pPhoto) {
+function addMenuItem(pName, pSection, pPrice, pPhoto, pDescription) {
     let sectionDiv = document.createElement("div")
     sectionDiv.classList.add("sectionDiv")
 
@@ -214,7 +215,15 @@ function addMenuItem(pName, pSection, pPrice, pPhoto) {
     let descriptionDiv2 = document.createElement("div")
     descriptionDiv2.classList.add("descriptionDiv2")
 
-    let descriptionImg = document.createElement("div")
+    let descriptionX = document.createElement("p")
+    descriptionX.classList.add("descriptionX")
+    descriptionX.innerHTML = "x"
+    descriptionX.onclick = function(){
+        descriptionDiv1.style.display = "none"
+        descriptionDiv2.style.display = "none"
+    }
+
+    let descriptionImg = document.createElement("img")
     descriptionImg.classList.add("descriptionImg")
     descriptionImg.src = pPhoto
 
@@ -228,16 +237,20 @@ function addMenuItem(pName, pSection, pPrice, pPhoto) {
 
     let description = document.createElement("div")
     description.classList.add("description")
+    description.innerHTML = pDescription
 
     let descriptionQty = document.createElement("div")
     descriptionQty.classList.add("descriptionQty")
+    descriptionQty.innerHTML = "Qty"
 
-    let descriptionQtyInput = document.createElement("div")
+    let descriptionQtyInput = document.createElement("input")
     descriptionQtyInput.classList.add("descriptionQtyInput")
 
     let descriptionAddToCart = document.createElement("div")
     descriptionAddToCart.classList.add("descriptionAddToCart")
+    descriptionAddToCart.innerHTML = "Add To Cart"
 
+    descriptionDiv2.appendChild(descriptionX)
     descriptionDiv2.appendChild(descriptionImg)
     descriptionDiv2.appendChild(descriptionName)
     descriptionDiv2.appendChild(descriptionPrice)
@@ -247,17 +260,8 @@ function addMenuItem(pName, pSection, pPrice, pPhoto) {
     descriptionDiv2.appendChild(descriptionAddToCart)
     document.getElementById("menuDiv").appendChild(descriptionDiv2)
 
-
-
-
-
-
-
-
-
-
-
     sectionDiv.onclick = function() {
-        document.getElementById(pName + "DescriptionDiv").display = "block"
+        descriptionDiv1.style.display = "block"
+        descriptionDiv2.style.display = "block"
     }
 }
