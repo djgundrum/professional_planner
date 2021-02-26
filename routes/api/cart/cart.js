@@ -5,7 +5,8 @@ const query = require("../global/query");
 
 router.get("/all", (req, res) => {
   try {
-    let id = req.session.user.id;
+    //let id = req.session.user.id;
+    let id = 1
 
     if (id === undefined || id === null) {
       return res.send({
