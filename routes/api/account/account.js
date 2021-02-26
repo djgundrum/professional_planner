@@ -165,7 +165,7 @@ router.post("/signin", (req, res) => {
 });
 
 function isEmpty(str) {
-  return str === null || str === undefuned || str === "";
+  return str === null || str === undefined || str === "";
 }
 
 module.exports = router;

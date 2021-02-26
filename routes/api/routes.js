@@ -36,6 +36,10 @@ let routes = {
         // Set an existing order to completed
         //p: id (id of the completed order)
         complete_order: "/api/order/done",
+
+        // Set the priority of an order
+        //p: id, priority (id of the order and the new priority that it will have)
+        set_order_priority: "/api/order/set_priority",
       },
       get: {
         // Returns array of order objects, all are not completed
@@ -61,6 +65,18 @@ let routes = {
         //This will return the specified product given in the url
         //p: product_id (id of the product you are tring to search)
         get_product: "/api/product/get_product/:product_id",
+      },
+    },
+    messages: {
+      post: {
+        // Send a message
+        //p: id, message (id is always the id of the customer, never send admin user_id)
+        send_message: "/api/messages/new",
+      },
+      get: {
+        // Get all the messages tied to a user (if admin all the messages are returned)
+        //p: no parameters needed
+        get_messages: "/api/messages/all",
       },
     },
   },
@@ -107,6 +123,12 @@ products {
     section: varchar(255) (Entre or dessert etc.)
     price: varchar(255) (Price of the product)
     available: int (Whether or not product can be purchased)
+}
+
+messages: {
+  id: int (unique)
+  user_id: int (id of the user sending the message)
+  message: varchar(500) (self-explanatory)
 }
 
 */
