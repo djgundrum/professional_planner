@@ -3,6 +3,7 @@
     height: 80px;
     position: fixed;
     background-color: #b40000;
+    top: 0;
 }
 
 #navUL {
