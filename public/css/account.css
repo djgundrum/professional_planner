@@ -1,0 +1,36 @@
+body {
+    margin: 0;
+    background-color: #efefef;
+}
+
+.loginText {
+
+}
+
+#loginBox {
+    /*justify-content: center;*/
+    margin-top: 100px;
+    position: relative;
+    box-shadow: 2px 2px 5px 2px #999999;
+    background-color: rgb(255,255,255);
+    width: 40vw;
+    margin-left: 30%
+}
+
+.accountButton{
+    margin-top: 10px;
+    text-align: center;
+    background-color: maroon;
+    border: none;
+    text-align: center;
+    color: white;
+    width: 300px;
+    display: block;
+    min-width: 200px;
+    max-width: 400px;
+    
+}
+
+@media screen and (max-width: 800px){
+
+}
