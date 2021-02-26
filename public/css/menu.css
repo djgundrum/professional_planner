@@ -101,9 +101,10 @@ body {
     height: 100%;
     width: 100%;
     background-color: black;
-    opacity: 70%;
+    opacity: 90%;
     top: 0;
     left: 0;
+    display: none;
 }
 .descriptionDiv2 {
     position: fixed;
@@ -118,6 +119,18 @@ body {
     z-index: 10;
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
+    display: none;
+}
+.descriptionX {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    margin: 0;
+    width: 20px;
+}
+.descriptionX:hover {
+    cursor: pointer;
 }
 .descriptionImg {
     height: 50%;
@@ -171,14 +184,23 @@ body {
     width: 20px;
     position: relative;
     top: calc(62% + 60px);
+    text-align: center;
 }
 .descriptionAddToCart {
-    width: 20%;
-    height: 30px;
+    width: 25%;
+    height: 40px;
     background-color: #b40000;
     position: absolute;
     bottom: 20px;
     left: 0;
     right: 0;
     margin: auto;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    line-height: 40px;
 }
+.descriptionAddToCart:hover {
+    cursor: pointer;
+}
+
