@@ -37,3 +37,25 @@ body{
     vertical-align: middle;
     height: 60px;
 }
+#checkOutButton {
+    width: 240px;
+    height: 60px;
+    background-color: #b40000;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 30px;
+    text-align: center;
+    line-height: 60px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 30px;
+    margin: auto;
+}
+#checkOutButton:hover {
+    cursor: pointer;
+}
+
+.hoverClass:hover {
+    cursor: pointer;
+}

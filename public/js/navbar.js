@@ -8,7 +8,7 @@ document.body.appendChild(navbar)
 
 var navHamburger = document.createElement("img")
 navHamburger.id = "navHamburger"
-navHamburger.src = "./images/hamburger.png"
+navHamburger.src = "../images/hamburger.png"
 
 var isUp = true
 navHamburger.onclick = function(){

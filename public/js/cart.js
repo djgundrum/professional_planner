@@ -1,17 +1,9 @@
 //get menu data
-getCart();
+//getCart();
 
 function getCart() {
   let url = "/api/order/all";
   $.get(url, (response) => {
-    // response.body.data = {
-    //     cart: {
-    //         id: 1,
-    //         user_id: 1,
-    //         product_id: 1,
-    //         quantity: 1
-    //     }
-    // }
     for (i = 0; i < response.body.data.length; i++) {
       addCartItem(
         response.body.data[i].id,
@@ -43,6 +35,7 @@ function getCart() {
         td4.style.width = "100px"
         td4.style.color = "#b40000"
         td4.innerHTML = "remove"
+        td4.classList.add("hoverClass")
 
         tempTR.appendChild(td1)
         tempTR.appendChild(td2)
