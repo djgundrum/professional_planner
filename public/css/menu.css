@@ -1,0 +1,184 @@
+body {
+    margin: 0;
+    background-color: #efefef;
+}
+
+#menuDiv {
+    position: absolute;
+    width: 100%;
+    height: calc(100% - 80px);
+    top: 80px;
+}
+
+#menuSearch {
+    width: 40%;
+    height: 30px;
+    position: relative;
+    top: 20px;
+    left: 20px;
+    margin-bottom: 40px;
+}
+
+#menuSearchButton {
+    position: absolute;
+    top: 20px;
+    background-color: #b40000;
+    height: 36px;
+    width: 5%;
+    left: calc(40% + 40px);
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    text-align: center;
+    line-height: 36px;
+    min-width: 80px;
+}
+
+
+.menuSection {
+    margin-top: 40px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+.menuSectionHeader {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 30px;
+    margin-left: 20px;
+    color: #b40000
+}
+.sectionDiv {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    background-color: white;
+    float: left;
+    margin: 20px;
+    box-shadow: 2px 2px 5px 2px #999999;
+}
+.sectionDiv:hover {
+    cursor: pointer;
+}
+.menuImgDiv {
+    position: relative;
+    height: 60%;
+    width: 60%;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 10%;
+}
+.menuName {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    color: #666666;
+    position: absolute;
+    top: 75%;
+    width: 100%;
+    text-align: center;
+    margin-top: 0;
+}
+.menuPrice {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    color: #666666;
+    position: absolute;
+    top: calc(75% + 25px);
+    width: 100%;
+    text-align: center;
+    margin-top: 0;
+}
+
+.menuImg {
+    height: 100%;
+    width: 100%;
+}
+
+.descriptionDiv1 {
+    position: fixed;
+    z-index: 5;
+    height: 100%;
+    width: 100%;
+    background-color: black;
+    opacity: 70%;
+    top: 0;
+    left: 0;
+}
+.descriptionDiv2 {
+    position: fixed;
+    height: 70%;
+    width: 30%;
+    background-color: white;
+    left: 0;
+    right: 0;
+    margin: auto;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+}
+.descriptionImg {
+    height: 50%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    top: 10%;
+}
+.descriptionName {
+    font-size: 20px;
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    margin: auto;
+    top: calc(62%)
+}
+.descriptionPrice {
+    font-size: 16px;
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    margin: auto;
+    top: calc(62% + 30px)
+}
+.description {
+    font-size: 12px;
+    width: 75%;
+    text-align: center;
+    position: relative;
+    margin: auto;
+    top: calc(62% + 60px);
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+.descriptionQty {
+    font-size: 16px;
+    width: 75%;
+    text-align: center;
+    position: relative;
+    top: calc(62% + 60px);
+    margin: auto;
+    left: 0;
+    right: 0;
+    margin: auto;
+    margin-top: 5%;
+}
+.descriptionQtyInput {
+    font-size: 16px;
+    width: 20px;
+    position: relative;
+    top: calc(62% + 60px);
+}
+.descriptionAddToCart {
+    width: 20%;
+    height: 30px;
+    background-color: #b40000;
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
