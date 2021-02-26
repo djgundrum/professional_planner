@@ -18,7 +18,7 @@ router.get("/all", (req, res) => {
       let sql = "select * from cart where user_id = ?";
       let p = [id];
 
-      query(sql, p, false, true).then(
+      query(sql, p, false, false).then(
         (rows) => {
           let data = [];
 
@@ -28,6 +28,7 @@ router.get("/all", (req, res) => {
               user_id: row.user_idtime,
               product_id: row.product_id,
               quantity: row.quantity,
+              price: row.price,
             });
           }
           return res.send({

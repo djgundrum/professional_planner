@@ -38,7 +38,8 @@ let routes = {
     menu: {
       post: {},
       get: {
-        // Get all the products in the
+        // Get all the products in the database
+        //p: No parameters needed
         get_all_products: "/api/menu/all",
       },
     },
