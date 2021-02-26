@@ -62,20 +62,32 @@ body {
   margin: 0 0 50px 0;
 }
 
+.order_table {
+  margin-top: 30px;
+  font-size: 25px;
+  border-collapse: collapse;
+}
+
 .order_table_button {
   color: #b40000;
   font-weight: bold;
-  font-size: 16px;
+  font-size: 25px;
+  cursor: pointer;
 }
 
 .table_row {
-  border-top: 1px solid #717171;
+  border-top: 1px solid black;
   margin: 20px 0;
   padding: 20px 0;
 }
 
 th {
   text-align: left;
+  padding-bottom: 20px;
+}
+
+td {
+  padding: 20px 0;
 }
 
 @media screen and (max-width: 800px) {
