@@ -85,23 +85,23 @@ document.getElementById("logoutButton").onclick = function(){
 document.getElementById("yEdit").onclick = function(){
     document.getElementById("yNameInput").classList.remove("yInput")
     document.getElementById("yNameInput").classList.add("yInputEdit")
-    document.getElementById("yNameInput").disabled = "false"
+    document.getElementById("yNameInput").disabled = false
 
     document.getElementById("yEmailInput").classList.remove("yInput")
     document.getElementById("yEmailInput").classList.add("yInputEdit")
-    document.getElementById("yEmailInput").disabled = "false"
+    document.getElementById("yEmailInput").disabled = false
 
     document.getElementById("yPasswordInput").classList.remove("yInput")
     document.getElementById("yPasswordInput").classList.add("yInputEdit")
-    document.getElementById("yPasswordInput").disabled = "false"
+    document.getElementById("yPasswordInput").disabled = false
 
     document.getElementById("yPhoneInput").classList.remove("yInput")
     document.getElementById("yPhoneInput").classList.add("yInputEdit")
-    document.getElementById("yPhoneInput").disabled = "false"
+    document.getElementById("yPhoneInput").disabled = false
 
     document.getElementById("yAddressInput").classList.remove("yInput")
     document.getElementById("yAddressInput").classList.add("yInputEdit")
-    document.getElementById("yAddressInput").disabled = "false"
+    document.getElementById("yAddressInput").disabled = false
 
     document.getElementById("logoutButton").style.display = "none"
     document.getElementById("saveEditButton").style.display = "block"
@@ -122,21 +122,26 @@ document.getElementById("saveEditButton").onclick = function(){
         if (response.valid) {
             document.getElementById("yNameInput").classList.remove("yInputEdit")
             document.getElementById("yNameInput").classList.add("yInput")
+            document.getElementById("yNameInput").disable = true
 
             document.getElementById("yEmailInput").classList.remove("yInputEdit")
             document.getElementById("yEmailInput").classList.add("yInput")
+            document.getElementById("yEmailInput").disable = true
 
             document.getElementById("yPasswordInput").classList.remove("yInputEdit")
             document.getElementById("yPasswordInput").classList.add("yInput")
+            document.getElementById("yPasswordInput").disable = true
 
             document.getElementById("yPhoneInput").classList.remove("yInputEdit")
             document.getElementById("yPhoneInput").classList.add("yInput")
+            document.getElementById("yPhoneInput").disable = true
 
             document.getElementById("yAddressInput").classList.remove("yInputEdit")
             document.getElementById("yAddressInput").classList.add("yInput")
+            document.getElementById("yAddressInput").disable = true
 
             document.getElementById("logoutButton").style.display = "block"
-            document.getElementById("saveEditButton").style.display = "none"
+            document.getElementById("saveEditButton").disable = true
         }
     })
 
