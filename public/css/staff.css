@@ -1,58 +1,57 @@
 body {
-    margin: 0;
-    background-color: #efefef;
+  margin: 0;
+  background-color: #efefef;
 }
 
 #staffDiv {
-    margin-top: 80px;
-    text-align: center;
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    width: 80%;
-    height: calc(100% - 80px);
-    margin-left: 10%;
-
+  margin-top: 80px;
+  text-align: center;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  width: 80%;
+  height: calc(100% - 80px);
+  margin-left: 10%;
 }
 
-#staffDiv>div {
-    position: relative;
-    min-width: 400px;
-    width: 30%;
-    height: 400px;
-    background-color: rgb(255, 255, 255);
-    float: left;
-    margin: 20px;
-    box-shadow: 2px 2px 5px 2px #999999;
-    padding-top: 20px;
+#staffDiv > div {
+  position: relative;
+  min-width: 400px;
+  width: 30%;
+  height: 400px;
+  background-color: rgb(255, 255, 255);
+  float: left;
+  margin: 20px;
+  box-shadow: 2px 2px 5px 2px #999999;
+  padding-top: 20px;
 }
 
-.menuClick{
-    position: relative;
-    width: 60%;
-    height: 60%;
-    margin-left: 20%;
-    box-shadow: 2px 2px 5px 2px #999999;
+.menuClick {
+  position: relative;
+  width: 60%;
+  height: 60%;
+  margin-left: 20%;
+  box-shadow: 2px 2px 5px 2px #999999;
 }
 
-.orderClick{
-    position: relative;
-    width: 60%;
-    height: 60%;
-    margin-left: 20%;
-    box-shadow: 2px 2px 5px 2px #999999;
+.orderClick {
+  position: relative;
+  width: 60%;
+  height: 60%;
+  margin-left: 20%;
+  box-shadow: 2px 2px 5px 2px #999999;
 }
 
 .updateMenuText {
-    padding-top: 20px;
+  padding-top: 20px;
 }
 
 .viewOrdersText {
-    padding-top: 20px;
+  padding-top: 20px;
 }
 
 @media screen and (max-width: 800px) {
-    #staffDiv {
-        display: block;
-    }
+  #staffDiv {
+    display: block;
+  }
 }

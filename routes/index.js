@@ -26,4 +26,8 @@ router.get("/account", (req, res) => {
   res.render("account.html");
 });
 
+router.get("/orders", (req, res) => {
+  res.render("orders.html");
+});
+
 module.exports = router;
