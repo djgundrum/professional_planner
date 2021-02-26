@@ -1,0 +1,39 @@
+body{
+    margin: 0;
+}
+#cartDiv {
+    position: absolute;
+    width: 100%;
+    height: calc(100% - 80px);
+    top: 80px;
+}
+#yourCart {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 40px;
+    color: #999999;
+    position: relative;
+    margin-left: 40px;
+    margin-top: 40px;
+}
+#cartTable {
+    position: relative;
+    margin-left: 40px;
+    margin-top: 40px;
+    width: 50%;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    color: #999999;
+    border-spacing: 0;
+    min-width: 400px
+}
+
+#cartTable th {
+    border-bottom: 1px solid #999999;
+    text-align: left;
+}
+#cartTable td {
+    border-bottom: 1px solid #999999;
+    text-align: left;
+    vertical-align: middle;
+    height: 60px;
+}
