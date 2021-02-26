@@ -50,7 +50,7 @@ router.post("/update", (req, res) => {
   } else {
     let sql =
       "update users set name = ?, email = ?, phone = ?, role = ?, password = ?, address = ? where id = ?";
-    let p = [name, email, phone, role, password, address];
+    let p = [name, email, phone, role, password, address, id];
 
     query(sql, p, true, false).then(
       () => {

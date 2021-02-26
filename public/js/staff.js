@@ -47,33 +47,45 @@ function getOrders() {
 function make_receipt(order_number, price, products, time) {
   get_products(products).then(
     (result) => {
+      console.log("This is the make_receipt");
+      console.log(result);
+      console.log(order_number);
+      console.log(price);
+      console.log(products);
+      console.log(time);
       let doc = new jsPDF();
       doc.setFontType("bold");
       doc.text(20, 20, "Order Number:");
 
       doc.setFontType("normal");
-      doc.text(20, 20, "" + order_number);
+      doc.text(20, 30, "" + order_number);
 
       doc.setFontType("bold");
-      doc.text(20, 20, "\n\nTime Ordered:");
+      doc.text(20, 50, "Time Ordered:");
 
       doc.setFontType("normal");
-      doc.text(20, 20, "" + time);
+      doc.text(20, 60, "" + time);
 
       doc.setFontType("bold");
-      doc.text(20, 20, "\n\nYour items:");
+      doc.text(20, 80, "Your items:");
 
       doc.setFontType("normal");
+      let offset = 90;
       for (let current in result) {
+        console.log("For loop through the things");
+        console.log(current);
         let text = `Item: ${current.name}, Price: ${current.price}`;
-        doc.text(20, 20, text);
+        doc.text(20, offset, text);
+        offset += 10;
       }
 
+      offset += 20;
       doc.setFontType("bold");
-      doc.text(20, 20, "\n\nTotal Price:");
+      doc.text(20, offset, "\n\nTotal Price:");
 
+      offset += 10;
       doc.setFontType("normal");
-      doc.text(20, 20, "" + price);
+      doc.text(20, offset, "" + price);
 
       doc.save("receipt.pdf");
     },
@@ -89,7 +101,11 @@ function get_products(products) {
       for (let i = 0; i < list.length; ++i) {
         let url = `/api/product/get_product/${list[i]}`;
         $.get(url, (result) => {
-          data.push({ name: result.body.name, price: result.body.price });
+          console.log(result);
+          data.push({
+            name: result.body.product.name,
+            price: result.body.product.price,
+          });
 
           if (i === list.length - 1) resolve(data);
         });
