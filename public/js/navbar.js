@@ -1,4 +1,4 @@
-var currentUsersRole = ""
+var userRole = ""
 window.onload = function(){
     resize()
 }
@@ -27,10 +27,6 @@ navbar.appendChild(navHamburger)
 var navDropdown = document.createElement("div")
 navDropdown.id = "navDropdown"
 navbar.appendChild(navDropdown)
-
-// First need to get user information after sign-in
-// TEMPORARY
-var userRole = "customer"
 
 
 var navbarItems = []

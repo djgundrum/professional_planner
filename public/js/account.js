@@ -27,7 +27,7 @@ document.getElementById("signInButton").onclick = function(){
             document.getElementById("yPasswordInput").value = response.body.user.password
             document.getElementById("yPhoneInput").value = response.body.user.phone
             document.getElementById("yAddressInput").value = response.body.user.address
-            currentUsersRole = response.body.user.role
+            userRole = response.body.user.role
 
             document.getElementById("emailInput").value = ""
             document.getElementById("passwordInput").value = ""
@@ -59,7 +59,7 @@ document.getElementById("signupCreateAccountButton").onclick = function(){
                 let url2 = "/api/account/signin"
                 $.post(url2, data2, (response2) => { 
                     if (response2.valid) {
-                        currentUsersRole = response2.body.user.role
+                        userRole = response2.body.user.role
                         document.getElementById("loggedInInfo").style.display = "block"
                         document.getElementById("signupBox").style.display = "none"
                         document.getElementById("yNameInput").value = response2.body.user.name
@@ -128,7 +128,7 @@ document.getElementById("saveEditButton").onclick = function(){
         password: document.getElementById("yPasswordInput").value,
         phone: document.getElementById("yPhoneInput").value,
         address: document.getElementById("yAddressInput").value,
-        role: currentUsersRole
+        role: userRole
     }
     $.post(url, data, (response) => {
         if (response.valid) {
