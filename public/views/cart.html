@@ -17,19 +17,50 @@
                     <th style="width: 100px">Price</th>
                     <th style="width: 100px"></th>
                 </tr>
-                <tr>
-                    <td style="width: auto; min-width: 100px">Item</td>
-                    <td style="width: 100px">Qty</td>
-                    <td style="width: 100px">Price</td>
-                    <td style="width: 100px; color: #b40000;">remove</td>
-                </tr>
             </table>
             <div id="checkOutButton">
                 Check Out
             </div>
         </div>
-        <div>
+        <div id="checkoutOverlay">
             
+        </div>
+        <div id="pickupDiv" style="display: none;">
+            <p id="exitPickup" class="hoverClass exitX">x</p>
+            <p id="pickupInstructions">Pickup Instructions</p>
+            <p id="pickupTime">Enter Pickup Time:</p>
+            <input type="time" id="inputTime">
+            <p id="carDescription">Your Car Description:</p>
+            <input type="text" id="inputCarDescription">
+            <p id="additionalInstructions">Additional Instructions:</p>
+            <input type="text" id="inputAdditionalInstructions">
+            <div id="instructionsContinue" class="hoverClass">Continue</div>
+        </div>
+        <div id="paymentDiv">
+            <p id="exitPayment" class="hoverClass exitX">x</p>
+            <p id="choosePayment">Choose Payment</p>
+            <div id="paymentDiv1">
+                <div id="paymentDiv11" class="hoverClass" >
+                    <img src="../images/creditCard.png" alt="" style="height: 50%; position: absolute; left: 50%; top: 50%; transform: translateY(-50%) translateX(-50%);">
+                </div>
+                <div id="paymentDiv12" class="hoverClass" >
+                    <img src="../images/paypal.png" alt="" style="height: 60%; position: absolute; left: 50%; top: 50%; transform: translateY(-50%) translateX(-50%);">
+                </div>
+                <div id="paymentDiv13" class="hoverClass" >
+                    <img src="../images/applePay.jpg" alt="" style="height: 80%; position: absolute; left: 50%; top: 50%; transform: translateY(-50%) translateX(-50%);">
+                </div>
+                <div id="paymentDiv14" class="hoverClass" >
+                    <img src="../images/googlePay.png" alt="" style="height: 70%; position: absolute; left: 50%; top: 50%; transform: translateY(-50%) translateX(-50%);">
+                </div>
+            </div>
+        </div>
+        <div id="thanksDiv">
+            <p id="exitThanks" class="hoverClass exitX">x</p>
+            <p id="thanks">Thanks for Ordering!</p>
+            <p id="orderReadyTime">Your order will be ready at ____</p>
+            <p id="seeYouThen">See you then!</p>
+            <p id="viewReceipt" class="hoverClass">View Receipt</p>
+            <div id="backToMenu" class="hoverClass">Back to Menu</div>
         </div>
     </body>
     <script src="../js/jquery.js"></script>
