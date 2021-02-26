@@ -62,4 +62,47 @@ router.get("/all", (req, res) => {
   }
 });
 
+router.post("/delete", (req, res) => {
+  let product_id = req.body.id;
+  let id = req.session.user.id;
+
+  if (
+    id === undefined ||
+    id === null ||
+    product_id === undefined ||
+    product_id === null
+  ) {
+    return res.send({
+      valid: false,
+      body: {
+        message: "The id provided is not a valid id",
+      },
+    });
+  } else {
+    let sql = "delete from cart where user_id = ? and product_id = ?";
+    let p = [id, product_id];
+
+    query(sql, p, true, false).then(
+      () => {
+        return res.send({
+          valid: true,
+          body: {
+            message: "Successfully from your cart.",
+          },
+        });
+      },
+      (err) => {
+        return res.send({
+          valid: false,
+          body: {
+            message:
+              "There was an error deleting from your cart. Please try again.",
+            error: err.message,
+          },
+        });
+      }
+    );
+  }
+});
+
 module.exports = router;

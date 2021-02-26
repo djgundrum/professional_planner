@@ -3,6 +3,59 @@ var router = express.Router();
 
 const query = require("../global/query");
 
+router.get("/order_history", (req, res) => {
+  //let id = req.session.user.id;
+  let id = 1;
+
+  if (id === undefined || id === null) {
+    return res.send({
+      valid: false,
+      body: {
+        message: "The user is not defined, they need to login first",
+        error: "invalid_id",
+      },
+    });
+  } else {
+    let sql = "select * from orders where user_id = ?";
+    let p = [id];
+
+    query(sql, p, false, false).then(
+      (rows) => {
+        let data = [];
+
+        for (let row of rows) {
+          data.push({
+            id: row.id,
+            time: row.time,
+            products: row.products,
+            price: row.price,
+            priority: row.priority,
+            car_description: row.car_description,
+            additional_instructions: row.additional_instructions,
+            user_id: row.user_id,
+          });
+        }
+        return res.send({
+          valid: true,
+          body: {
+            message: "All the orders from this user",
+            orders: data,
+          },
+        });
+      },
+      (err) => {
+        return res.send({
+          valid: false,
+          body: {
+            message: "There was an error getting the orders. Please try again.",
+            error: err.message,
+          },
+        });
+      }
+    );
+  }
+});
+
 router.post("/done", (req, res) => {
   let id = req.body.id;
 
@@ -47,14 +100,16 @@ router.post("/new_order", (req, res) => {
   let priority = req.body.priority;
   let car_description = req.body.car_description;
   let additional_instructions = req.body.additional_instructions;
+  let id = req.body.id;
 
   if (
     isEmpty(time) ||
     isEmpty(products) ||
     isEmpty(price) ||
-    isEmpty(priority) ||
+    priority == undefined ||
     isEmpty(car_description) ||
-    isEmpty(additional_instructions)
+    isEmpty(additional_instructions) ||
+    id == undefined
   ) {
     return res.send({
       valid: false,
@@ -65,8 +120,16 @@ router.post("/new_order", (req, res) => {
     });
   } else {
     let sql =
-      "insert into orders (time, products, price, priority, car_description, additional_instructions) values (?, ?, ?, ?, ?, ?)";
-    let p = [time, products, price];
+      "insert into orders (time, products, price, priority, car_description, additional_instructions, user_id) values (?, ?, ?, ?, ?, ?, ?)";
+    let p = [
+      time,
+      products,
+      price,
+      priority,
+      car_description,
+      additional_instructions,
+      user_id,
+    ];
 
     query(sql, p, true, false).then(
       () => {
@@ -106,6 +169,7 @@ router.get("/all", (req, res) => {
           priority: row.priority,
           car_description: row.car_description,
           additional_instructions: row.additional_instructions,
+          user_id: row.user_id,
         });
       }
       return res.send({

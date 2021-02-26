@@ -4,6 +4,75 @@ var router = express.Router();
 let query = require("../global/query");
 let user = require("../global/user");
 
+router.post("/logout", (req, res) => {
+  query("", [], true, true).then(
+    () => {
+      return res.send({
+        valid: true,
+        body: { message: "Successfully logged out the user" },
+      });
+    },
+    (err) => {
+      return res.send({
+        valid: false,
+        body: {
+          message:
+            "There was an error logging out the account. Please try again.",
+          error: err.message,
+        },
+      });
+    }
+  );
+});
+
+router.post("/update", (req, res) => {
+  let name = req.body.name;
+  let email = req.body.email;
+  let password = req.body.password;
+  let phone = req.body.phone;
+  let address = req.body.address;
+  let role = req.body.role;
+  let id = req.session.user.id;
+
+  if (
+    isEmpty(name) ||
+    isEmpty(email) ||
+    isEmpty(password) ||
+    id === undefined
+  ) {
+    return res.send({
+      valid: false,
+      body: {
+        message: "There was an error updating the account.",
+        error: "One of the fields was blank",
+      },
+    });
+  } else {
+    let sql =
+      "update users set name = ?, email = ?, phone = ?, role = ?, password = ?, address = ? where id = ?";
+    let p = [name, email, phone, role, password, address];
+
+    query(sql, p, true, false).then(
+      () => {
+        return res.send({
+          valid: true,
+          body: { message: "Successfully updated the account" },
+        });
+      },
+      (err) => {
+        return res.send({
+          valid: false,
+          body: {
+            message:
+              "There was an error updating the account. Please refresh and try again.",
+            error: err.message,
+          },
+        });
+      }
+    );
+  }
+});
+
 router.post("/signup", (req, res) => {
   let name = req.body.name;
   let email = req.body.email;

@@ -9,10 +9,18 @@ let routes = {
         // Create a new customer, returns if successful
         //p: name, email, password
         signup: "/api/account/sginup",
+
+        // Update the user account, returns if successful
+        //p: name, email, password, phone, address, role
+        update: "/api/account/update",
       },
     },
     cart: {
-      post: {},
+      post: {
+        // Deletes an item from the cart
+        //p: id (id of the product)
+        delete_item_from_cart: "/api/cart/delete",
+      },
       get: {
         // Returns all items in customer's cart (need to have signed in)
         //p: No parameters needed
@@ -33,6 +41,10 @@ let routes = {
         // Returns array of order objects, all are not completed
         //p: no parameters
         get_current_unfinished_orders: "/api/order/all",
+
+        // Returns all of the orders from one user
+        //p: No parameters needed
+        get_all_user_orders: "/api/order/order_history",
       },
     },
     menu: {
@@ -71,6 +83,10 @@ orders: {
     completed: int (0 if not done, 1 if completed)
     products: varchar(500) (A list of the products in that order, each product it separated by a comma)
     price: varchar(255) (Total price of the order)
+    priority: int (Where the order is in the queue)
+    car_description: varchar(500) (Description of the customer's car)
+    additional_instructions: varchar(500) (If the customer has any more notes)
+    user_id: int (The id of the user that placed the order)
 }
 
 user: {
