@@ -4,15 +4,16 @@ getProducts();
 function getProducts() {
   let url = "/api/menu/all";
   $.get(url, (response) => {
-
     for (i = 0; i < response.body.data.length; i++) {
-      addMenuItem(
-        response.body.data[i].name,
-        response.body.data[i].section,
-        response.body.data[i].price,
-        response.body.data[i].photo_url,
-        response.body.data[i].description
-      );
+      if (document.getElementById("menuSearch").value == "" || response.body.data[i].name.toLowerCase().includes(document.getElementById("menuSearch").value.toLowerCase())) {
+        addMenuItem(
+          response.body.data[i].name,
+          response.body.data[i].section,
+          response.body.data[i].price,
+          response.body.data[i].photo_url,
+          response.body.data[i].description
+        );
+      }
     }
     
     function addMenuItem(pName, pSection, pPrice, pPhoto, pDescription) {
@@ -87,6 +88,13 @@ function getProducts() {
       let descriptionAddToCart = document.createElement("div");
       descriptionAddToCart.classList.add("descriptionAddToCart");
       descriptionAddToCart.innerHTML = "Add To Cart";
+      descriptionAddToCart.onclick = function(){
+        //ADD ITEM TO CART
+
+
+        descriptionDiv1.style.display="none"
+        descriptionDiv2.style.display="none"
+      }
     
       descriptionDiv2.appendChild(descriptionX);
       descriptionDiv2.appendChild(descriptionImg);
@@ -106,4 +114,12 @@ function getProducts() {
     
     console.log(response);
   });
+}
+
+document.getElementById("menuSearchButton").onclick = function() {
+  let children = document.getElementsByClassName("sectionDiv")
+  while (children[0]) {
+    children[0].parentNode.removeChild(children[0])
+  }
+  getProducts()
 }
