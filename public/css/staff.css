@@ -10,7 +10,7 @@ body {
   display: flex;
   justify-content: center;
   width: 80%;
-  height: calc(100% - 80px);
+  height: calc(100vh - 80px);
   margin-left: 10%;
 }
 
@@ -20,7 +20,6 @@ body {
   width: 30%;
   height: 400px;
   background-color: rgb(255, 255, 255);
-  float: left;
   margin: 20px;
   box-shadow: 2px 2px 5px 2px #999999;
   padding-top: 20px;
@@ -43,11 +42,40 @@ body {
 }
 
 .updateMenuText {
-  padding-top: 20px;
+  font-size: 30px;
 }
 
-.viewOrdersText {
-  padding-top: 20px;
+.icon {
+  width: 70%;
+  height: auto;
+}
+
+#order {
+  /* display: none; */
+  margin: 80px 50px;
+  padding: 100px 0;
+  display: none;
+}
+
+.header-text {
+  font-size: 50px;
+  margin: 0 0 50px 0;
+}
+
+.order_table_button {
+  color: #b40000;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.table_row {
+  border-top: 1px solid #717171;
+  margin: 20px 0;
+  padding: 20px 0;
+}
+
+th {
+  text-align: left;
 }
 
 @media screen and (max-width: 800px) {

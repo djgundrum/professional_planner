@@ -130,7 +130,7 @@ router.post("/signin", (req, res) => {
 
     query(sql, p, false, false).then(
       (result) => {
-        if (result.length > 0) {
+        if (result.length === 0) {
           return res.send({
             valid: false,
             body: { message: "Wrong credentials." },
