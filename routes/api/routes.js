@@ -67,6 +67,7 @@ let routes = {
 
         // Update an existing product
         //p: id, name, description, photo_url, section, price, available
+        update_product: "/api/product/update",
       },
       get: {
         //This will return the specified product given in the url
