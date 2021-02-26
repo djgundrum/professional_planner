@@ -104,6 +104,9 @@ body {
   bottom: 40px;
 }
 
+#loggedInInfo {
+  display: none;
+}
 #accountInfo1 {
   margin-top: 80px;
   width: 50%;

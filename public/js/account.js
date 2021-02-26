@@ -28,6 +28,9 @@ document.getElementById("signInButton").onclick = function(){
             document.getElementById("yPhoneInput").value = response.body.user.phone
             document.getElementById("yAddressInput").value = response.body.user.address
             currentUsersRole = response.body.user.role
+
+            document.getElementById("emailInput").value = ""
+            document.getElementById("passwordInput").value = ""
         }
     })
 }
@@ -64,6 +67,11 @@ document.getElementById("signupCreateAccountButton").onclick = function(){
                         document.getElementById("yPasswordInput").value = response2.body.user.password
                         document.getElementById("yPhoneInput").value = response2.body.user.phone
                         document.getElementById("yAddressInput").value = response2.body.user.address
+
+                        document.getElementById("signupNameInput").value = ""
+                        document.getElementById("signupEmailInput").value = ""
+                        document.getElementById("signupPasswordInput").value = ""
+                        document.getElementById("confirmPasswordInput").value = ""
                     }
                 })
             }
@@ -78,8 +86,13 @@ document.getElementById("signupCreateAccountButton").onclick = function(){
     
 }
 document.getElementById("logoutButton").onclick = function(){
-    document.getElementById("loggedInInfo").style.display = "none"
-    document.getElementById("loginBox").style.display = "block"
+    let url = "/api/account/logout"
+    $.post(url, (response) => {
+        if (response.valid) {
+            document.getElementById("loggedInInfo").style.display = "none"
+            document.getElementById("loginBox").style.display = "block"
+        }
+    })
 }
 
 document.getElementById("yEdit").onclick = function(){
@@ -118,7 +131,6 @@ document.getElementById("saveEditButton").onclick = function(){
         role: currentUsersRole
     }
     $.post(url, data, (response) => {
-        console.log(response)
         if (response.valid) {
             document.getElementById("yNameInput").classList.remove("yInputEdit")
             document.getElementById("yNameInput").classList.add("yInput")
@@ -141,7 +153,7 @@ document.getElementById("saveEditButton").onclick = function(){
             document.getElementById("yAddressInput").disable = true
 
             document.getElementById("logoutButton").style.display = "block"
-            document.getElementById("saveEditButton").disable = true
+            document.getElementById("saveEditButton").style.display = "none"
         }
     })
 
