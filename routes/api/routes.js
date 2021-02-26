@@ -12,6 +12,14 @@ let routes = {
       },
     },
     cart: {
+      post: {},
+      get: {
+        // Returns all items in customer's cart (need to have signed in)
+        //p: No parameters needed
+        get_all_cart: "/api/cart/all",
+      },
+    },
+    order: {
       post: {
         // Create a new order, returns if successful
         //p: time, products, price (products are id of products separated by commas)
@@ -32,6 +40,14 @@ let routes = {
       get: {
         // Get all the products in the
         get_all_products: "/api/menu/all",
+      },
+    },
+    product: {
+      post: {},
+      get: {
+        //This will return the specified product given in the url
+        //p: product_id (id of the product you are tring to search)
+        get_product: "/api/product/get_product/:product_id",
       },
     },
   },

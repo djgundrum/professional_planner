@@ -3,119 +3,62 @@ var router = express.Router();
 
 const query = require("../global/query");
 
-router.post("/done", (req, res) => {
-  let id = req.body.id;
-
-  if (id === undefined || id === null) {
-    return res.send({
-      valid: false,
-      body: {
-        message: "There was not a valid id provided",
-        error: "invalid_id",
-      },
-    });
-  } else {
-    let sql = "update orders set completed = 1 where id = ?";
-    let p = [id];
-
-    query(sql, p, true, false).then(
-      () => {
-        return res.send({
-          valid: true,
-          body: {
-            message: "Successfully updated your order.",
-          },
-        });
-      },
-      (err) => {
-        return res.send({
-          valid: false,
-          body: {
-            message: "There was an error updating the order. Please try again.",
-            error: err.message,
-          },
-        });
-      }
-    );
-  }
-});
-
-router.post("/new_order", (req, res) => {
-  let time = req.body.time;
-  let products = req.body.products;
-  let price = req.body.price;
-
-  if (isEmpty(time) || isEmpty(products) || isEmpty(price)) {
-    return res.send({
-      valid: false,
-      body: {
-        message: "There was an error creating the account.",
-        error: "One of the fields was blank",
-      },
-    });
-  } else {
-    let sql = "insert into orders (time, products, price) values (?, ?, ?)";
-    let p = [time, products, price];
-
-    query(sql, p, true, false).then(
-      () => {
-        return res.send({
-          valid: true,
-          body: {
-            message: "Successfully created your order.",
-          },
-        });
-      },
-      (err) => {
-        return res.send({
-          valid: false,
-          body: {
-            message: "There was an error creating the order. Please try again.",
-            error: err.message,
-          },
-        });
-      }
-    );
-  }
-});
-
 router.get("/all", (req, res) => {
-  let sql = "select * from orders where completed = 0";
+  try {
+    let id = req.session.user.id;
 
-  query(sql, [], false, false).then(
-    (rows) => {
-      let data = [];
-
-      for (let row of rows) {
-        data.push({
-          id: row.id,
-          time: row.time,
-          products: row.products,
-          price: row.price,
-        });
-      }
-      return res.send({
-        valid: true,
-        body: {
-          message: "All the current orders that are not done.",
-          orders: data,
-        },
-      });
-    },
-    (err) => {
+    if (id === undefined || id === null) {
       return res.send({
         valid: false,
         body: {
-          message: "There was an error creating the order. Please try again.",
-          error: err.message,
+          message: "The session id was not defined, the user must login",
         },
       });
-    }
-  );
-});
+    } else {
+      let sql = "select * from cart where user_id = ?";
+      let p = [id];
 
-function isEmpty(str) {
-  return str === null || str === undefuned || str === "";
-}
+      query(sql, p, false, true).then(
+        (rows) => {
+          let data = [];
+
+          for (let row of rows) {
+            data.push({
+              id: row.id,
+              user_id: row.user_idtime,
+              product_id: row.product_id,
+              quantity: row.quantity,
+            });
+          }
+          return res.send({
+            valid: true,
+            body: {
+              message: "These are all the items in the cart.",
+              cart: data,
+            },
+          });
+        },
+        (err) => {
+          return res.send({
+            valid: false,
+            body: {
+              message:
+                "There was an error getting the items in the cart. Please try again.",
+              error: err.message,
+            },
+          });
+        }
+      );
+    }
+  } catch (err) {
+    return res.send({
+      valid: false,
+      body: {
+        message: "There was an error processing the user information.",
+        error: err.message,
+      },
+    });
+  }
+});
 
 module.exports = router;
