@@ -6,6 +6,28 @@
     <link rel="stylesheet" href="../css/navbar.css" />
   </head>
   <body>
+    <div id="loggedInInfo">
+      <div id="accountInfo1">
+        <p class="loginText yTitle">Your Information</p>
+        <img src="../images/pencil.png" alt="" id="yEdit" class="hoverClass">
+        <hr class="yLine">
+        <div id="accountInfo2">
+          <p id="yName" class="loginText">Name:</p>
+          <p id="yEmail" class="loginText">Email:</p>
+          <p id="yPassword" class="loginText">Password:</p>
+          <p id="yPhone" class="loginText">Phone Number:</p>
+          <p id="yAddress" class="loginText">Address:</p>
+        </div>
+        
+      </div>
+      <div id="accountInfo11">
+        <p class="loginText yTitle">Your Orders</p>
+        <hr class="yLine">
+      </div>
+      <div id="logoutDiv">
+        <div id="logoutButton" class="hoverClass">Log Out</div>
+      </div>
+    </div>
     <div id="loginBox">
       <p class="loginText">Email</p>
       <input type="text" id="emailInput" class="accountInput" />
@@ -13,11 +35,26 @@
       <input type="text" id="passwordInput" class="accountInput" />
 
       <div id="centeredButtons">
-        <button id="signInButton" class="accountButton">Sign In</button>
+        <div id="signInButton" class="accountButton">Sign In</div>
         <hr id="signInLine">
-        <button id="createAccountButton" class="accountButton">
+        <div id="createAccountButton" class="accountButton">
           Create Account
-        </button>
+        </div>
+      </div>
+    </div>
+    <div id="signupBox">
+      <p class="loginText">Name</p>
+      <input type="text" id="signupNameInput" class="accountInput" />
+      <p class="loginText">Email</p>
+      <input type="text" id="signupEmailInput" class="accountInput" />
+      <p class="loginText">Password</p>
+      <input type="text" id="signupPasswordInput" class="accountInput" />
+      <p class="loginText">Confirm Password</p>
+      <input type="text" id="confirmPasswordInput" class="accountInput" />
+      <div id="centeredButtons">
+        <div id="signupCreateAccountButton" class="accountButton">
+          Create Account
+        </div>
       </div>
     </div>
   </body>

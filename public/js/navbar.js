@@ -34,7 +34,7 @@ var userRole = "customer"
 
 var navbarItems = []
 if (userRole == "admin" || userRole == "staff"){
-    navbarItems = ["HOME", "LOG OUT"]
+    navbarItems = ["HOME", "ACCOUNT"]
 }
 else /* customers */ {
     navbarItems = ["MENU", "CART", "ACCOUNT"]
