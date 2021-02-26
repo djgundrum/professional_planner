@@ -8,7 +8,7 @@ let routes = {
 
         // Create a new customer, returns if successful
         //p: name, email, password
-        signup: "/api/account/sginup",
+        signup: "/api/account/signup",
 
         // Update the user account, returns if successful
         //p: name, email, password, phone, address, role
