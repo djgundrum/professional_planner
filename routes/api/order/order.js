@@ -197,7 +197,7 @@ router.post("/new_order", (req, res) => {
 });
 
 router.get("/all", (req, res) => {
-  let sql = "select * from orders where completed = 0";
+  let sql = "select * from orders where completed = 0 order by priority asc";
 
   query(sql, [], false, false).then(
     (rows) => {

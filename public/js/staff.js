@@ -7,12 +7,30 @@ function getOrders() {
     else {
       let rows = (orders = response.body.orders);
 
-      for (let row of rows) {
+      for (let i = 0; i < rows.length; ++i) {
+        let row = rows[i];
         let tr = document.createElement("tr");
         tr.classList.add("table_row");
         tr.style.borderTop = "1px solid #717171;";
 
+        let up_arrow = document.createElement("div");
+        let down_arrow = document.createElement("div");
+        up_arrow.classList.add("arrow");
+        down_arrow.classList.add("arrow");
+        up_arrow.classList.add("up");
+        down_arrow.classList.add("down");
+        down_arrow.onclick = () => {
+          if (i + 1 < rows.length) set_priority(row, rows[i + 1]);
+          else return;
+        };
+        up_arrow.onclick = () => {
+          if (i - 1 >= 0) set_priority(row, rows[i - 1]);
+          else return;
+        };
+
         let priority = document.createElement("td");
+        priority.appendChild(up_arrow);
+        priority.appendChild(down_arrow);
 
         let id = document.createElement("td");
         id.innerHTML = row.id;
@@ -42,6 +60,23 @@ function getOrders() {
         document.getElementById("order_table").appendChild(tr);
       }
     }
+  });
+}
+
+function set_priority(first, second) {
+  let first_data = { id: first.id, priority: second.priority };
+  let second_data = { id: second.id, priority: first.priority };
+  let url = "/api/order/set_priority";
+
+  $.post(url, first_data, (result) => {
+    console.log(result);
+    $.post(url, second_data, (result) => {
+      console.log(result);
+      document.getElementById("order_table").innerHTML =
+        '<tr id="cartHeader"><th style="width: auto; min-width: 100px"></th><th style="width: 200px">Order #</th><th style="width: 200px">Time</th><th style="width: 200px"></th><th style="width: 200px"></th></tr>';
+
+      getOrders();
+    });
   });
 }
 
