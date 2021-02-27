@@ -14,25 +14,18 @@ router.get("/validate", (req, res) => {
 });
 
 router.post("/logout", (req, res) => {
-  query("", [], true, true).then(
-    () => {
-      req.session.user = undefined;
-      return res.send({
-        valid: true,
-        body: { message: "Successfully logged out the user" },
-      });
-    },
-    (err) => {
-      return res.send({
-        valid: false,
-        body: {
-          message:
-            "There was an error logging out the account. Please try again.",
-          error: err.message,
-        },
-      });
-    }
-  );
+  try {
+    req.session.user = undefined;
+    return res.send({
+      valid: true,
+      body: { message: "Successfully logged out the user" },
+    });
+  } catch (err) {
+    return res.send({
+      valid: true,
+      body: { message: "Error logging out the user" },
+    });
+  }
 });
 
 router.post("/update", (req, res) => {
