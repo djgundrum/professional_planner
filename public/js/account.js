@@ -13,6 +13,11 @@ window.onload = function(){
             if (userRole != "") {
                 document.getElementById("loggedInInfo").style.display = "block"
                 document.getElementById("loginBox").style.display = "none"
+                document.getElementById("yNameInput").value = response.body.user.name
+                document.getElementById("yEmailInput").value = response.body.user.email
+                document.getElementById("yPasswordInput").value = response.body.user.password
+                document.getElementById("yPhoneInput").value = response.body.user.phone
+                document.getElementById("yAddressInput").value = response.body.user.address
             }
             else {
                 document.getElementById("loggedInInfo").style.display = "none"
@@ -113,6 +118,9 @@ document.getElementById("logoutButton").onclick = function(){
         if (response.valid) {
             document.getElementById("loggedInInfo").style.display = "none"
             document.getElementById("loginBox").style.display = "block"
+            userRole = ""
+            document.getElementById("navbar").remove()
+            buildNav()
         }
     })
 }
@@ -154,28 +162,39 @@ document.getElementById("saveEditButton").onclick = function(){
     }
     $.post(url, data, (response) => {
         if (response.valid) {
-            document.getElementById("yNameInput").classList.remove("yInputEdit")
-            document.getElementById("yNameInput").classList.add("yInput")
-            document.getElementById("yNameInput").disable = true
+            
 
-            document.getElementById("yEmailInput").classList.remove("yInputEdit")
-            document.getElementById("yEmailInput").classList.add("yInput")
-            document.getElementById("yEmailInput").disable = true
+            let url2 = "/api/account/signin"
+            let data2 = {
+                email: document.getElementById("yEmailInput").value,
+                password: document.getElementById("yPasswordInput").value
+            }
+            $.post(url2, data2, (response2) => {
+                if (response2.valid){
+                    document.getElementById("yNameInput").classList.remove("yInputEdit")
+                    document.getElementById("yNameInput").classList.add("yInput")
+                    document.getElementById("yNameInput").disable = true
 
-            document.getElementById("yPasswordInput").classList.remove("yInputEdit")
-            document.getElementById("yPasswordInput").classList.add("yInput")
-            document.getElementById("yPasswordInput").disable = true
+                    document.getElementById("yEmailInput").classList.remove("yInputEdit")
+                    document.getElementById("yEmailInput").classList.add("yInput")
+                    document.getElementById("yEmailInput").disable = true
 
-            document.getElementById("yPhoneInput").classList.remove("yInputEdit")
-            document.getElementById("yPhoneInput").classList.add("yInput")
-            document.getElementById("yPhoneInput").disable = true
+                    document.getElementById("yPasswordInput").classList.remove("yInputEdit")
+                    document.getElementById("yPasswordInput").classList.add("yInput")
+                    document.getElementById("yPasswordInput").disable = true
 
-            document.getElementById("yAddressInput").classList.remove("yInputEdit")
-            document.getElementById("yAddressInput").classList.add("yInput")
-            document.getElementById("yAddressInput").disable = true
+                    document.getElementById("yPhoneInput").classList.remove("yInputEdit")
+                    document.getElementById("yPhoneInput").classList.add("yInput")
+                    document.getElementById("yPhoneInput").disable = true
 
-            document.getElementById("logoutButton").style.display = "block"
-            document.getElementById("saveEditButton").style.display = "none"
+                    document.getElementById("yAddressInput").classList.remove("yInputEdit")
+                    document.getElementById("yAddressInput").classList.add("yInput")
+                    document.getElementById("yAddressInput").disable = true
+
+                    document.getElementById("logoutButton").style.display = "block"
+                    document.getElementById("saveEditButton").style.display = "none"
+                }
+            })
         }
     })
 

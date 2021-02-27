@@ -178,7 +178,7 @@ function getProducts() {
           document.getElementById("addNameInput").value = pName
           document.getElementById("addDescriptionInput").value = pDescription
           document.getElementById("addPriceInput").value = pPrice
-          if (pAvailable == 0){
+          if (pAvailable == 1){
             document.getElementById("isAvailable").checked = true
           }
           document.getElementById("addDiv1").style.display = "block"
@@ -239,9 +239,9 @@ document.getElementById("addMenuItemButton").onclick = function(){
     if (document.getElementById("addMenuItemButton").innerHTML == "Add Menu Item"){
       //alert("new")
       let url = "/api/product/new";
-      let a = 1
+      let a = 0
       if (document.getElementById("isAvailable").checked){
-        a = 0
+        a = 1
       }
       let data = {
         name: aNameInput,
@@ -270,9 +270,9 @@ document.getElementById("addMenuItemButton").onclick = function(){
       let url2 = `/api/product/get_product/${currentSectionID}`
       $.get(url2, (response2) => {
         let url = "/api/product/update";
-        let a = 1
+        let a = 0
         if (document.getElementById("isAvailable").checked){
-          a = 0
+          a = 1
         }
         let data = {
           id: currentSectionID,

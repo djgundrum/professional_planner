@@ -73,6 +73,7 @@ document.getElementById("instructionsContinue").onclick = function(){
 }
 
 document.getElementById("paymentDiv11").onclick = function(){
+
   openThanks()
 }
 document.getElementById("paymentDiv12").onclick = function(){
@@ -84,6 +85,7 @@ document.getElementById("paymentDiv13").onclick = function(){
 document.getElementById("paymentDiv14").onclick = function(){
   openThanks()
 }
+
 function openThanks(){
   document.getElementById("thanksDiv").style.display = "block"
 }

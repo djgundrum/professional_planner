@@ -44,8 +44,6 @@ function buildNav(){
     var navDropdown = document.createElement("div")
     navDropdown.id = "navDropdown"
     navbar.appendChild(navDropdown)
-    
-    
     var navbarItems = []
     if (userRole == "admin" || userRole == "staff"){
         navbarItems = ["HOME", "ACCOUNT"]
