@@ -140,10 +140,10 @@ function getProducts() {
       descriptionAddToCart.onclick = function(){
         //ADD ITEM TO CART
         let url = "/api/account/validate"
-        $.get(url, response => {
-          console.log(response)
-          if (response.valid) {
-            console(response.body.user.id) 
+        $.get(url, response3 => {
+          console.log(response3)
+          if (response3.valid) {
+            console(response3.body.user.id) 
           }
         })
 
