@@ -4,6 +4,14 @@ var router = express.Router();
 let query = require("../global/query");
 let user = require("../global/user");
 
+router.get("/validate", (req, res) => {
+  if (req.sesssion && req.session.user) {
+    return res.send({ valid: true, body: { user: req.session.user } });
+  } else {
+    return res.send({ valid: false, body: { user: null } });
+  }
+});
+
 router.post("/logout", (req, res) => {
   query("", [], true, true).then(
     () => {

@@ -1,6 +1,11 @@
 let routes = {
   api: {
     account: {
+      get: {
+        // Check to see if the user is signed in
+        //p: no parameters needed (will return the user if signed in)
+        validate: "/api/account/validate",
+      },
       post: {
         // Returns user information if successful
         // p: email, password
