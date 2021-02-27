@@ -1,12 +1,51 @@
 //get menu data
 getProducts();
-
+var currentSection = ""
+var currentSectionID = ""
 function getProducts() {
   let url = "/api/menu/all";
   $.get(url, (response) => {
+    if (userRole.toLowerCase() == "admin") {
+      let addItemDiv = document.createElement("div")
+      addItemDiv.classList.add("addItemDiv")
+      let addP = document.createElement("p")
+      addP.innerHTML = "+"
+      addItemDiv.appendChild(addP)
+      document.getElementById("entreesDiv").appendChild(addItemDiv)
+      addItemDiv.onclick = function(){
+        openAddScreen("entree")
+      }
+
+      let addItemDiv2 = document.createElement("div")
+      addItemDiv2.classList.add("addItemDiv")
+      let addP2 = document.createElement("p")
+      addP2.innerHTML = "+"
+      addItemDiv2.appendChild(addP2)
+      document.getElementById("sidesDiv").appendChild(addItemDiv2)
+      addItemDiv2.onclick = function(){
+        openAddScreen("side")
+      }
+
+      let addItemDiv3 = document.createElement("div")
+      addItemDiv3.classList.add("addItemDiv")
+      let addP3 = document.createElement("p")
+      addP3.innerHTML = "+"
+      addItemDiv3.appendChild(addP3)
+      document.getElementById("dessertsDiv").appendChild(addItemDiv3)
+      addItemDiv3.onclick = function(){
+        openAddScreen("dessert")
+      }
+      function openAddScreen(pSection){
+        document.getElementById("addDiv1").style.display = "block"
+        document.getElementById("addDiv2").style.display = "block"
+        document.getElementById("addMenuItemButton").innerHTML = "Add Menu Item"
+        currentSection = pSection
+      }
+    }
     for (i = 0; i < response.body.data.length; i++) {
       if (document.getElementById("menuSearch").value == "" || response.body.data[i].name.toLowerCase().includes(document.getElementById("menuSearch").value.toLowerCase())) {
         addMenuItem(
+          response.body.data[i].id,
           response.body.data[i].name,
           response.body.data[i].section,
           response.body.data[i].price,
@@ -16,7 +55,9 @@ function getProducts() {
       }
     }
     
-    function addMenuItem(pName, pSection, pPrice, pPhoto, pDescription) {
+    function addMenuItem(pId, pName, pSection, pPrice, pPhoto, pDescription) {
+      
+
       let sectionDiv = document.createElement("div");
       sectionDiv.classList.add("sectionDiv");
     
@@ -35,6 +76,11 @@ function getProducts() {
       menuPrice.classList.add("menuPrice");
       menuPrice.innerHTML = pPrice;
     
+      let idp = document.createElement("p")
+      idp.innerHTML = pId
+      idp.style.display = "none"
+
+      sectionDiv.appendChild(idp)
       menuImgDiv.appendChild(menuImg);
       sectionDiv.appendChild(menuImgDiv);
       sectionDiv.appendChild(menuName);
@@ -107,12 +153,32 @@ function getProducts() {
       document.getElementById("menuDiv").appendChild(descriptionDiv2);
     
       sectionDiv.onclick = function () {
-        descriptionDiv1.style.display = "block";
-        descriptionDiv2.style.display = "block";
+        if (userRole.toLowerCase() == "staff") {
+          document.getElementById("addUrlInput").disabled = true
+          document.getElementById("addNameInput").disabled = true
+          document.getElementById("addDescriptionInput").disabled = true
+          document.getElementById("addPriceInput").disabled = true
+          document.getElementById("addDiv1").style.display = "block"
+          document.getElementById("addDiv2").style.display = "block"
+          document.getElementById("addMenuItemButton").innerHTML = "Update"
+          currentSectionID = sectionDiv.children[0].innerHTML
+        }
+        else if (userRole.toLowerCase() == "admin") {
+          document.getElementById("addUrlInput").disabled = false
+          document.getElementById("addNameInput").disabled = false
+          document.getElementById("addDescriptionInput").disabled = false
+          document.getElementById("addPriceInput").disabled = false
+          document.getElementById("addDiv1").style.display = "block"
+          document.getElementById("addDiv2").style.display = "block"
+          document.getElementById("addMenuItemButton").innerHTML = "Update"
+          currentSectionID = sectionDiv.children[0].innerHTML
+        }
+        else {
+          descriptionDiv1.style.display = "block";
+          descriptionDiv2.style.display = "block";
+        }
       };
     }
-    
-    console.log(response);
   });
 }
 
@@ -122,4 +188,68 @@ document.getElementById("menuSearchButton").onclick = function() {
     children[0].parentNode.removeChild(children[0])
   }
   getProducts()
+}
+
+document.getElementById("addMenuItemButton").onclick = function(){
+  let aNameInput = document.getElementById("addNameInput").value
+  let aDescriptionInput = document.getElementById("addDescriptionInput").value
+  let aUrlInput = document.getElementById("addUrlInput").value
+  let aPriceInput = document.getElementById("addPriceInput").value
+  if (aNameInput == "" || aDescriptionInput == "" || aUrlInput == "" || aPriceInput == "") {
+    alert("All fields must be filled out")
+  }
+  else {
+    if (document.getElementById("addMenuItemButton").innerHTML == "Add Menu Item"){
+      //alert("new")
+      let url = "/api/product/new";
+      let a = 1
+      if (document.getElementById("isAvailable").checked){
+        a = 0
+      }
+      let data = {
+        name: aNameInput,
+        description: aDescriptionInput,
+        photo_url: aUrlInput,
+        section: currentSection,
+        price: aPriceInput,
+        available: a
+      }
+      
+      $.post(url, data, (response) => {
+        console.log(response)
+        if (response.valid) {
+          document.getElementById("addDiv1").style.display = "none"
+          document.getElementById("addDiv2").style.display = "none"
+        }
+      })
+    }
+    else {
+      //alert("update")
+      let url2 = `/api/product/get_product/${currentSectionID}`
+      $.get(url2, (response2) => {
+        let url = "/api/product/update";
+        let a = 1
+        if (document.getElementById("isAvailable").checked){
+          a = 0
+        }
+        let data = {
+          id: currentSectionID,
+          name: aNameInput,
+          description: aDescriptionInput,
+          photo_url: aUrlInput,
+          section: response2.body.product.section,
+          price: aPriceInput,
+          available: a
+        }
+        console.log(data)
+        $.post(url, data, (response) => {
+          console.log(response)
+          if (response.valid) {
+            document.getElementById("addDiv1").style.display = "none"
+            document.getElementById("addDiv2").style.display = "none"
+          }
+        })
+      })
+    }
+  }
 }

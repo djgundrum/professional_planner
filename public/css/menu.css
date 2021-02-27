@@ -207,3 +207,41 @@ body {
 #menuSearchButton:hover {
     cursor: pointer;
 }
+
+.addItemDiv {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    background-color: white;
+    float: left;
+    margin: 20px;
+    box-shadow: 2px 2px 5px 2px #999999;
+    font-size: 150px;
+}
+.addItemDiv p{
+    margin: 0;
+    line-height: 250px;
+    width: 100%;
+    text-align: center;
+    color: #999999;
+}
+.addItemDiv:hover {
+    cursor: pointer;
+}
+
+.addTexts {
+    text-align: left;
+    margin-left: 5%;
+    margin-top: 40px;
+    color: #666666;
+}
+.addInputs {
+    height: 30px;
+    width: 90%;
+    margin: auto;
+}
+#isAvailable {
+    float: left;
+    margin-top: 42px;
+    margin-left: 20px;
+}

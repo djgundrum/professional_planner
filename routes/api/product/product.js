@@ -28,8 +28,8 @@ router.post("/update", (req, res) => {
     });
   } else {
     let sql =
-      "update products set name = ?, description = ?, photo_url = ?, section = ?, available = ? where id = ?";
-    let p = [name, description, photo_url, section, available, id];
+      "update products set name = ?, price = ?, description = ?, photo_url = ?, section = ?, available = ? where id = ?";
+    let p = [name, price, description, photo_url, section, available, id];
 
     query(sql, p, true, false).then(
       () => {
