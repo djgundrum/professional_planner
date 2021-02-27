@@ -16,6 +16,7 @@ router.get("/validate", (req, res) => {
 router.post("/logout", (req, res) => {
   query("", [], true, true).then(
     () => {
+      req.session.user = undefined;
       return res.send({
         valid: true,
         body: { message: "Successfully logged out the user" },
