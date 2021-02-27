@@ -44,7 +44,10 @@ navUL2.id = "navUL2"
 for (i=0; i<navbarItems.length; i++){
     let tempA = document.createElement("a")
     tempA.id = "navbarA"+i
-    tempA.href = ""
+    tempA.href = "/"+navbarItems[i]
+    if (navbarItems[i] == "HOME") {
+        tempA.href = "/staff"
+    }
     tempA.innerHTML = navbarItems[i]
 
     let tempLI = document.createElement("li")
