@@ -143,7 +143,7 @@ router.post("/new_order", (req, res) => {
   let priority = req.body.priority;
   let car_description = req.body.car_description;
   let additional_instructions = req.body.additional_instructions;
-  let id = req.body.id;
+  let user_id = req.session.user.id;
 
   if (
     isEmpty(time) ||
