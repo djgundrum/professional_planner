@@ -6,10 +6,10 @@ let user = require("../global/user");
 
 router.get("/validate", (req, res) => {
   console.log(req.session);
-  if (req.sesssion && req.session.user) {
+  try {
     return res.send({ valid: true, body: { user: req.session.user } });
-  } else {
-    return res.send({ valid: false, body: { user: null } });
+  } catch (err) {
+    return res.send({ valid: false, body: { error: error } });
   }
 });
 
