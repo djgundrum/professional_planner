@@ -10,6 +10,7 @@ router.post("/update", (req, res) => {
   let section = req.body.section;
   let price = req.body.price;
   let available = req.body.available;
+  let id = req.body.id;
 
   if (
     isEmpty(name) ||
