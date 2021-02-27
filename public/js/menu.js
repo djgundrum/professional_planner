@@ -6,6 +6,7 @@ function getProducts() {
   let url = "/api/menu/all";
   $.get(url, (response) => {
     if (userRole.toLowerCase() == "admin") {
+      console.log(response)
       let addItemDiv = document.createElement("div")
       addItemDiv.classList.add("addItemDiv")
       let addP = document.createElement("p")
@@ -44,18 +45,20 @@ function getProducts() {
     }
     for (i = 0; i < response.body.data.length; i++) {
       if (document.getElementById("menuSearch").value == "" || response.body.data[i].name.toLowerCase().includes(document.getElementById("menuSearch").value.toLowerCase())) {
+        if (response.body.data[i].available || userRole.toLowerCase() != "customer")
         addMenuItem(
           response.body.data[i].id,
           response.body.data[i].name,
           response.body.data[i].section,
           response.body.data[i].price,
           response.body.data[i].photo_url,
-          response.body.data[i].description
+          response.body.data[i].description,
+          response.body.data[i].available
         );
       }
     }
     
-    function addMenuItem(pId, pName, pSection, pPrice, pPhoto, pDescription) {
+    function addMenuItem(pId, pName, pSection, pPrice, pPhoto, pDescription, pAvailable) {
       
 
       let sectionDiv = document.createElement("div");
@@ -85,11 +88,11 @@ function getProducts() {
       sectionDiv.appendChild(menuImgDiv);
       sectionDiv.appendChild(menuName);
       sectionDiv.appendChild(menuPrice);
-      if (pSection == "Entree") {
+      if (pSection.toLowerCase() == "entree") {
         document.getElementById("entreesDiv").appendChild(sectionDiv);
-      } else if (pSection == "Side") {
+      } else if (pSection.toLowerCase() == "side") {
         document.getElementById("sidesDiv").appendChild(sectionDiv);
-      } else if (pSection == "Dessert") {
+      } else if (pSection.toLowerCase() == "dessert") {
         document.getElementById("dessertsDiv").appendChild(sectionDiv);
       }
     
@@ -136,7 +139,12 @@ function getProducts() {
       descriptionAddToCart.innerHTML = "Add To Cart";
       descriptionAddToCart.onclick = function(){
         //ADD ITEM TO CART
-
+        let url = "/api/account/validate"
+        $.get(url, response => {
+          if (response.valid) {
+            response.body.user
+          }
+        })
 
         descriptionDiv1.style.display="none"
         descriptionDiv2.style.display="none"
@@ -158,6 +166,10 @@ function getProducts() {
           document.getElementById("addNameInput").disabled = true
           document.getElementById("addDescriptionInput").disabled = true
           document.getElementById("addPriceInput").disabled = true
+          document.getElementById("addUrlInput").value = pPhoto
+          document.getElementById("addNameInput").value = pName
+          document.getElementById("addDescriptionInput").value = pDescription
+          document.getElementById("addPriceInput").value = pPrice
           document.getElementById("addDiv1").style.display = "block"
           document.getElementById("addDiv2").style.display = "block"
           document.getElementById("addMenuItemButton").innerHTML = "Update"
@@ -168,6 +180,10 @@ function getProducts() {
           document.getElementById("addNameInput").disabled = false
           document.getElementById("addDescriptionInput").disabled = false
           document.getElementById("addPriceInput").disabled = false
+          document.getElementById("addUrlInput").value = pPhoto
+          document.getElementById("addNameInput").value = pName
+          document.getElementById("addDescriptionInput").value = pDescription
+          document.getElementById("addPriceInput").value = pPrice
           document.getElementById("addDiv1").style.display = "block"
           document.getElementById("addDiv2").style.display = "block"
           document.getElementById("addMenuItemButton").innerHTML = "Update"
@@ -183,9 +199,16 @@ function getProducts() {
 }
 
 document.getElementById("menuSearchButton").onclick = function() {
+  reloadItems()
+}
+function reloadItems() {
   let children = document.getElementsByClassName("sectionDiv")
+  let addChildren = document.getElementsByClassName("addItemDiv")
   while (children[0]) {
     children[0].parentNode.removeChild(children[0])
+  }
+  while (addChildren[0]) {
+    addChildren[0].parentNode.removeChild(addChildren[0])
   }
   getProducts()
 }
@@ -220,6 +243,11 @@ document.getElementById("addMenuItemButton").onclick = function(){
         if (response.valid) {
           document.getElementById("addDiv1").style.display = "none"
           document.getElementById("addDiv2").style.display = "none"
+          document.getElementById("addUrlInput").innerHTML = ""
+          document.getElementById("addNameInput").innerHTML = ""
+          document.getElementById("addPriceInput").innerHTML = ""
+          document.getElementById("addDescriptionInput").innerHTML = ""
+          reloadItems()
         }
       })
     }
@@ -247,6 +275,11 @@ document.getElementById("addMenuItemButton").onclick = function(){
           if (response.valid) {
             document.getElementById("addDiv1").style.display = "none"
             document.getElementById("addDiv2").style.display = "none"
+            document.getElementById("addUrlInput").innerHTML = ""
+            document.getElementById("addNameInput").innerHTML = ""
+            document.getElementById("addPriceInput").innerHTML = ""
+            document.getElementById("addDescriptionInput").innerHTML = ""
+            reloadItems()
           }
         })
       })

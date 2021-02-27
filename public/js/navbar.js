@@ -1,4 +1,4 @@
-var userRole = ""
+var userRole = "customer"
 window.onload = function(){
     resize()
 }
