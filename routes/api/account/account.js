@@ -5,6 +5,7 @@ let query = require("../global/query");
 let user = require("../global/user");
 
 router.get("/validate", (req, res) => {
+  console.log(req.session)
   if (req.sesssion && req.session.user) {
     return res.send({ valid: true, body: { user: req.session.user } });
   } else {
@@ -154,7 +155,7 @@ router.post("/signin", (req, res) => {
             row.address,
             row.role
           );
-
+          console.log(req.session.user)
           return res.send({ valid: true, body: { user: req.session.user } });
         }
       },

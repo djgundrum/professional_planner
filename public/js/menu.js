@@ -141,8 +141,9 @@ function getProducts() {
         //ADD ITEM TO CART
         let url = "/api/account/validate"
         $.get(url, response => {
+          console.log(response)
           if (response.valid) {
-            response.body.user
+            console(response.body.user.id) 
           }
         })
 
