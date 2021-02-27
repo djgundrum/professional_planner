@@ -22,6 +22,9 @@ let routes = {
     },
     cart: {
       post: {
+        // Add item to your cart
+        //p: product_id, quantity
+        add_to_your_cart: "/api/cart/add",
         // Deletes an item from the cart
         //p: id (id of the product)
         delete_item_from_cart: "/api/cart/delete",
