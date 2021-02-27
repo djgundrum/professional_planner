@@ -113,14 +113,6 @@ function make_receipt(order_number, price, products, time) {
         offset += 10;
       }
 
-      offset += 20;
-      doc.setFontType("bold");
-      doc.text(20, offset, "Total Price:");
-
-      offset += 10;
-      doc.setFontType("normal");
-      doc.text(20, offset, "" + price);
-
       doc.save("receipt.pdf");
     },
     (err) => {}
@@ -170,6 +162,6 @@ document.getElementById("viewOrders").onclick = () => {
   getOrders();
 };
 
-document.getElementById("updateMenu").onclick = function() {
-  window.location.href = "/Menu"
-}
+document.getElementById("updateMenu").onclick = function () {
+  window.location.href = "/Menu";
+};
