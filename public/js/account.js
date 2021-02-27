@@ -1,14 +1,28 @@
+window.onload = function(){
+    let url = "/api/account/validate"
+    $.get(url, response => {
+        console.log(response)
+        if (response.valid) {
+            try {
+                rr = response.body.user.role
+                userRole = rr
+            }
+            catch(error){
 
-var loggedin = false
+            }
+            if (userRole != "") {
+                document.getElementById("loggedInInfo").style.display = "block"
+                document.getElementById("loginBox").style.display = "none"
+            }
+            else {
+                document.getElementById("loggedInInfo").style.display = "none"
+                document.getElementById("loginBox").style.display = "block"
+            }
+        }
+    }) 
+    
+}
 
-if (loggedin == true) {
-    document.getElementById("loggedInInfo").style.display = "block"
-    document.getElementById("loginBox").style.display = "none"
-}
-else {
-    document.getElementById("loggedInInfo").style.display = "none"
-    document.getElementById("loginBox").style.display = "block"
-}
 
 document.getElementById("signInButton").onclick = function(){
     let loginEmail = document.getElementById("emailInput").value
@@ -29,8 +43,13 @@ document.getElementById("signInButton").onclick = function(){
             document.getElementById("yAddressInput").value = response.body.user.address
             userRole = response.body.user.role
 
+            
+
             document.getElementById("emailInput").value = ""
             document.getElementById("passwordInput").value = ""
+
+            document.getElementById("navbar").remove()
+            buildNav()
         }
     })
 }
@@ -72,6 +91,9 @@ document.getElementById("signupCreateAccountButton").onclick = function(){
                         document.getElementById("signupEmailInput").value = ""
                         document.getElementById("signupPasswordInput").value = ""
                         document.getElementById("confirmPasswordInput").value = ""
+
+                        document.getElementById("navBar").remove()
+                        buildNav()
                     }
                 })
             }

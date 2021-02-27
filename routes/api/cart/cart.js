@@ -57,8 +57,8 @@ router.post("/add", (req, res) => {
 
 router.get("/all", (req, res) => {
   try {
-    //let id = req.session.user.id;
-    let id = 1;
+    let id = req.session.user.id;
+
 
     if (id === undefined || id === null) {
       return res.send({
@@ -116,9 +116,9 @@ router.get("/all", (req, res) => {
 });
 
 router.post("/delete", (req, res) => {
-  let product_id = req.body.id;
+  let product_id = req.body.product_id;
   let id = req.session.user.id;
-
+  console.log(product_id + ", "+id)
   if (
     id === undefined ||
     id === null ||

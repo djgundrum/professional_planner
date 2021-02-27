@@ -169,3 +169,7 @@ document.getElementById("viewOrders").onclick = () => {
   document.getElementById("staffDiv").style.display = "none";
   getOrders();
 };
+
+document.getElementById("updateMenu").onclick = function() {
+  window.location.href = "/Menu"
+}

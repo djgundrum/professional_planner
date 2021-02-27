@@ -2,7 +2,9 @@ body {
   margin: 0;
   background-color: #efefef;
 }
-
+.hoverClass:hover {
+  cursor: pointer;
+}
 #staffDiv {
   margin-top: 80px;
   text-align: center;

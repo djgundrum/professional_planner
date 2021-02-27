@@ -138,17 +138,24 @@ function getProducts() {
       descriptionAddToCart.classList.add("descriptionAddToCart");
       descriptionAddToCart.innerHTML = "Add To Cart";
       descriptionAddToCart.onclick = function(){
-        //ADD ITEM TO CART
         let url = "/api/account/validate"
         $.get(url, response3 => {
-          console.log(response3)
           if (response3.valid) {
-            console(response3.body.user.id) 
+            let url2 = "/api/cart/add"
+            let data4 = {
+              product_id: idp.innerHTML,
+              quantity: descriptionQtyInput.value
+            }
+            $.post(url2, data4, response4 => {
+              if (response4.valid) {
+                descriptionDiv1.style.display="none"
+                descriptionDiv2.style.display="none"
+              }
+            })
           }
         })
 
-        descriptionDiv1.style.display="none"
-        descriptionDiv2.style.display="none"
+        
       }
     
       descriptionDiv2.appendChild(descriptionX);
@@ -171,6 +178,9 @@ function getProducts() {
           document.getElementById("addNameInput").value = pName
           document.getElementById("addDescriptionInput").value = pDescription
           document.getElementById("addPriceInput").value = pPrice
+          if (pAvailable == 0){
+            document.getElementById("isAvailable").checked = true
+          }
           document.getElementById("addDiv1").style.display = "block"
           document.getElementById("addDiv2").style.display = "block"
           document.getElementById("addMenuItemButton").innerHTML = "Update"
@@ -185,6 +195,9 @@ function getProducts() {
           document.getElementById("addNameInput").value = pName
           document.getElementById("addDescriptionInput").value = pDescription
           document.getElementById("addPriceInput").value = pPrice
+          if (pAvailable == 0){
+            document.getElementById("isAvailable").checked = true
+          }
           document.getElementById("addDiv1").style.display = "block"
           document.getElementById("addDiv2").style.display = "block"
           document.getElementById("addMenuItemButton").innerHTML = "Update"

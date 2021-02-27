@@ -4,7 +4,6 @@ getCart();
 function getCart() {
   let url = "/api/cart/all";
   $.get(url, (response) => {
-    
     for (i = 0; i < response.body.cart.length; i++) {
       addCartItem(
         response.body.cart[i].product_id,
@@ -40,6 +39,20 @@ function getCart() {
         td4.style.color = "#b40000"
         td4.innerHTML = "remove"
         td4.classList.add("hoverClass")
+
+        td4.onclick = function() {
+          let url3 = "/api/cart/delete"
+
+          let data3 = {
+            product_id: pProductId
+          }
+          $.post(url3, data3, response3 => {
+            if (response3.valid) {
+              cartTable.innerHTML = '<tr id="cartHeader"><th style="width: auto; min-width: 100px">Item</th><th style="width: 100px">Qty</th><th style="width: 100px">Price</th><th style="width: 100px"></th></tr>'
+              getCart()
+            }
+          })
+        }
 
         tempTR.appendChild(td1)
         tempTR.appendChild(td2)
