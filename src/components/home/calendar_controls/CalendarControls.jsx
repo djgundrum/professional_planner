@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import CalendarControlsDropdown from './CalendarControlsDropdown';
-import MyCalendars from "./MyCalendars";
-import MyTeamSchedules from './MyTeamSchedules';
-import MyContacts from './MyContacts'
+import CalendarControlsDropdown from './calendar_controls_dropdown/CalendarControlsDropdown';
+import MyCalendars from "./my_calendars/MyCalendars";
+import MyTeamSchedules from './my_team_schedules/MyTeamSchedules';
+import MyContacts from './my_contacts/MyContacts'
+import './calendarControls.css'
 
 class CalendarControls extends Component {
     state = {

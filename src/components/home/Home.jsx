@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import MenuBar from './Menubar';
-import CalendarControls from './CalendarControls'
+import MenuBar from './menu/Menubar';
+import CalendarControls from './calendar_controls/CalendarControls'
+import Calendar from './calendar/Calendar'
+import './home.css'
 
 class Home extends Component {
     state = {
@@ -73,6 +75,7 @@ class Home extends Component {
             <div id="homeScreen">
                 < MenuBar activeCalendars={this.state.activeCalendars} activeTeamSchedule={this.state.activeTeamSchedule} view={this.state.view} timeframe={this.state.timeframe} switchView={this.switchView} switchTimeframe={this.switchTimeframe} dateInfo={this.state.dateInfo} forwardTimeframe={this.forwardTimeframe} backwardTimeframe={this.backwardTimeframe}/>
                 < CalendarControls updateCalendars={this.updateCalendars} updateTeamSchedule={this.updateTeamSchedule} activeCalendars={this.state.activeCalendars} activeTeamSchedule={this.state.activeTeamSchedule} view={this.state.view}/>
+                < Calendar dateInfo={this.state.dateInfo}/>
             </div>
         );
     }

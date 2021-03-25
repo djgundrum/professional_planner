@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import TeamScheduleListItem from './TeamScheduleListItem'
+import TeamScheduleListItem from './team_schedule_list_item/TeamScheduleListItem'
+import './myTeamSchedules.css'
 
 class MyTeamSchedules extends Component {
     state = {

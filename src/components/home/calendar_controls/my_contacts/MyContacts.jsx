@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import ContactListItem from './ContactListItem'
+import ContactListItem from './contact_list_item/ContactListItem'
+import './myContacts.css'
 
 class MyContacts extends Component {
     state = {

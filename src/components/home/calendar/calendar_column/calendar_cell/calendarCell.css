@@ -1,0 +1,7 @@
+.calendarCell {
+  width: 100%;
+  height: 60px;
+}
+.calendarCellNotLast {
+  border-bottom: 1px #cccccc solid;
+}

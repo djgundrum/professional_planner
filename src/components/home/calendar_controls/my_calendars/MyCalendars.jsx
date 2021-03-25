@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import CalendarListItem from './CalendarListItem'
+import CalendarListItem from './calendar_list_item/CalendarListItem'
+import './myCalendars.css'
 
 class MyCalendars extends Component {
     state = {

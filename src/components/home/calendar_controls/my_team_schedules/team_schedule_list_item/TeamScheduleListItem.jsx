@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './teamScheduleListItem.css'
 
 class TeamScheduleListItem extends Component {
     state = {
@@ -26,7 +27,7 @@ class TeamScheduleListItem extends Component {
         return (
             <div key={"div"+this.state.calendar.id} className={this.props.view === "Team Schedule" ? "hoverClass" : ""} onClick={this.props.view === "Team Schedule" ? this.updateHomeTeamSchedule : ()=>{}}>
                 <div key={"color"+this.state.calendar.id} className="scheduleNameColor" style={isActive ? selected : deselected}></div>
-                <p key={"name"+this.state.calendar.id}  className="calendarNames">
+                <p key={"name"+this.state.calendar.id}  className="scheduleNames">
                     {this.state.calendar.name}
                 </p>
             </div>

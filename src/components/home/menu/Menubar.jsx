@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import dropdownWhite from './images/dropdownArrowWhite.png'
+import dropdownWhite from '../../images/dropdownArrowWhite.png'
+import './menuBar.css'
 
 class MenuBar extends Component {
     state = {

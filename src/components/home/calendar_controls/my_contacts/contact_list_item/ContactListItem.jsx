@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './contactListItem.css'
 
 class ContactListItem extends Component {
     state = {
@@ -9,7 +10,7 @@ class ContactListItem extends Component {
     render() { 
         return (
             <div className="hoverClass">
-                <p className="calendarNames">
+                <p className="contactNames">
                     {this.state.contact.name}
                 </p>
             </div>

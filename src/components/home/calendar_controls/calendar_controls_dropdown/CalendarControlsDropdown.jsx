@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import dropdown from './images/dropdownArrow.svg'
+import dropdown from '../../../images/dropdownArrow.svg'
+import './calendarControlsDropdown.css'
 
 class CalendarControlsDropdown extends Component {
     state = {}
