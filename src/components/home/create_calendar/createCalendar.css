@@ -50,105 +50,48 @@
 #calendarNameInput::placeholder {
   color: #cccccc;
 }
-#calendarIcon {
+#calendarColors {
+  width: 360px;
   position: absolute;
-  top: 90px;
+  left: 72.5px;
+  top: 80px;
+}
+.calendarColor {
+  float: left;
+  border-radius: 13px;
+  margin: 5px;
+  cursor: pointer;
+}
+#shareDiv {
+  position: absolute;
+  top: 140px;
   left: 75px;
+  width: 350px;
+}
+#addPersonDiv {
+  float: left;
+  height: 30px;
+  width: 30px;
+  opacity: 50%;
+  border-radius: 15px;
+}
+#addPersonDiv:hover {
+  background-color: #cccccc;
+  cursor: pointer;
+}
+#addPersonIcon {
+  height: 120%;
+}
+#shareWithText {
+  float: left;
   height: 30px;
   opacity: 50%;
-}
-#calendarSelect {
-  position: absolute;
-  top: 90px;
-  left: 120px;
-  height: 30px;
-  opacity: 50%;
+  margin: 0;
+  margin-left: 10px;
+  margin-right: 5px;
   font-size: 20px;
   font-family: Arial, Helvetica, sans-serif;
-  width: 200px;
-  border: 0px;
-  color: #666666;
-}
-#startText {
-  font-size: 20px;
-  font-family: Arial, Helvetica, sans-serif;
-  position: absolute;
-  top: 150px;
-  left: 75px;
-  margin: 0;
-  color: #999999;
-}
-#startDateInput {
-  height: 30px;
-  font-size: 16px;
-  font-family: Arial, Helvetica, sans-serif;
-  position: absolute;
-  top: 180px;
-  left: 75px;
-  width: 150px;
-  margin: 0;
-  opacity: 0.5;
-}
-#startTimeInput {
-  height: 30px;
-  font-size: 16px;
-  font-family: Arial, Helvetica, sans-serif;
-  position: absolute;
-  top: 180px;
-  right: 75px;
-  width: 150px;
-  margin: 0;
-  opacity: 0.5;
-}
-#endText {
-  font-size: 20px;
-  font-family: Arial, Helvetica, sans-serif;
-  position: absolute;
-  top: 230px;
-  left: 75px;
-  margin: 0;
-  color: #999999;
-}
-#endDateInput {
-  height: 30px;
-  font-size: 16px;
-  font-family: Arial, Helvetica, sans-serif;
-  position: absolute;
-  top: 260px;
-  left: 75px;
-  width: 150px;
-  margin: 0;
-  opacity: 0.5;
-}
-#endTimeInput {
-  height: 30px;
-  font-size: 16px;
-  font-family: Arial, Helvetica, sans-serif;
-  position: absolute;
-  top: 260px;
-  right: 75px;
-  width: 150px;
-  margin: 0;
-  opacity: 0.5;
-}
-#timezoneIcon {
-  position: absolute;
-  top: 330px;
-  left: 75px;
-  height: 30px;
-  opacity: 50%;
-}
-#timezoneSelect {
-  position: absolute;
-  top: 330px;
-  left: 120px;
-  height: 30px;
-  opacity: 50%;
-  font-size: 20px;
-  font-family: Arial, Helvetica, sans-serif;
-  width: 200px;
-  border: 0px;
-  color: #666666;
+  line-height: 28px;
 }
 #createCalendarScreenButton {
   background-color: #29abe2;
@@ -165,5 +108,34 @@
   color: #f4f4f4;
   border-radius: 20px;
   line-height: 40px;
+  cursor: pointer;
+}
+.personDiv {
+  height: 30px;
+  background-color: #eeeeee;
+  float: left;
+  border-radius: 15px;
+  margin: 0px 5px 10px 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 30px;
+  color: #999999;
+}
+.personDiv p {
+  float: left;
+  margin: 0;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.deletePerson {
+  float: left;
+  height: 16px;
+  margin-top: 7px;
+  margin-left: 7px;
+  opacity: 70%;
   cursor: pointer;
 }

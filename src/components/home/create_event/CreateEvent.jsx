@@ -56,7 +56,6 @@ class CreateEvent extends Component {
                     <img src={timezoneIcon} alt="" id="timezoneIcon"/>
                     <select id="timezoneSelect">
                         {this.props.timezones.map((timezone) => (
-                            
                             <option value={timezone}>{timezone}</option>
                         ))}
                     </select>
