@@ -217,11 +217,11 @@ router.get("/", (req, res) => {
 			})
 			.then(
 				() => {
-					return res.send(
-						new response(
-							"Successfully pulled all the schedules from the database"
-						).body
-					);
+					let r = new response(
+						"Successfully pulled all the schedles from the database"
+					).body;
+					r.body.schedules = rows;
+					return res.send(r);
 				},
 				(err) => {
 					return res.send(
@@ -254,6 +254,7 @@ router.get("/", (req, res) => {
 router.get("/:id", (req, res) => {
 	try {
 		let db = new query();
+		var rows;
 
 		let schedule_id = req.params.id;
 
@@ -268,9 +269,11 @@ router.get("/:id", (req, res) => {
 			})
 			.then(
 				() => {
-					return res.send(
-						new response("Successfully schedule from the database").body
-					);
+					let r = new response(
+						"Successfully retrieved the schedule from the database"
+					).body;
+					r.body.schedules = rows;
+					return res.send(r);
 				},
 				(err) => {
 					return res.send(
