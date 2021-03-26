@@ -1,28 +1,52 @@
-const pool = require("./connection");
+//const pool = require("./connection");
+const mysql = require("mysql");
 
-const query = (sql, p, empty, end) => {
-  if (end) {
-    pool.end();
-    return;
-  } else if (empty) {
-    pool.query(sql, p, (err) => {
-      if (err) {
-        console.log(err.message);
-        return false;
-      } else {
-        return true;
-      }
+class db {
+  constructor() {
+    this.pool = mysql.createPool({
+      connectionLimit: 10,
+      host: "45.82.72.223",
+      user: "declan",
+      password: "Anyvipw1-",
+      database: "planner",
     });
-  } else {
-    pool.query(sql, p, (err, rows) => {
-      if (err) {
-        console.log(err.message);
-        return false;
+  }
+
+  query(sql, p, empty) {
+    console.log("This is the query about to run: ");
+    console.log(sql);
+    console.log(p);
+    return new Promise((resolve, reject) => {
+      if (empty) {
+        this.pool.query(sql, p, (err) => {
+          if (err) {
+            console.log(err.message);
+            reject(err);
+          } else {
+            resolve(true);
+          }
+        });
       } else {
-        return rows;
+        this.pool.query(sql, p, (err, rows) => {
+          if (err) {
+            console.log(err.message);
+            reject(err);
+          } else {
+            resolve(rows);
+          }
+        });
       }
     });
   }
-};
 
-module.exports = query;
+  end() {
+    return new Promise((resolve, reject) => {
+      this.pool.end((err) => {
+        if (err) reject(err);
+        else resolve();
+      });
+    });
+  }
+}
+
+module.exports = db;
