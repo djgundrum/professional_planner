@@ -15,6 +15,22 @@ class MyContacts extends Component {
         {
             "id": 3,
             "name": "Contact 3",
+        },
+        {
+            "id": 4,
+            "name": "Contact 4",
+        },
+        {
+            "id": 5,
+            "name": "Contact 5",
+        },
+        {
+            "id": 6,
+            "name": "Contact 6",
+        },
+        {
+            "id": 7,
+            "name": "Contact 7",
         }]
     }
     render() { 

@@ -6,7 +6,7 @@ class CalendarControlsDropdown extends Component {
     state = {}
     render() { 
         return (
-            <div className="calendarControlsDropdown hoverClass">    
+            <div className={this.props.section==="first" ? "calendarControlsDropdown1 hoverClass" : "calendarControlsDropdown hoverClass"}>    
                     <p className="titles" >{this.props.title}</p>
                     {this.props.propShow ? <img className="dropdownArrow dropdownDown" src={dropdown} alt=""/> : <img className="dropdownArrow dropdownRight" src={dropdown} alt=""/>}                         
             </div>

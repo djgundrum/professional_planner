@@ -29,7 +29,7 @@ class Calendar extends Component {
             )
         }
         for (let t=1; t<=23; t++){
-            t<12 ? times.push(t+"am") : (t>12 ? times.push(t%12+"pm") : times.push("12pm"))
+            t<12 ? times.push(t+" am") : (t>12 ? times.push(t%12+" pm") : times.push("12 pm"))
         }
         return (
             <div id="calendarDiv">

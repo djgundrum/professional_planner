@@ -2,10 +2,48 @@ import React, { Component } from 'react';
 import MenuBar from './menu/Menubar';
 import CalendarControls from './calendar_controls/CalendarControls'
 import Calendar from './calendar/Calendar'
+import CreateEvent from './create_event/CreateEvent'
 import './home.css'
+import CreateCalendar from './create_calendar/CreateCalendar';
 
 class Home extends Component {
     state = {
+        //mySchedules and myEvents are hardcoded currently, will be loaded from API call
+        //myEvents should only contain events from active calendars
+        myScheduless: [{
+            "id": 1,
+            "name": "CalendarCalendarCalendar1",
+            "time": "CT",
+            "type": 1,
+            "description": "#ff5135",
+            "color": ""
+        },
+        {
+            "id": 2,
+            "name": "Calendar2",
+            "time": "CT",
+            "type": 1,
+            "description": "#00bf50",
+            "color": ""
+        },
+        {
+            "id": 3,
+            "name": "Calendar3",
+            "time": "CT",
+            "type": 1,
+            "description": "#3fa9f5",
+            "color": ""
+        }],
+        myEvents: [{
+            "id": 1,
+            "name": "lunch",
+            "time": "2021-03-25 12:00:00",
+            "type": 1,
+            "capacity": 1,
+            "length": 60,
+            "description": "",
+            "schedule_id": 2
+        }],
         activeCalendars: [],
         activeTeamSchedule: [],
         view: "Calendar",
@@ -14,7 +52,10 @@ class Home extends Component {
             currentDate: new Date(),
             startDate: new Date(new Date().getTime()-((new Date().getDay())*24*60*60*1000)),
             endDate: new Date(new Date().getTime()+((6-new Date().getDay())*24*60*60*1000))
-        }
+        },
+        timezones: ["Timezone 1", "Timezone 2"],
+        isCreateEventScreen: false,
+        isCreateCalendarScreen: false
     }
     forwardTimeframe = () => {
         // ONLY WORKS FOR WEEK TIMEFRAME
@@ -70,12 +111,25 @@ class Home extends Component {
     switchTimeframe = () => {
         this.state.timeframe === "Week" ? this.setState({timeframe: "Month"}) : this.setState({timeframe: "Week"})
     }
+    toggleCreateEventScreen = (p) => {
+        this.setState({isCreateEventScreen: !this.state.isCreateEventScreen})
+    }
+    toggleCreateCalendarScreen = (p) => {
+        this.setState({isCreateCalendarScreen: !this.state.isCreateCalendarScreen})
+    }
     render() { 
+        let request = new XMLHttpRequest()
+        let key = "AIzaSyAVpFhty0wB6vrcALbaAzYSSMmU_LFsgGw"
+        request.open("GET", "https://maps.googleapis.com/maps/api/timezone/json?location=39.6034810,-119.6822510&timestamp=1331161200&key="+key)
+        request.send()
+        request.onload = () => {}
         return ( 
             <div id="homeScreen">
                 < MenuBar activeCalendars={this.state.activeCalendars} activeTeamSchedule={this.state.activeTeamSchedule} view={this.state.view} timeframe={this.state.timeframe} switchView={this.switchView} switchTimeframe={this.switchTimeframe} dateInfo={this.state.dateInfo} forwardTimeframe={this.forwardTimeframe} backwardTimeframe={this.backwardTimeframe}/>
-                < CalendarControls updateCalendars={this.updateCalendars} updateTeamSchedule={this.updateTeamSchedule} activeCalendars={this.state.activeCalendars} activeTeamSchedule={this.state.activeTeamSchedule} view={this.state.view}/>
+                < CalendarControls updateCalendars={this.updateCalendars} updateTeamSchedule={this.updateTeamSchedule} activeCalendars={this.state.activeCalendars} activeTeamSchedule={this.state.activeTeamSchedule} view={this.state.view} toggleCreateEventScreen={this.toggleCreateEventScreen} toggleCreateCalendarScreen={this.toggleCreateCalendarScreen}/>
                 < Calendar dateInfo={this.state.dateInfo}/>
+                < CreateEvent mySchedules={this.state.myScheduless} timezones={this.state.timezones} toggleCreateEventScreen={this.toggleCreateEventScreen} isCreateEventScreen={this.state.isCreateEventScreen}/>
+                < CreateCalendar mySchedules={this.state.myScheduless} timezones={this.state.timezones} toggleCreateCalendarScreen={this.toggleCreateCalendarScreen} isCreateCalendarScreen={this.state.isCreateCalendarScreen}/>
             </div>
         );
     }

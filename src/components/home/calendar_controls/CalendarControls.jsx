@@ -23,30 +23,35 @@ class CalendarControls extends Component {
     render() { 
         return (
             <div id="calendarControls">
-                <div id="addEventButton" className="calendarControlsButton hoverClass">
-                    Add Event
+                <div id="calendarControlsTop">
+                    <div id="addEventButton" className="calendarControlsButton hoverClass" onClick={this.props.toggleCreateEventScreen}>
+                        Create Event
+                    </div>
+                    <div id="createCalendarButton" className="calendarControlsButton hoverClass" onClick={this.props.toggleCreateCalendarScreen}>
+                        Create Calendar
+                    </div>
+                    <div id="createTeamScheduleButton" className="calendarControlsButton hoverClass">
+                        Create Team Schedule
+                    </div>
                 </div>
-                <div id="createCalendarButton" className="calendarControlsButton hoverClass">
-                    Create Calendar
-                </div>
-                <div id="createTeamScheduleButton" className="calendarControlsButton hoverClass">
-                    Create Team Schedule
-                </div>
+                <div id="calendarControlsBottom" className="scrollbox">
+                    <div id="calendarControlsBottomContent" className="scrollbox-content">
+                        <div onClick={this.toggleCalendars}>
+                            <CalendarControlsDropdown title="My Calendars" propShow={this.state.showCalendars} section="first"/>
+                        </div>
+                        {this.state.showCalendars && <MyCalendars updateCalendars={this.props.updateCalendars} activeCalendars={this.props.activeCalendars} view={this.props.view}/>}
 
-                <div onClick={this.toggleCalendars}>
-                    <CalendarControlsDropdown title="My Calendars" propShow={this.state.showCalendars}/>
-                </div>
-                {this.state.showCalendars && <MyCalendars updateCalendars={this.props.updateCalendars} activeCalendars={this.props.activeCalendars} view={this.props.view}/>}
+                        <div onClick={this.toggleTeamSchedules}>
+                            <CalendarControlsDropdown title="My Team Schedules" propShow={this.state.showTeamSchedules}/>
+                        </div>
+                        {this.state.showTeamSchedules && <MyTeamSchedules updateTeamSchedule={this.props.updateTeamSchedule} activeTeamSchedule={this.props.activeTeamSchedule} view={this.props.view}/>}
 
-                <div onClick={this.toggleTeamSchedules}>
-                    <CalendarControlsDropdown title="My Team Schedules" propShow={this.state.showTeamSchedules}/>
+                        <div onClick={this.toggleContacts}>
+                            <CalendarControlsDropdown title="My Contacts" propShow={this.state.showContacts} view={this.props.view} section={"Contacts"}/>
+                        </div>
+                        {this.state.showContacts && <MyContacts/>}
+                    </div>
                 </div>
-                {this.state.showTeamSchedules && <MyTeamSchedules updateTeamSchedule={this.props.updateTeamSchedule} activeTeamSchedule={this.props.activeTeamSchedule} view={this.props.view}/>}
-
-                <div onClick={this.toggleContacts}>
-                    <CalendarControlsDropdown title="My Contacts" propShow={this.state.showContacts} view={this.props.view} section={"Contacts"}/>
-                </div>
-                {this.state.showContacts && <MyContacts/>}
             </div>
         );
     }
