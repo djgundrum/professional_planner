@@ -203,7 +203,7 @@ router.post("/login", (req, res) => {
 								let r = new response("The user was successfully logged in")
 									.body;
 								r.body.user = rows[0];
-								return res.send(r.body);
+								return res.send(r);
 							} else
 								return res.send(
 									new response("The password provided was incorrect", false)
@@ -267,33 +267,37 @@ router.post("/create_user", (req, res) => {
 					return generate_hash(password, rounds);
 				})
 				.then((hash) => {
-					let sql =
-						"insert into users (name, email, password, role) values (?, ?, ?, ?)";
-					let p = [name, email, hash, role];
+					if (rows.length > 0)
+						throw { message: "There is already a user with this email" };
+					else {
+						let sql =
+							"insert into users (name, email, password, role) values (?, ?, ?, ?)";
+						let p = [name, email, hash, role];
 
-					db.query(sql, p, true)
-						.then(() => {
-							db.end();
-						})
-						.then(
-							() => {
-								return res.send(
-									new response("The user was successfully added").body
-								);
-							},
-							(err) => {
-								console.log("Error in creating a new user");
-								console.log(err.message);
-								return res.send(
-									new response(
-										"There was an error creating the new user",
-										false,
-										err.message
-									)
-								);
-							}
+						return db.query(sql, p, true);
+					}
+				})
+				.then(() => {
+					db.end();
+				})
+				.then(
+					() => {
+						return res.send(
+							new response("The user was successfully added").body
 						);
-				});
+					},
+					(err) => {
+						console.log("Error in creating a new user");
+						console.log(err.message);
+						return res.send(
+							new response(
+								"There was an error creating the new user",
+								false,
+								err.message
+							)
+						);
+					}
+				);
 		}
 	} catch (err) {
 		console.log("there was an error creating the new user");
