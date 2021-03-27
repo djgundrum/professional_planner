@@ -1,25 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import Login from './components/login/Login';
+import Home from './components/home/Home'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+//Do call to backend to see if user is logged in
+// If logged in, take to homescreen, or else return login screen
+var loggedIn = true;
+
+export default function App() {
+  if (loggedIn) {
+    return (
+      < Home />
+    );
+  }
+  else {
+    return (
+      <Login />
+    );
+  }
 }
-
-export default App;

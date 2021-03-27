@@ -1,0 +1,8 @@
+.contactNames {
+  line-height: 20px;
+  font-size: 18px;
+  margin-left: 50px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

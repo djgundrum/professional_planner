@@ -1,0 +1,13 @@
+.scheduleNames {
+  line-height: 20px;
+  font-size: 18px;
+  margin-left: 50px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.scheduleNameColor {
+  float: left;
+  margin-left: 20px;
+  border-radius: 10px;
+}
