@@ -5,6 +5,7 @@ var logger = require("morgan");
 var cors = require("cors");
 
 var indexRouter = require("./routes/index");
+var api_router = require("./routes/api/api");
 var session = require("express-session");
 
 var app = express();
@@ -23,5 +24,6 @@ app.set("view engine", "html");
 app.use(session({ secret: "schedule_planner" }));
 
 app.use("/", indexRouter);
+app.use("/api", api_router);
 
 module.exports = app;
