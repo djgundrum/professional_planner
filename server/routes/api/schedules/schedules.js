@@ -247,7 +247,7 @@ router.get("/", (req, res) => {
 /**
  * get: /api/schedules/:id
  *
- * Creates a new schedule
+ * Gets a specific schedule
  *
  * @param id This is id of the schedule to be returned. Append the id to the end of the route
  */
