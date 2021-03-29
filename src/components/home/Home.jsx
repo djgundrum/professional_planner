@@ -34,16 +34,6 @@ class Home extends Component {
             "description": "#3fa9f5",
             "color": ""
         }],
-        myEvents: [{
-            "id": 1,
-            "name": "lunch",
-            "time": "2021-03-25 12:00:00",
-            "type": 1,
-            "capacity": 1,
-            "length": 60,
-            "description": "",
-            "schedule_id": 2
-        }],
         activeCalendars: [],
         activeTeamSchedule: [],
         view: "Calendar",
@@ -55,7 +45,10 @@ class Home extends Component {
         },
         timezones: ["Timezone 1", "Timezone 2"],
         isCreateEventScreen: false,
-        isCreateCalendarScreen: false
+        isCreateCalendarScreen: false,
+        isCreateTeamScheduleScreen: true,
+        isAddEmployeeScreen: false,
+        isAddMeetingScreen: false
     }
     forwardTimeframe = () => {
         // ONLY WORKS FOR WEEK TIMEFRAME
@@ -111,11 +104,14 @@ class Home extends Component {
     switchTimeframe = () => {
         this.state.timeframe === "Week" ? this.setState({timeframe: "Month"}) : this.setState({timeframe: "Week"})
     }
-    toggleCreateEventScreen = (p) => {
+    toggleCreateEventScreen = () => {
         this.setState({isCreateEventScreen: !this.state.isCreateEventScreen})
     }
-    toggleCreateCalendarScreen = (p) => {
+    toggleCreateCalendarScreen = () => {
         this.setState({isCreateCalendarScreen: !this.state.isCreateCalendarScreen})
+    }
+    toggleCreateTeamScheduleScreen = () => {
+        this.setState({isCreateTeamScheduleScreen: !this.state.isCreateTeamScheduleScreen})
     }
     render() { 
         let request = new XMLHttpRequest()
@@ -126,8 +122,8 @@ class Home extends Component {
         return ( 
             <div id="homeScreen">
                 < MenuBar activeCalendars={this.state.activeCalendars} activeTeamSchedule={this.state.activeTeamSchedule} view={this.state.view} timeframe={this.state.timeframe} switchView={this.switchView} switchTimeframe={this.switchTimeframe} dateInfo={this.state.dateInfo} forwardTimeframe={this.forwardTimeframe} backwardTimeframe={this.backwardTimeframe}/>
-                < CalendarControls updateCalendars={this.updateCalendars} updateTeamSchedule={this.updateTeamSchedule} activeCalendars={this.state.activeCalendars} activeTeamSchedule={this.state.activeTeamSchedule} view={this.state.view} toggleCreateEventScreen={this.toggleCreateEventScreen} toggleCreateCalendarScreen={this.toggleCreateCalendarScreen}/>
                 < Calendar dateInfo={this.state.dateInfo}/>
+                < CalendarControls updateCalendars={this.updateCalendars} updateTeamSchedule={this.updateTeamSchedule} activeCalendars={this.state.activeCalendars} activeTeamSchedule={this.state.activeTeamSchedule} view={this.state.view} toggleCreateEventScreen={this.toggleCreateEventScreen} toggleCreateCalendarScreen={this.toggleCreateCalendarScreen} isCreateTeamScheduleScreen={this.state.isCreateTeamScheduleScreen} toggleCreateTeamScheduleScreen={this.toggleCreateTeamScheduleScreen}/>
                 < CreateEvent mySchedules={this.state.myScheduless} timezones={this.state.timezones} toggleCreateEventScreen={this.toggleCreateEventScreen} isCreateEventScreen={this.state.isCreateEventScreen}/>
                 < CreateCalendar mySchedules={this.state.myScheduless} timezones={this.state.timezones} toggleCreateCalendarScreen={this.toggleCreateCalendarScreen} isCreateCalendarScreen={this.state.isCreateCalendarScreen}/>
             </div>

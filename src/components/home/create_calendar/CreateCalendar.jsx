@@ -38,7 +38,7 @@ class CreateCalendar extends Component {
             "name": "Contact 7",
         }],
         //0) red 1) orange 2) yellow 3) light green 4) dark green 5) light blue 6) dark blue 7) purple 8) pink 9) grey
-        colors: ["#ff3200", "#ff7f0a", "#ffe174", "#4bdf00", "#009f1a", "#0acbff", "#5f71ff", "#dd5fff", "#ff7bd5", "#777777",]
+        colors: ["#ff3200", "#ff7f0a", "#ffe174", "#4bdf00", "#009f1a", "#0acbff", "#5f71ff", "#dd5fff", "#ff7bd5", "#777777"]
     }
     addCalendar = () => {
         //Send parameters
