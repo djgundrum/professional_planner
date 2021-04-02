@@ -4,7 +4,7 @@ import Home from './components/home/Home'
 
 //Do call to backend to see if user is logged in
 // If logged in, take to homescreen, or else return login screen
-var loggedIn = true;
+var loggedIn = false;
 
 export default function App() {
   if (loggedIn) {

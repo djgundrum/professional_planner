@@ -46,7 +46,7 @@ class Home extends Component {
         timezones: ["Timezone 1", "Timezone 2"],
         isCreateEventScreen: false,
         isCreateCalendarScreen: false,
-        isCreateTeamScheduleScreen: true,
+        isCreateTeamScheduleScreen: false,
         isAddEmployeeScreen: false,
         isAddMeetingScreen: false
     }
