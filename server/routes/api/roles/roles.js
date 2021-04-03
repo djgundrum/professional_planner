@@ -77,7 +77,7 @@ router.post("/create", (req, res) => {
 					"Some of the required fields were not provided correctly",
 					false,
 					`name: ${name}`
-				)
+				).body
 			);
 		} else {
 			let sql = "insert into user_roles (name, description) values (?, ?)";
@@ -90,7 +90,7 @@ router.post("/create", (req, res) => {
 				.then(
 					() => {
 						return res.send(
-							new response(`The ${name} role was successfully created`)
+							new response(`The ${name} role was successfully created`).body
 						);
 					},
 					(err) => {
@@ -99,7 +99,7 @@ router.post("/create", (req, res) => {
 								`There was an error creating the ${name} role`,
 								false,
 								err.message
-							)
+							).body
 						);
 					}
 				);
@@ -107,6 +107,7 @@ router.post("/create", (req, res) => {
 	} catch (err) {
 		return res.send(
 			new response(`There was an error creating the role`, false, err.message)
+				.body
 		);
 	}
 });

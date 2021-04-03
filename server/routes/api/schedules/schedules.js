@@ -4,6 +4,17 @@ const router = express.Router();
 const query = require("../../global/query");
 const response = require("../../global/response");
 
+/**
+ * post: /api/schedules/update
+ *
+ * Updates an existing schedule
+ *
+ * @param name (string) Name of the new schedule
+ * @param type (int) The schedule type
+ * @param description (string) OPTIONAL description of what the schedule is for
+ * @param time (datetime) OPTIONAL Time of the schedule, defaults to n/a
+ * @param schedule_id (int) The id fo the schedule to update
+ */
 router.post("/update", (req, res) => {
 	try {
 		let db = new query();

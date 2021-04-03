@@ -51,7 +51,7 @@ router.get("/", (req, res) => {
 });
 
 /**
- * get: /api/preference_types/category
+ * get: /api/preferences/category
  *
  * Gets all preference categories
  *
@@ -62,10 +62,8 @@ router.get("/category", (req, res) => {
 		let db = new query();
 		var rows;
 
-		let category = req.query.params.category;
-
 		let sql = "select category from preference_types group by category";
-		let p = [category];
+		let p = [];
 
 		db.query(sql, p, false)
 			.then((result) => {
@@ -102,7 +100,7 @@ router.get("/category", (req, res) => {
 });
 
 /**
- * post: /api/preference_types/create
+ * post: /api/preferences/create
  *
  * Creates a specified preference and stores in the database
  *
@@ -165,7 +163,7 @@ router.post("/create", (req, res) => {
 });
 
 /**
- * post: /api/preference_types/delete
+ * post: /api/preferences/delete
  *
  * Deletes a specified preference from the database
  *
