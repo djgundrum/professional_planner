@@ -29,7 +29,10 @@ class CalendarControls extends Component {
                     {
                         this.props.isCreateTeamScheduleScreen ?
                         <>
-                            <div id="addEmployeesButton" className="calendarControlsButton hoverClass" onClick={this.props.toggleCreateEventScreen}>
+                            <div id="addEmployeesButton" className="calendarControlsButton hoverClass" onClick={this.props.toggleCreateTeamScheduleScreen}>
+                                Back
+                            </div>
+                            <div id="backToCalendar" className="calendarControlsButton hoverClass" onClick={this.props.toggleCreateEventScreen}>
                                 Add Employees
                             </div>
                             <div id="addMeetingButton" className="calendarControlsButton hoverClass" onClick={this.props.toggleCreateCalendarScreen}>
@@ -44,7 +47,7 @@ class CalendarControls extends Component {
                             <div id="createCalendarButton" className="calendarControlsButton hoverClass" onClick={this.props.toggleCreateCalendarScreen}>
                                 Create Calendar
                             </div>
-                            <div id="createTeamScheduleButton" className="calendarControlsButton hoverClass">
+                            <div id="createTeamScheduleButton" className="calendarControlsButton hoverClass" onClick={this.props.toggleCreateTeamScheduleScreen}>
                                 Create Team Schedule
                             </div>
                         </>
