@@ -5,7 +5,7 @@ import ProtectedRoute from "./components/global/protected/protected";
 import Login from "./components/login/Login";
 import Home from "./components/home/Home";
 import Test from "./components/test/test";
-import Profile from "./components/profile"
+import Profile from "./components/profile/Profile";
 
 function App() {
 	return (
@@ -15,7 +15,7 @@ function App() {
 				<Route exact path="/home" component={Home} />
 				<Route exact path="/login" component={Login} />
 				<Route exact path="/test" component={Test} />
-				<Route exact path="profile" component={Profile}></Route>
+				<Route exact path="/profile" component={Profile}></Route>
 			</Switch>
 		</Router>
 	);

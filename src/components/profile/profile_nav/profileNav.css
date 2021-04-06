@@ -1,5 +1,65 @@
 #profileNav {
-  width: 300px;
+  width: 400px;
+  height: 100%;
   position: fixed;
   background-color: #29abe2;
+}
+.profileNavIcon {
+  position: relative;
+  float: left;
+}
+.profileNavOption {
+  font-size: 24px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #f4f4f4;
+  position: relative;
+  width: 100%;
+  margin: 0;
+  text-align: center;
+  padding: 40px 0px 40px 0px;
+  background-color: #ffffff00;
+}
+.profileNavOption:hover {
+  background-color: #ffffff10;
+  cursor: pointer;
+  transform: scale(1.1);
+}
+.profileNavOption div {
+  height: 20px;
+  width: auto;
+  position: relative;
+  display: inline-block;
+}
+.profileNavOption p {
+  position: relative;
+  float: left;
+  margin: 0;
+  line-height: 40px;
+  margin-left: 20px;
+}
+.profileBack {
+  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #f4f4f4;
+  margin: 10px 0px 0px 10px;
+  position: relative;
+  height: 80px;
+}
+.profileBack p {
+  float: left;
+  margin: 0px;
+  line-height: 20px;
+  margin-left: 10px;
+}
+.profileBackArrow {
+  transform: rotate(90deg);
+  height: 10px;
+  margin-top: 5px;
+  margin-left: 5px;
+  float: left;
+}
+#profileBackContainer {
+  display: inline-block;
+  cursor: pointer;
+  padding: 10px;
 }

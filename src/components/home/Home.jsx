@@ -10,7 +10,7 @@ class Home extends Component {
 	state = {
 		//mySchedules and myEvents are hardcoded currently, will be loaded from API call
 		//myEvents should only contain events from active calendars
-		myScheduless: [
+		mySchedules: [
 			{
 				id: 1,
 				name: "CalendarCalendarCalendar1",
@@ -169,13 +169,13 @@ class Home extends Component {
 					toggleCreateTeamScheduleScreen={this.toggleCreateTeamScheduleScreen}
 				/>
 				<CreateEvent
-					mySchedules={this.state.myScheduless}
+					mySchedules={this.state.mySchedules}
 					timezones={this.state.timezones}
 					toggleCreateEventScreen={this.toggleCreateEventScreen}
 					isCreateEventScreen={this.state.isCreateEventScreen}
 				/>
 				<CreateCalendar
-					mySchedules={this.state.myScheduless}
+					mySchedules={this.state.mySchedules}
 					timezones={this.state.timezones}
 					toggleCreateCalendarScreen={this.toggleCreateCalendarScreen}
 					isCreateCalendarScreen={this.state.isCreateCalendarScreen}
