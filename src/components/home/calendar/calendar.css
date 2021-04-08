@@ -1,0 +1,52 @@
+#calendarDiv {
+  /*
+  NEED TO CHANGE CALC AND MARGIN LEFT WITH MOBILE
+  */
+  height: calc(100% - 60px);
+  width: calc(100% - 340px);
+  position: fixed;
+  margin-top: 60px;
+  margin-left: 300px;
+  padding-left: 40px;
+  display: flex;
+  overflow-y: scroll;
+  overflow-x: visible;
+}
+
+#timeColumn {
+  /*
+  NEED TO CHANGE MARGIN LEFT WITH MOBILE
+  */
+  width: 40px;
+  position: absolute;
+  top: 90px;
+  left: 0px;
+}
+#timeColumn p {
+  width: 40px;
+  text-align: center;
+  font-size: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 61px;
+  margin: 0;
+  color: #999999;
+}
+::-webkit-scrollbar {
+  width: 14px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #ffffff00;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #cccccc;
+  border-radius: 7px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #999999;
+}

@@ -1,0 +1,153 @@
+#menuBar {
+  height: 60px;
+  width: 100%;
+  margin: 0;
+  top: 0;
+  left: 0;
+  position: fixed;
+  background-color: #29abe2;
+  z-index: 2;
+}
+
+#activeCalendarsTopLeft {
+  margin: 0 0 0 25px;
+  width: 250px;
+  line-height: 60px;
+  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #eeeeee;
+  text-align: center;
+  position: absolute;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#dateDiv {
+  position: absolute;
+  height: 60px;
+  left: 325px;
+}
+#dateTitle {
+  position: relative;
+  float: left;
+  margin: 0 20px 0 20px;
+  font-size: 28px;
+  line-height: 60px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #eeeeee;
+}
+#dateLeft {
+  height: 10px;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%) rotate(90deg);
+  float: left;
+}
+#dateRight {
+  height: 10px;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%) rotate(-90deg);
+  float: left;
+}
+#accountDiv {
+  height: 40px;
+  width: 40px;
+  border-radius: 20px;
+  background-color: #ffffff90;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  text-decoration: none;
+}
+#accountDiv p {
+  line-height: 40px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  color: #29abe2;
+  margin: 0;
+  width: 40px;
+  text-align: center;
+}
+#timeFrameDiv {
+  position: relative;
+  height: 60px;
+  margin-right: 100px;
+  float: right;
+  text-align: center;
+}
+#viewDiv {
+  position: relative;
+  height: 60px;
+  float: right;
+  margin-right: 60px;
+}
+.menuRightText1 {
+  line-height: 60px;
+  margin: 0 0 0 20px;
+  float: left;
+  font-size: 18px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #eeeeee;
+}
+.menuRightText12 {
+  line-height: 60px;
+  float: left;
+  margin: 0;
+  font-size: 18px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #eeeeee;
+  width: 100%;
+  text-align: center;
+}
+.menuDropdown {
+  height: 8px;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  float: right;
+  margin: 0 10px 0 10px;
+}
+.menuRightText2 {
+  line-height: 60px;
+  margin: 0 0 0 50px;
+  float: left;
+  font-size: 18px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #eeeeee;
+}
+.menuRightText22 {
+  line-height: 60px;
+  margin: 0;
+  float: left;
+  font-size: 18px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #eeeeee;
+  width: 100%;
+  text-align: center;
+}
+.menuDropdown2 {
+  height: 8px;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  float: right;
+  margin: 0 50px 0 10px;
+}
+#changeTimeframeDiv {
+  background-color: #29abe2;
+  opacity: 90%;
+  height: 60px;
+  position: absolute;
+  top: 60px;
+  width: 100%;
+}
+#changeViewDiv {
+  background-color: #29abe2;
+  opacity: 90%;
+  height: 60px;
+  position: absolute;
+  top: 60px;
+  width: 100%;
+}

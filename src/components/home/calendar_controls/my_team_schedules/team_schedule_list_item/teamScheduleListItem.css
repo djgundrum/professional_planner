@@ -1,0 +1,57 @@
+.scheduleListItem {
+  margin-top: 20px;
+  position: relative;
+}
+.scheduleNames {
+  line-height: 20px;
+  font-size: 18px;
+  margin: 0;
+  margin-left: 50px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 160px;
+}
+.scheduleNameColor {
+  float: left;
+  margin-left: 20px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.memberListItem {
+  margin: 10px 0px 10px 50px;
+}
+.memberName {
+  line-height: 16px;
+  font-size: 14px;
+  margin: 0;
+  margin-left: 50px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100px;
+}
+.memberNameColor {
+  float: left;
+  margin-left: 16px;
+  border-radius: 8px;
+}
+.dropdownArrow {
+  height: 12px;
+  margin-left: 10px;
+  opacity: 40%;
+  position: absolute;
+  right: 0;
+  cursor: pointer;
+}
+.dropdownDown {
+  top: 50%;
+  transform: translateY(-50%);
+}
+.dropdownRight {
+  top: 50%;
+  transform: translateY(-50%) rotate(-90deg);
+}
+.scheduleMembers {
+  margin-top: 10px;
+}
