@@ -176,6 +176,15 @@ class Login extends Component {
                 Sign Up
               </p>
             </div>
+            <div className="signUpDiv">
+              <p
+                id="signUpText2"
+                className="hoverClass"
+                onClick={this.forgot_password}
+              >
+                Forgot Your Password?
+              </p>
+            </div>
           </div>
           <div id="signUpDiv1">
             <p className="signUpTitle">Sign Up</p>
