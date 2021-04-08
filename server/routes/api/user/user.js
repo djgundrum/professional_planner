@@ -399,11 +399,7 @@ router.post("/create_user", (req, res) => {
     // This is the amount of times a string will be hashed to create a secure salt
     let rounds = 10;
 
-<<<<<<< Updated upstream
     if (isEmpty(email) || isEmpty(password)) {
-=======
-    if (isEmpty(name) || isEmpty(email) || isEmpty(password) || isEmpty(role)) {
->>>>>>> Stashed changes
       let r = new response(
         "Some of the parameters are not valid",
         false,
