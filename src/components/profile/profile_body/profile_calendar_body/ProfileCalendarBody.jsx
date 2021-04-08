@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import './profileCalendarBody.css'
+import CreateCalendar from '../../../home/create_calendar/CreateCalendar'
+import ConfirmDelete from '../confirm_delete/ConfirmDelete'
 
 class ProfileCalendarBody extends Component {
     state = {
@@ -27,29 +29,63 @@ class ProfileCalendarBody extends Component {
 				type: 1,
 				description: "#3fa9f5",
 				color: "",
-			},
-		]
+			}
+		],
+        isCreateCalendarScreen: false,
+		isDeleteCalendarScreen: false,
+		calendarToDelete: ["", ""]
     }
+    toggleCreateCalendarScreen = () => {
+		this.setState({
+			isCreateCalendarScreen: !this.state.isCreateCalendarScreen,
+		});
+	};
+	askDeleteCalendar = (pId, pName) => {
+		this.setState({
+			isDeleteCalendarScreen: !this.state.isDeleteCalendarScreen,
+			calendarToDelete: [pId, pName]
+		})
+	}
+	toggleDeleteCalendar = (pId) => {
+		if(pId){
+			//DELETE CALENDAR HERE
+		}
+		this.askDeleteCalendar("", "")
+	}
     render() { 
         return (
-            <div id="profileCalendarDiv" className="profileBodies">
-                <div className="profileCalendars" id="profileAddCalendar">
-                    +
+            <>
+                <div id="profileCalendarDiv" className="profileBodies">
+                    <div className="profileCalendars" id="profileAddCalendar">
+                        +
+                    </div>
+                    {
+                        this.state.mySchedules.map((calendar) => (
+                            <div key={"profileCalendar"+calendar.id} className="profileCalendars" style={{backgroundColor: calendar.description+"99"}}>
+                                <p className="profileCalendarNames">{calendar.name}</p>
+                                <div className="profileEditCalendar" onClick={this.toggleCreateCalendarScreen}>
+                                    Edit
+                                </div>
+                                <div className="profileDeleteCalendar" onClick={()=>{
+									this.askDeleteCalendar(calendar.id, calendar.name)
+								}}>
+                                    Delete
+                                </div>
+                            </div>
+                        ))
+                    }
                 </div>
-                {
-                    this.state.mySchedules.map((calendar) => (
-                        <div key={"profileCalendar"+calendar.id} className="profileCalendars" style={{backgroundColor: calendar.description+"99"}}>
-                            <p className="profileCalendarNames">{calendar.name}</p>
-                            <div className="profileEditCalendar">
-                                Edit
-                            </div>
-                            <div className="profileDeleteCalendar">
-                                Delete
-                            </div>
-                        </div>
-                    ))
-                }
-            </div>
+                <CreateCalendar
+					mySchedules={this.state.mySchedules}
+					timezones={this.state.timezones}
+					toggleCreateCalendarScreen={this.toggleCreateCalendarScreen}
+					isCreateCalendarScreen={this.state.isCreateCalendarScreen}
+				/>
+				{
+					this.state.isDeleteCalendarScreen ? <ConfirmDelete calendarToDelete={this.state.calendarToDelete} toggleDeleteCalendar={this.toggleDeleteCalendar}/> : <></>
+				}
+                
+            </>
         );
     }
 }

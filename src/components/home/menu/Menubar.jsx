@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import dropdownWhite from '../../images/dropdownArrowWhite.png'
 import './menuBar.css'
+import { NavLink } from 'react-router-dom'
 
 class MenuBar extends Component {
     state = {
@@ -58,13 +59,13 @@ class MenuBar extends Component {
                     </p>
                     <img src={dropdownWhite} id="dateRight" className="hoverClass" alt="" onClick={this.props.forwardTimeframe}/>
                 </div>
-                <div id="timeFrameDiv" className="hoverClass" onClick={this.dropdownTimeframe}>
+                {/* <div id="timeFrameDiv" className="hoverClass" onClick={this.dropdownTimeframe}>
                     <p className="menuRightText1">{this.props.timeframe}</p>
                     <img src={dropdownWhite} className="menuDropdown" alt=""/>
                     <div id="changeTimeframeDiv" onClick={this.props.switchTimeframe} style={this.state.timeframeUp ? {display: "none"} : {display: "block"}}>
                         <p className="menuRightText12">{this.props.timeframe === "Week" ? "Month" : "Week"}</p>
                     </div>
-                </div>
+                </div> */}
                 <div id="viewDiv" className="hoverClass" onClick={this.dropdownView}>
                     <p className="menuRightText2">{this.props.view}</p>
                     <img src={dropdownWhite} className="menuDropdown2" alt=""/>
@@ -72,9 +73,9 @@ class MenuBar extends Component {
                         <p className="menuRightText22">{this.props.view === "Calendar" ? "Team Schedule" : "Calendar"}</p>
                     </div>
                 </div>     
-                <div id="accountDiv" className="hoverClass">
+                <NavLink to="/profile" id="accountDiv" className="hoverClass">
                     <p>{this.state.user.name.substring(0,1)}</p>
-                </div>
+                </NavLink>
             </div>
         );
     }

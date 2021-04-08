@@ -48,13 +48,13 @@
 .profileBack p {
   float: left;
   margin: 0px;
-  line-height: 20px;
+  line-height: 40px;
   margin-left: 10px;
 }
 .profileBackArrow {
   transform: rotate(90deg);
-  height: 10px;
-  margin-top: 5px;
+  height: 8px;
+  margin-top: 16px;
   margin-left: 5px;
   float: left;
 }
@@ -62,4 +62,20 @@
   display: inline-block;
   cursor: pointer;
   padding: 10px;
+}
+#logoutDiv {
+  width: 200px;
+  height: 40px;
+  background-color: white;
+  color: #999999;
+  font-size: 24px;
+  line-height: 36px;
+  text-align: center;
+  border-radius: 20px;
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  cursor: pointer;
 }

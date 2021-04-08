@@ -19,6 +19,9 @@ class CalendarColumn extends Component {
         }
         return (
             <div className={this.props.isLast ? "calendarColumn" : "calendarColumn calendarColumnNotLast"}>
+                <div className="columnOverlay">
+                    
+                </div>
                 <div className={this.props.isToday ? "columnDateHeader currentDate" : "columnDateHeader"}>
                     <p className="columnDay">{this.props.columnDateInfo[0]}</p>
                     <p className="columnDate">{this.props.columnDateInfo[1]}</p>
