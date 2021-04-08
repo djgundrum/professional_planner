@@ -82,6 +82,7 @@
   top: 0;
   left: 0;
   transform: translateX(-400px) translateY(-400px);
+  z-index: 1;
 }
 #signInBackgroundBubble2 {
   position: absolute;
@@ -92,6 +93,7 @@
   bottom: 0;
   right: 0;
   transform: translateX(250px) translateY(250px);
+  z-index: 1;
 }
 #signInBackgroundBubble3 {
   position: absolute;
@@ -104,6 +106,7 @@
   bottom: 0;
   margin: auto;
   transform: translateX(-100px) translateY(950px);
+  z-index: 1;
 }
 #signInBackgroundBubble4 {
   position: absolute;
@@ -116,6 +119,7 @@
   margin: auto;
   top: 50%;
   transform: translateX(400px) translateY(-300px);
+  z-index: 1;
 }
 #welcomeTitle {
   top: 10%;

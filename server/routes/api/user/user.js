@@ -4,6 +4,156 @@ const router = express.Router();
 const query = require("../../global/query");
 const response = require("../../global/response");
 const bcrypt = require("bcrypt");
+const crypto = require("crypto");
+const emailer = require("../../global/email");
+
+/**
+ * post: /api/user/forgot_password
+ *
+ * Will generate and save a hashed token for the user to reset their password with. Then will send them an email with the link to the reset password page.
+ *
+ * *Required
+ * @param email (string) The email the user used to sign up with
+ */
+router.post("/forgot_password", (req, res) => {
+  try {
+    let db = new query();
+    let emaile = new emailer();
+
+    let user_email = req.body.email;
+
+    if (isEmpty(user_email)) {
+      throw { message: `Provided email was not valid. email: ${user_email}` };
+    } else {
+      let hash = crypto.randomBytes(50).toString("hex");
+
+      let sql = "update users set password_reset = ? where email = ?;";
+      let p = [hash, user_email];
+
+      db.query(sql, p, true)
+        .then(() => {
+          return db.end();
+        })
+        .then(() => {
+          let test = `http://localhost:3000/forgot_password/${hash}`;
+          let live = `https://whatever.com/forgot_password/${hash}`;
+
+          let html = `
+						<h3>Click the link to reset your password</h3>
+						<a href="${test}" target="_blank">Reset Password</a>
+						`;
+
+          return emaile.email_html(
+            user_email,
+            "info@storylinq.com",
+            "Reset Your Password",
+            html
+          );
+        })
+        .then(() => {
+          return emaile.end();
+        })
+        .then(
+          () => {
+            return res.send(
+              new response("Successfully set reset password and sent email")
+                .body
+            );
+          },
+          (err) => {
+            throw { message: err.message };
+          }
+        );
+    }
+  } catch (err) {
+    return res.send(
+      new response("Error in forgot password functionality", false, err.message)
+        .body
+    );
+  }
+});
+
+/**
+ * post: /api/user/forgot_password_update
+ *
+ * After going to the reset password page, call this function with their hash and send in thier new password
+ *
+ * *Required
+ * @param hash (string) The hash that the user had generated for them
+ * @param password (string) The new password the user provided
+ */
+router.post("forgot_password_update", (req, res) => {
+  try {
+    let db = new query();
+    let rounds = 10;
+
+    let hash = req.body.hash;
+    let password = req.body.password;
+
+    if (isEmpty(hash) || isEmpty(password)) {
+      return res.send(
+        new response(
+          `The provided parameters were not valid`,
+          false,
+          `hash: ${hash}, password: ${password}`
+        ).body
+      );
+    } else {
+      generate_hash(password, rounds)
+        .then((result) => {
+          let sql = "update users set password = ? where password_reset = ?";
+          let p = [result, hash];
+
+          return db.query(sql, p, true);
+        })
+        .then(() => {
+          return db.end();
+        })
+        .then(
+          () => {
+            return res.send("The password was updated successfully").body;
+          },
+          (err) => {
+            throw { message: err.message };
+          }
+        );
+    }
+  } catch (err) {
+    return res.send(
+      new response(
+        "Error updating the password for the user",
+        false,
+        err.message
+      ).body
+    );
+  }
+});
+
+/**
+ * post: /api/user/logout
+ *
+ * Will logout the current user
+ *
+ * @params no parameters needed for this route
+ */
+router.post("/logout", (req, res) => {
+  try {
+    req.session.destroy((err) => {
+      if (err) throw { message: err.message };
+      else {
+        return res.send(new response("Successfully logged out the user.").body);
+      }
+    });
+  } catch (err) {
+    return res.send(
+      new response(
+        "There was an error logging out the current user.",
+        false,
+        err.message
+      ).body
+    );
+  }
+});
 
 /**
  * post: /api/user/update_preference
@@ -249,7 +399,11 @@ router.post("/create_user", (req, res) => {
     // This is the amount of times a string will be hashed to create a secure salt
     let rounds = 10;
 
+<<<<<<< Updated upstream
     if (isEmpty(email) || isEmpty(password)) {
+=======
+    if (isEmpty(name) || isEmpty(email) || isEmpty(password) || isEmpty(role)) {
+>>>>>>> Stashed changes
       let r = new response(
         "Some of the parameters are not valid",
         false,

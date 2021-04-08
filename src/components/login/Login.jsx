@@ -1,13 +1,19 @@
 import React, { Component } from "react";
 import "./login.css";
+<<<<<<< Updated upstream
 import axios from "axios";
 import Loading from "../global/loading/loading";
 import Error from "../global/error/error";
 import { Redirect } from "react-router-dom";
+=======
+
+import axios from "axios";
+>>>>>>> Stashed changes
 
 class Login extends Component {
   state = {
     isSignin: true,
+<<<<<<< Updated upstream
     signinEmail: "",
     signinPassword: "",
     signupEmail: "",
@@ -178,6 +184,92 @@ class Login extends Component {
             />
 
             <div className="signInButton hoverClass" onClick={this.signup}>
+=======
+  };
+
+  forgot_password = () => {
+    let email = "declan.gundrum.17@gmail.com";
+
+    if (email === "") {
+      this.setState({
+        error: {
+          error: true,
+          message: "Please enter your email address into the input.",
+        },
+      });
+    }
+
+    let url = "/api/user/forgot_password";
+    let data = { email: email };
+
+    axios.post(url, data).then((result) => {
+      console.log(result);
+
+      if (!result.data.valid) {
+        this.setState({
+          error: { error: true, message: result.data.body.message },
+        });
+      } else {
+        console.log("Successfully did everything");
+      }
+    });
+  };
+  render() {
+    return (
+      <div id="loginScreen">
+        <div id="signInBackgroundBubble1"></div>
+        <div id="signInBackgroundBubble2"></div>
+        <div id="signInBackgroundBubble3"></div>
+        <div id="signInBackgroundBubble4"></div>
+        <div id="signInShadow1"></div>
+        <div id="signInShadow2"></div>
+        <div id="signInDiv1">
+          <p id="welcomeTitle">Welcome to the Perfect Professional Planner</p>
+          <p id="welcomeText">
+            Create calendars, share them with others, and generate team
+            schedules that seamlessly fit around your employees' busy lives.
+            Perfect for business and personal use to maximize efficiency and
+            free time.
+          </p>
+        </div>
+        <div id="signInDiv2">
+          <div id="signInDiv21">
+            <p className="signInTitle">Login</p>
+            <p className="signInText">Email</p>
+            <input type="text" className="signInInput" />
+            <p className="signInText">Password</p>
+            <input type="text" className="signInInput" />
+
+            <div className="signInButton hoverClass">
+              <p>Sign In</p>
+            </div>
+            <div className="signUpDiv">
+              <p id="signUpText1">Don't have an account?</p>
+              <p
+                id="signUpText2"
+                className="hoverClass"
+                onClick={this.switchLogin}
+              >
+                Sign Up
+              </p>
+            </div>
+            <div className="signUpDiv">
+              <p onClick={this.forgot_password} id="signUpText2">
+                Forgot Your Password?
+              </p>
+            </div>
+          </div>
+          <div id="signUpDiv1">
+            <p className="signUpTitle">Sign Up</p>
+            <p className="signInText">Email</p>
+            <input type="text" className="signInInput" />
+            <p className="signInText">Password</p>
+            <input type="text" className="signInInput" />
+            <p className="signInText">Confirm Password</p>
+            <input type="text" className="signInInput" />
+
+            <div className="signInButton hoverClass">
+>>>>>>> Stashed changes
               <p>Sign Up</p>
             </div>
             <div className="signUpDiv">
