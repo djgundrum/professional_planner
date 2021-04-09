@@ -8,6 +8,61 @@ const crypto = require("crypto");
 const emailer = require("../../global/email");
 
 /**
+ * get: /api/user/email/:email
+ *
+ * Will get a user based on their email address
+ *
+ * *Required
+ * email (string) Email address of the user
+ */
+router.get("/email/:email", (req, res) => {
+  try {
+    let db = new query();
+    var rows;
+
+    let email = req.params.email;
+
+    if (isEmpty(email)) {
+      return res.send(
+        new response(
+          "The provided email address was not valid",
+          false,
+          `email: ${email}`
+        ).body
+      );
+    } else {
+      let sql = "select * from users where email = ?";
+      let p = [email];
+
+      db.query(sql, p, false)
+        .then((result) => {
+          rows = result;
+          return db.end();
+        })
+        .then(
+          () => {
+            if (rows.length === 0)
+              throw { message: "There are no users with that email address" };
+            else {
+              let r = new response("Successfully got the user").body;
+              r.body.user = rows[0];
+
+              return res.send(r);
+            }
+          },
+          (err) => {
+            throw { message: err.message };
+          }
+        );
+    }
+  } catch (err) {
+    return res.send(
+      new response("Error in returning the user", false, err.message).body
+    );
+  }
+});
+
+/**
  * post: /api/user/forgot_password
  *
  * Will generate and save a hashed token for the user to reset their password with. Then will send them an email with the link to the reset password page.
