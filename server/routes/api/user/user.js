@@ -42,7 +42,12 @@ router.get("/email/:email", (req, res) => {
         .then(
           () => {
             if (rows.length === 0)
-              throw { message: "There are no users with that email address" };
+              return res.send(
+                new response(
+                  "There are no users with that email address",
+                  false
+                ).body
+              );
             else {
               let r = new response("Successfully got the user").body;
               r.body.user = rows[0];
@@ -51,6 +56,7 @@ router.get("/email/:email", (req, res) => {
             }
           },
           (err) => {
+            console.log(err);
             throw { message: err.message };
           }
         );
