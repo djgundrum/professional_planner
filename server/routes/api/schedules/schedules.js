@@ -92,6 +92,7 @@ router.post("/update", (req, res) => {
 router.post("/create", (req, res) => {
   try {
     let db = new query();
+    var rows;
 
     let name = req.body.name;
     let description = req.body.description;
@@ -114,13 +115,21 @@ router.post("/create", (req, res) => {
 
       db.query(sql, p, true)
         .then(() => {
+          sql =
+            "select * from schedles where name = ? and type = ? and creator = ?";
+          p = [name, type, creator_id];
+
+          return db.query(sql, p, false);
+        })
+        .then((result) => {
+          rows = result;
           return db.end();
         })
         .then(
           () => {
-            return res.send(
-              new response("The schedule was successfully created").body
-            );
+            let r = new response("The schedule was successfully created.").body;
+            r.body.schedule = rows;
+            return res.send(r);
           },
           (err) => {
             return res.send(
