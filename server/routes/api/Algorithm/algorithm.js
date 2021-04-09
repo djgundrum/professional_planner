@@ -121,7 +121,7 @@ function algorithm(managerialConstraints, employees) {
   var employeeArr = makeArrayOfEmployees(employees);
   var employeeTotalHrsArr = makeArrayOfEmployees(employees);
   var weekdays = ["m", "t", "w", "r", "f"];
-  var numEmployeesPerShift = 1;
+  var numEmployeesPerShift = 2;
   var tempEndTime = null;
 
   //iterate through week
@@ -133,7 +133,6 @@ function algorithm(managerialConstraints, employees) {
     for (var j = numEmployeesPerShift; j>0; j--) {
       //iterate through day (per shift block 0.25 hrs)
       for (var i = startTime; i < endTime; i += 0.25) {
-        
         //iterate through day employee list and check for availability during shift block (include randomness here)
         for (employee of employeeArr) {
           //assign first available employee to that shift
@@ -221,6 +220,30 @@ const employees = {
     conflicts: { m: [], t: [], w: [], r: [], f: [] },
   },
   e0006: {
+    preferredMinHrs: 3,
+    preferredMaxHrs: 6,
+    preferredHrs: 5,
+    conflicts: { m: [], t: [], w: [], r: [], f: [] },
+  },
+  e0007: {
+    preferredMinHrs: 3,
+    preferredMaxHrs: 6,
+    preferredHrs: 5,
+    conflicts: { m: [], t: [], w: [], r: [], f: [] },
+  },
+  e0008: {
+    preferredMinHrs: 3,
+    preferredMaxHrs: 6,
+    preferredHrs: 5,
+    conflicts: { m: [], t: [], w: [], r: [], f: [] },
+  },
+  e0009: {
+    preferredMinHrs: 3,
+    preferredMaxHrs: 6,
+    preferredHrs: 5,
+    conflicts: { m: [], t: [], w: [], r: [], f: [] },
+  },
+  e0010: {
     preferredMinHrs: 3,
     preferredMaxHrs: 6,
     preferredHrs: 5,
