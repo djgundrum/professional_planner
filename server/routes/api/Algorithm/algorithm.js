@@ -14,7 +14,7 @@ const response = require("../../global/response");
 
 router.post("/", async (req, res) => {
   try {
-    let alg = await algorithm(constraints, employees);
+    let alg = await testEmpty();
 
     let r = new response("This is what was returned").body;
 
@@ -33,6 +33,31 @@ router.post("/", async (req, res) => {
   }
 });
 
+async function testEmpty() {
+  var constraints = {
+    minHrs: 2,
+    maxHrs: 5,
+    minShift: 2,
+    maxShift: 4,
+    normalShift: 2.5,
+    minEmployees: 2,
+    maxEmployees: 4,
+    prefferedNumberOfEmployees: 3,
+    businessHrs: {
+      m: { start: 10, end: 17.5 },
+      t: { start: 10, end: 17.5 },
+      w: { start: 10, end: 17.5 },
+      r: { start: 10, end: 17.5 },
+      f: { start: 10, end: 17.5 },
+    },
+  };
+
+  var employees = {};
+
+  let alg = await algorithm(constraints, employees);
+  return alg;
+}
+
 function makeArrayOfEmployees(employees) {
   var arr = [];
   for (x in employees) {
@@ -41,7 +66,7 @@ function makeArrayOfEmployees(employees) {
       preferredHrs: employees[x]["preferredHrs"],
       actualHrs: 0,
       shifts: { m: [], t: [], w: [], r: [], f: [] },
-      conflicts: employees[x]['conflicts']
+      conflicts: employees[x]["conflicts"],
     });
   }
   return arr;
@@ -73,14 +98,12 @@ function isAvailable(
   var shiftLength = 0;
   var remainingHrs = employee["preferredHrs"] - employee["actualHrs"];
 
-  
   //accumulate max valid shiftLength
   //NOT accounting for preferred employee time
-  
-  endTime:
-  for (endTime = startTime; endTime < endOfDayTime; endTime += 0.25) {
+
+  endTime: for (endTime = startTime; endTime < endOfDayTime; endTime += 0.25) {
     shiftLength = endTime - startTime;
-    if (shiftLength == maxHrs || shiftLength >= remainingHrs-.25) {
+    if (shiftLength == maxHrs || shiftLength >= remainingHrs - 0.25) {
       break;
     }
 
@@ -94,7 +117,7 @@ function isAvailable(
   if (shiftLength >= minHrs) {
     employee["shifts"][day].push([startTime, endTime]);
     employee["actualHrs"] += shiftLength;
-    
+
     return endTime;
   }
   //if employee has conflict return null
@@ -129,14 +152,21 @@ function algorithm(managerialConstraints, employees) {
     //iterate through number of employees per shift (default to 1)
     var startTime = managerialConstraints["businessHrs"]["m"]["start"];
     var endTime = managerialConstraints["businessHrs"]["m"]["end"];
-    
-    for (var j = numEmployeesPerShift; j>0; j--) {
+
+    for (var j = numEmployeesPerShift; j > 0; j--) {
       //iterate through day (per shift block 0.25 hrs)
       for (var i = startTime; i < endTime; i += 0.25) {
         //iterate through day employee list and check for availability during shift block (include randomness here)
         for (employee of employeeArr) {
           //assign first available employee to that shift
-          tempEndTime = isAvailable(employee, employeeArr, managerialConstraints, day, i, endTime);
+          tempEndTime = isAvailable(
+            employee,
+            employeeArr,
+            managerialConstraints,
+            day,
+            i,
+            endTime
+          );
           if (tempEndTime != null) {
             i = tempEndTime - 0.25;
             break;

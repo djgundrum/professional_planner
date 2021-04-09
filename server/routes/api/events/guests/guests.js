@@ -10,6 +10,7 @@ router.post("/add", (req, res) => {
 
     let user_id = req.body.user_id;
     let event_id = req.body.event_id;
+    let schedule_id = req.body.schedule_id;
 
     if (isEmpty(user_id) || isEmpty(event_id)) {
       return res.send(
