@@ -109,11 +109,20 @@ router.post("/create", (req, res) => {
         ).body
       );
     } else {
-      let sql =
-        "insert into schedules (name, description, type, time, creator) values (?, ?, ?, ?, ?)";
-      let p = [name, description, type, time, creator_id];
+      let sql = "select * from schedules where name = ?";
+      let p = name;
 
-      db.query(sql, p, true)
+      db.query(sql, p, false)
+        .then((result) => {
+          if (result.length > 0) {
+            return Promise.reject("A schedule with this name already exists");
+          } else {
+            sql =
+              "insert into schedules (name, description, type, time, creator) values (?, ?, ?, ?, ?)";
+            p = [name, description, type, time, creator_id];
+            return db.query(sql, p, true);
+          }
+        })
         .then(() => {
           sql =
             "select * from schedules where name = ? and type = ? and creator = ?";
