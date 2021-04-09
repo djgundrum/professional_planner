@@ -82,7 +82,7 @@ router.post("/forgot_password", (req, res) => {
  * @param hash (string) The hash that the user had generated for them
  * @param password (string) The new password the user provided
  */
-router.post("forgot_password_update", (req, res) => {
+router.post("/forgot_password_update", (req, res) => {
   try {
     let db = new query();
     let rounds = 10;
@@ -111,7 +111,9 @@ router.post("forgot_password_update", (req, res) => {
         })
         .then(
           () => {
-            return res.send("The password was updated successfully").body;
+            return res.send(
+              new response("The password was updated successfully").body
+            );
           },
           (err) => {
             throw { message: err.message };
@@ -312,7 +314,7 @@ router.post("/login", (req, res) => {
         "Some of the required fields were not set properly",
         false,
         `email: ${email} password: ${password}`
-      );
+      ).body;
     } else {
       let sql = "select * from users where email = ?";
       let p = [email];
