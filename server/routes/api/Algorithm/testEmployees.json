@@ -1,0 +1,38 @@
+{
+    "e0001": {
+        "preferredMinHrs": 3, 
+        "preferredMaxHrs":6, 
+        "preferredHrs": 10,
+        "conflicts": {"m":[[10,12], [4,5]],"t": [], "w":[], "r":[], "f":[]}
+    },
+    "e0002": {
+        "preferredMinHrs": 3, 
+        "preferredMaxHrs":6, 
+        "preferredHrs": 10,
+        "conflicts": {"m":[],"t": [], "w":[], "r":[], "f":[]}
+    },
+    "e0003": {
+        "preferredMinHrs": 3, 
+        "preferredMaxHrs":6, 
+        "preferredHrs": 11,
+        "conflicts": {"m":[],"t": [], "w":[], "r":[], "f":[]}
+    },
+    "e0004": {
+        "preferredMinHrs": 3, 
+        "preferredMaxHrs":6, 
+        "preferredHrs": 5,
+        "conflicts": {"m":[],"t": [], "w":[], "r":[], "f":[]}
+    },
+    "e0005": {
+        "preferredMinHrs": 3, 
+        "preferredMaxHrs":6, 
+        "preferredHrs": 5,
+        "conflicts": {"m":[],"t": [], "w":[], "r":[], "f":[]}
+    },
+    "e0006": {
+        "preferredMinHrs": 3, 
+        "preferredMaxHrs":6, 
+        "preferredHrs": 5,
+        "conflicts": {"m":[],"t": [], "w":[], "r":[], "f":[]}
+    }
+}
