@@ -3,6 +3,7 @@
   height: 100%;
   position: fixed;
   background-color: #29abe2;
+  z-index: 10;
 }
 .profileNavIcon {
   position: relative;

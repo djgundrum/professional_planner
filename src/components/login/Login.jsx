@@ -113,7 +113,7 @@ class Login extends Component {
   };
   render() {
     return this.state.isLoggedIn ? (
-      <Redirect to="/home"></Redirect>
+      <Redirect to="/home" />
     ) : (
       <div id="loginScreen">
         <Error
@@ -177,11 +177,7 @@ class Login extends Component {
               </p>
             </div>
             <div className="signUpDiv">
-              <p
-                id="signUpText2"
-                className="hoverClass"
-                onClick={this.forgot_password}
-              >
+              <p id="forgotPassword" onClick={this.forgot_password}>
                 Forgot Your Password?
               </p>
             </div>
@@ -216,11 +212,7 @@ class Login extends Component {
             <div className="signInButton hoverClass" onClick={this.signup}>
               <p>Sign Up</p>
             </div>
-            <div className="signUpDiv">
-              <p onClick={this.forgot_password} id="signUpText2">
-                Forgot Your Password?
-              </p>
-            </div>
+
             <div className="signUpDiv">
               <p
                 id="signUpText3"

@@ -6,9 +6,18 @@ import teamIcon from "../../images/teamIcon.png";
 import contactsIcon from "../../images/contactsIcon.png";
 import backArrow from "../../images/dropdownArrowWhite.png";
 import { NavLink } from "react-router-dom";
+import axios from "axios";
+import Error from "../../global/error/error";
+import { Redirect } from "react-router-dom";
 
 class ProfileNav extends Component {
-  state = {};
+  state = {
+    error: {
+      error: false,
+      message: "",
+    },
+    isLoggedIn: true,
+  };
   setInformation = () => {
     this.props.updateScreen("information");
   };
@@ -22,11 +31,37 @@ class ProfileNav extends Component {
     this.props.updateScreen("contact");
   };
   logOut = () => {
-    let url = "";
+    let url = "/api/user/logout";
+    axios.post(url).then((result) => {
+      if (!result.data.valid) {
+        this.setState({
+          error: {
+            error: true,
+            message: "Could not log out",
+          },
+        });
+      } else {
+        this.setState({
+          isLoggedIn: false,
+        });
+      }
+    });
   };
   render() {
-    return (
+    return this.state.isLoggedIn ? (
       <div id="profileNav">
+        <Error
+          error={this.state.error.error}
+          message={this.state.error.message}
+          close={() => {
+            this.setState({
+              error: {
+                error: false,
+                message: "",
+              },
+            });
+          }}
+        ></Error>
         <NavLink to={"/home"} className="profileBack">
           <div id="profileBackContainer" onClick={this.goHome}>
             <img src={backArrow} alt="" className="profileBackArrow" />
@@ -81,6 +116,8 @@ class ProfileNav extends Component {
           Logout
         </div>
       </div>
+    ) : (
+      <Redirect to="/login" />
     );
   }
 }

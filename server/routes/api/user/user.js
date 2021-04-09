@@ -585,7 +585,7 @@ router.get("/account", (req, res) => {
             let r = new response("User object successfully loaded").body;
             r.body.user = { user: user, preferences: rows };
 
-            return res.send(r.body);
+            return res.send(r);
           },
           (err) => {
             let r = new response(

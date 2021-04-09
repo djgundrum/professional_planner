@@ -268,3 +268,7 @@
   margin: 0;
   color: #999999;
 }
+#forgotPassword {
+  color: rgba(0, 183, 255, 1);
+  cursor: pointer;
+}

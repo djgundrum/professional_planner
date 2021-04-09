@@ -12,13 +12,13 @@ function App() {
   return (
     <Router>
       <Switch>
-        <Route exact path="/" component={Home} />
-        <Route exact path="/home" component={Home} />
+        <ProtectedRoute exact={true} path="/" component={Home} />
+        <ProtectedRoute exact={true} path="/home" component={Home} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/test" component={Test} />
-        <Route exact path="/profile" component={Profile}></Route>
-        <Route
-          exact
+        <ProtectedRoute exact={true} path="/profile" component={Profile} />
+        <ProtectedRoute
+          exact={true}
           path="/forgot_password/:hash"
           component={Forgot_Password}
         />
