@@ -101,7 +101,7 @@ class ProfileNav extends Component {
             <p>Team Schedules</p>
           </div>
         </div>
-        <div className="profileNavOption" onClick={this.setContact}>
+        {/* <div className="profileNavOption" onClick={this.setContact}>
           <div>
             <img
               src={contactsIcon}
@@ -111,7 +111,7 @@ class ProfileNav extends Component {
             />
             <p>Contacts</p>
           </div>
-        </div>
+        </div> */}
         <div id="logoutDiv" onClick={this.logOut}>
           Logout
         </div>

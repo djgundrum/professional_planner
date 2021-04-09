@@ -116,7 +116,7 @@ router.post("/create", (req, res) => {
       db.query(sql, p, true)
         .then(() => {
           sql =
-            "select * from schedles where name = ? and type = ? and creator = ?";
+            "select * from schedules where name = ? and type = ? and creator = ?";
           p = [name, type, creator_id];
 
           return db.query(sql, p, false);
@@ -128,7 +128,7 @@ router.post("/create", (req, res) => {
         .then(
           () => {
             let r = new response("The schedule was successfully created.").body;
-            r.body.schedule = rows;
+            r.body.schedule = rows[0];
             return res.send(r);
           },
           (err) => {

@@ -9,36 +9,7 @@ class CreateCalendar extends Component {
     name: "",
     color: "#ff3200",
     //Needs to be updated
-    sharedContacts: [
-      {
-        id: 1,
-        name: "ContactContactContact 1",
-      },
-      {
-        id: 2,
-        name: "Contact 2",
-      },
-      {
-        id: 3,
-        name: "Contact 3",
-      },
-      {
-        id: 4,
-        name: "Contact 4",
-      },
-      {
-        id: 5,
-        name: "Contact 5",
-      },
-      {
-        id: 6,
-        name: "Contact 6",
-      },
-      {
-        id: 7,
-        name: "Contact 7",
-      },
-    ],
+    sharedContacts: [],
     //0) red 1) orange 2) yellow 3) light green 4) dark green 5) light blue 6) dark blue 7) purple 8) pink 9) grey
     colors: [
       "#ff3200",
@@ -53,10 +24,57 @@ class CreateCalendar extends Component {
       "#777777",
     ],
   };
+  addContacts = () => {
+    let contactString = document.getElementById("addContactInput").value;
+    let contacts = contactString.split(",").map(function (item) {
+      return item.trim();
+    });
+    let contactNames = [];
+    let errorNames = [];
 
+    for (let i = 0; i < contacts.length; i++) {
+      let url = `/api/user/email/${contacts[i]}`;
+      axios.get(url).then((result) => {
+        if (result.data.valid) {
+          contactNames.push({
+            id: result.data.body.user.id,
+            name: result.data.body.user.name,
+            email: result.data.body.user.email,
+          });
+        } else {
+          errorNames.push(contacts[i]);
+        }
+        if (i == contacts.length - 1) {
+          if (contactNames.length > 0) {
+            let newContacts = this.state.sharedContacts.concat(contactNames);
+            this.setState({
+              //sharedContacts: this.state.sharedContacts.push(contactNames),
+              sharedContacts: newContacts,
+            });
+          }
+          if (errorNames.length > 0) {
+            console.log("Email does not exist");
+            //error here
+          }
+        }
+      });
+    }
+  };
+  deletePerson = (pId) => {
+    let newContacts = this.state.sharedContacts;
+    for (let i = 0; i < newContacts.length; i++) {
+      if (newContacts[i].id == pId) {
+        newContacts.splice(i, 1);
+        this.setState({
+          sharedContacts: newContacts,
+        });
+      }
+    }
+  };
   addCalendar = () => {
     let url1 = "/api/user/account";
     axios.get(url1).then((result1) => {
+      console.log(result1);
       let url2 = "/api/schedules/create";
       let data = {
         creator_id: result1.data.body.user.user.id,
@@ -65,6 +83,7 @@ class CreateCalendar extends Component {
         description: this.props.createCalendarInfo.description,
       };
       axios.post(url2, data).then((result2) => {
+        console.log(result2);
         if (result2.data.valid) {
           this.props.toggleCreateCalendarScreen();
           this.props.clearCreateCalendarInfo();
@@ -72,7 +91,6 @@ class CreateCalendar extends Component {
             name: "",
             color: "#ff3200",
           });
-          //Figure out how to get schedule id of calendar that was just created, the create guest list entry with user id and that schedule id
         }
       });
     });
@@ -83,6 +101,7 @@ class CreateCalendar extends Component {
     });
   };
   render() {
+    console.log(this.state.sharedContacts);
     return (
       <div
         id="createCalendarScreen"
@@ -136,10 +155,23 @@ class CreateCalendar extends Component {
               <img src={addPersonIcon} alt="" id="addPersonIcon" />
             </div>
             <p id="shareWithText">Share With:</p>
+          </div>
+          <div id="shareContacts">
+            <input type="text" id="addContactInput" />
+            <div id="addContactButton" onClick={this.addContacts}>
+              Add
+            </div>
             {this.state.sharedContacts.map((contact) => (
               <div key={contact.id} className="personDiv">
-                <p>{contact.name}</p>
-                <img src={xIcon} alt="" className="deletePerson" />
+                <p>{contact.name ? contact.name : contact.email}</p>
+                <img
+                  src={xIcon}
+                  alt=""
+                  className="deletePerson"
+                  onClick={() => {
+                    this.deletePerson(contact.id);
+                  }}
+                />
               </div>
             ))}
           </div>

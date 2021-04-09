@@ -11,7 +11,7 @@ class CalendarControls extends Component {
   state = {
     showCalendars: true,
     showTeamSchedules: true,
-    showContacts: true,
+    //showContacts: true,
   };
   toggleCalendars = () => {
     this.setState({ showCalendars: !this.state.showCalendars });
@@ -42,13 +42,13 @@ class CalendarControls extends Component {
               >
                 Add Employees
               </div>
-              <div
+              {/* <div
                 id="addMeetingButton"
                 className="calendarControlsButton hoverClass"
                 onClick={this.props.toggleCreateCalendarScreen}
               >
                 Add Meeting Block
-              </div>
+              </div> */}
             </>
           ) : (
             <>
@@ -140,7 +140,7 @@ class CalendarControls extends Component {
                   />
                 )}
 
-                <div onClick={this.toggleContacts}>
+                {/* <div onClick={this.toggleContacts}>
                   <CalendarControlsDropdown
                     title="My Contacts"
                     propShow={this.state.showContacts}
@@ -148,7 +148,7 @@ class CalendarControls extends Component {
                     section={"Contacts"}
                   />
                 </div>
-                {this.state.showContacts && <MyContacts />}
+                {this.state.showContacts && <MyContacts />} */}
               </>
             )}
           </div>
