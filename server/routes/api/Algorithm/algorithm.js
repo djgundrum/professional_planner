@@ -41,6 +41,7 @@ function makeArrayOfEmployees(employees) {
       preferredHrs: employees[x]["preferredHrs"],
       actualHrs: 0,
       shifts: { m: [], t: [], w: [], r: [], f: [] },
+      conflicts: employees[x]['conflicts']
     });
   }
   return arr;
@@ -72,23 +73,28 @@ function isAvailable(
   var shiftLength = 0;
   var remainingHrs = employee["preferredHrs"] - employee["actualHrs"];
 
+  
   //accumulate max valid shiftLength
   //NOT accounting for preferred employee time
+  
+  endTime:
   for (endTime = startTime; endTime < endOfDayTime; endTime += 0.25) {
     shiftLength = endTime - startTime;
-    if (shiftLength === maxHrs || shiftLength > remainingHrs) {
+    if (shiftLength == maxHrs || shiftLength >= remainingHrs-.25) {
       break;
     }
-    for (c in conflicts) {
-      if (!(endTime < c[0] || startTime > c[1])) {
-        break;
+
+    for (c of conflicts) {
+      if (!(endTime < c[0] || endTime > c[1])) {
+        break endTime;
       }
     }
   }
 
   if (shiftLength >= minHrs) {
-    employee["shifts"][day].add([startTime, endTime]);
+    employee["shifts"][day].push([startTime, endTime]);
     employee["actualHrs"] += shiftLength;
+    
     return endTime;
   }
   //if employee has conflict return null
@@ -99,15 +105,14 @@ function createSchedule(employeeArr, unfilledShifts) {
   var sched = { m: [], t: [], w: [], r: [], f: [] };
   for (day in sched) {
     for (employee of employeeArr) {
-      for (shift in employee["shifts"][day]) {
-        sched[day].add([employee["ID"], shift]);
+      for (shift of employee["shifts"][day]) {
+        sched[day].push([employee["ID"], shift]);
       }
     }
     for (unfilled in unfilledShifts[day]) {
-      sched[day].add([-1, unfilled]);
+      sched[day].push([-1, unfilled]);
     }
   }
-
   return sched;
 }
 
@@ -120,18 +125,19 @@ function algorithm(managerialConstraints, employees) {
   var tempEndTime = null;
 
   //iterate through week
-  for (day in weekdays) {
+  for (day of weekdays) {
     //iterate through number of employees per shift (default to 1)
-    var startTime = managerialConstraints["businessHrs"]["start"];
-    var endTime = managerialConstraints["businessHrs"]["end"];
-
-    for (i in numEmployeesPerShift) {
+    var startTime = managerialConstraints["businessHrs"]["m"]["start"];
+    var endTime = managerialConstraints["businessHrs"]["m"]["end"];
+    
+    for (var j = numEmployeesPerShift; j>0; j--) {
       //iterate through day (per shift block 0.25 hrs)
       for (var i = startTime; i < endTime; i += 0.25) {
+        
         //iterate through day employee list and check for availability during shift block (include randomness here)
-        for (employee in employeeArr) {
+        for (employee of employeeArr) {
           //assign first available employee to that shift
-          tempEndTime = isAvailable(employee, employee);
+          tempEndTime = isAvailable(employee, employeeArr, managerialConstraints, day, i, endTime);
           if (tempEndTime != null) {
             i = tempEndTime - 0.25;
             break;
@@ -143,7 +149,7 @@ function algorithm(managerialConstraints, employees) {
           //make dummy employee to store unfilled shifts
           //if for example 2 out of 3 shifts filled then skipAhead by 0.25 is good?
           var skipAhead = 0.25;
-          unfilledShifts[day].add([startTime, startTime + 0.25]);
+          unfilledShifts[day].push([startTime, startTime + 0.25]);
           i += skipAhead - 0.25;
         }
       }
