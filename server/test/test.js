@@ -13,7 +13,7 @@ describe("User routes", () => {
     it("it will logout current user", (done) => {
       chai
         .request(server)
-        .get("/logout")
+        .post("/api/user/logout")
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.have.property("valid").eql(true);
@@ -21,9 +21,32 @@ describe("User routes", () => {
         });
     });
   });
-  describe("#indexOf()", function () {
-    it("should return -1 when the value is not present", function () {
-      assert.equal([1, 2, 3].indexOf(4), -1);
+});
+
+describe("Event routes", () => {
+  describe("/POST get all events", () => {
+    it("it will get all events", (done) => {
+      chai
+        .request(server)
+        .get("/api/events")
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.have.property("valid").eql(true);
+          done();
+        });
+    });
+  });
+  describe("/POST add event", () => {
+    it("it will create an event", (done) => {
+      chai
+        .request(server)
+        .data({ name: "Justin's going away party", capacity: 15, duration: 5, schedule_id: 5, type: 1})
+        .get("/api/events/create")
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.have.property("valid").eql(true);
+          done();
+        });
     });
   });
 });
