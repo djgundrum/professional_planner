@@ -1,0 +1,40 @@
+.employeeNameColor {
+  float: left;
+  margin-left: 20px;
+  border-radius: 10px;
+}
+
+.employeeNames {
+  line-height: 20px;
+  font-size: 18px;
+  margin-bottom: 0px;
+  margin-left: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.employeeBlock {
+  height: 30px;
+  position: relative;
+  margin-left: 50px;
+  margin-top: 10px;
+}
+.employeeBlockColor {
+  height: 14px;
+  width: 14px;
+  border-radius: 7px;
+  background-color: #999999;
+  top: 50%;
+  transform: translateY(-50%);
+  position: relative;
+  float: left;
+}
+.employeeBlockName {
+  line-height: 30px;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+  position: relative;
+  float: left;
+  margin: 0;
+  margin-left: 10px;
+}

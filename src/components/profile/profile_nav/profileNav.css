@@ -1,0 +1,82 @@
+#profileNav {
+  width: 400px;
+  height: 100%;
+  position: fixed;
+  background-color: #29abe2;
+  z-index: 10;
+}
+.profileNavIcon {
+  position: relative;
+  float: left;
+}
+.profileNavOption {
+  font-size: 24px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #f4f4f4;
+  position: relative;
+  width: 100%;
+  margin: 0;
+  text-align: center;
+  padding: 40px 0px 40px 0px;
+  background-color: #ffffff00;
+}
+.profileNavOption:hover {
+  background-color: #ffffff10;
+  cursor: pointer;
+  transform: scale(1.1);
+}
+.profileNavOption div {
+  height: 20px;
+  width: auto;
+  position: relative;
+  display: inline-block;
+}
+.profileNavOption p {
+  position: relative;
+  float: left;
+  margin: 0;
+  line-height: 40px;
+  margin-left: 20px;
+}
+.profileBack {
+  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #f4f4f4;
+  margin: 10px 0px 0px 10px;
+  position: relative;
+  height: 80px;
+}
+.profileBack p {
+  float: left;
+  margin: 0px;
+  line-height: 40px;
+  margin-left: 10px;
+}
+.profileBackArrow {
+  transform: rotate(90deg);
+  height: 8px;
+  margin-top: 16px;
+  margin-left: 5px;
+  float: left;
+}
+#profileBackContainer {
+  display: inline-block;
+  cursor: pointer;
+  padding: 10px;
+}
+#logoutDiv {
+  width: 200px;
+  height: 40px;
+  background-color: white;
+  color: #999999;
+  font-size: 24px;
+  line-height: 36px;
+  text-align: center;
+  border-radius: 20px;
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  cursor: pointer;
+}

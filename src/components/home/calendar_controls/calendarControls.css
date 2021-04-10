@@ -1,0 +1,37 @@
+#calendarControls {
+  width: 300px;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  right: 0;
+  padding-top: 60px;
+  display: flex;
+  flex-flow: column;
+}
+
+.calendarControlsButton {
+  width: 250px;
+  height: 40px;
+  border: 1px solid #cccccc;
+  border-radius: 20px;
+  margin: 25px auto auto auto;
+  line-height: 40px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  text-align: center;
+  color: #999999;
+}
+#calendarControlsBottom {
+  margin-bottom: 60px;
+  margin-top: 50px;
+}
+.scrollbox {
+  overflow: auto;
+  visibility: hidden;
+}
+
+.scrollbox-content,
+.scrollbox:hover,
+.scrollbox:focus {
+  visibility: visible;
+}

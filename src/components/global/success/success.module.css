@@ -1,0 +1,69 @@
+#success_container {
+  position: fixed;
+  overflow: hidden;
+  bottom: 2em;
+  left: 0;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+}
+
+#success_box {
+  position: relative;
+  width: 35%;
+  height: 100%;
+  background: linear-gradient(to bottom left, #b0db7d 40%, #99dbb4 100%);
+  border-radius: 20px;
+  box-shadow: 5px 5px 20px rgba(#cbcdd3, 10%);
+  padding: 5px;
+  animation: error_fade 0.5s ease-out;
+}
+
+@keyframes error_fade {
+  from {
+    opacity: 0;
+    transform: translateY(50%);
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.error_message {
+  padding: 2em 2em;
+  text-align: center;
+}
+
+#error_header {
+  font-size: 1.1em;
+  font-weight: 100;
+  letter-spacing: 3px;
+  padding-top: 5px;
+  color: #fcfcfc;
+  padding-bottom: 5px;
+  text-transform: uppercase;
+}
+
+#error_body {
+  margin-top: -5px;
+  font-size: 0.8em;
+  font-weight: 100;
+  color: darken(#777777, 10%);
+  letter-spacing: 1px;
+}
+
+.error_close {
+  width: 1em;
+  height: 1em;
+  background: #fcfcfc;
+  transition: background-color 0.5s ease;
+  border-radius: 50%;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.error_close:hover {
+  background-color: red;
+  cursor: pointer;
+}

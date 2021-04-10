@@ -1,0 +1,98 @@
+.profileBodies {
+  height: 100%;
+  width: calc(100% - 400px);
+  position: absolute;
+  right: 0;
+  background-color: #f4f4f4;
+}
+#profileNamesDiv {
+  position: relative;
+  height: 100px;
+  display: flex;
+}
+#profileFirstDiv {
+  height: 100px;
+  width: 35%;
+  background-color: white;
+  position: relative;
+  margin: 50px 5% 50px 10%;
+  box-shadow: 5px 5px 5px #cccccc;
+  border-radius: 15px;
+  padding-top: 10px;
+}
+#profileEmailDiv {
+  height: 100px;
+  width: 35%;
+  background-color: white;
+  position: relative;
+  margin: 50px 10% 50px 5%;
+  box-shadow: 5px 5px 5px #cccccc;
+  border-radius: 15px;
+  padding-top: 10px;
+}
+#profilePasswordDiv {
+  height: 100px;
+  width: 80%;
+  margin: 100px 10% 50px 10%;
+  background-color: white;
+  box-shadow: 5px 5px 5px #cccccc;
+  position: relative;
+  border-radius: 15px;
+  padding-top: 10px;
+}
+.accountTitle {
+  font-size: 18px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #999999;
+  margin: 0px 0px 0px 25px;
+  font-weight: 600;
+}
+.accountInput {
+  height: 24px;
+  line-height: 24px;
+  font-size: 18px;
+  color: #999999;
+  font-family: Arial, Helvetica, sans-serif;
+  border: 1px solid #cccccc00;
+  text-align: left;
+  margin: auto;
+  display: block;
+  width: calc(100% - 50px);
+  margin-top: 30px;
+  border-radius: 10px;
+  padding: 5px;
+  background-color: #00000000;
+}
+.accountInput2 {
+  height: 24px;
+  line-height: 24px;
+  font-size: 18px;
+  color: #999999;
+  font-family: Arial, Helvetica, sans-serif;
+  border: 1px solid #cccccc00;
+  text-align: left;
+  margin: auto;
+  display: block;
+  width: calc(100% - 200px);
+  margin-top: 30px;
+  border-radius: 10px;
+  padding: 5px;
+  background-color: #00000000;
+}
+.accountInput:focus {
+  border: 1px solid #aaaaaa;
+  outline: 0;
+}
+#changePasswordDiv {
+  background-color: #29abe2;
+  height: 40px;
+  width: 80px;
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
+  border-radius: 10px;
+  text-align: center;
+  line-height: 40px;
+  color: white;
+  cursor: pointer;
+}

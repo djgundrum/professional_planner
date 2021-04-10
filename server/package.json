@@ -1,0 +1,31 @@
+{
+  "name": "Professional_Planner",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "test": "nyc mocha"
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "debug": "~2.6.9",
+    "ejs": "^3.1.3",
+    "express": "~4.16.1",
+    "express-session": "^1.17.1",
+    "froala-editor": "^3.2.5-1",
+    "morgan": "~1.9.1",
+    "mysql": "^2.18.1",
+    "nodemailer": "^6.4.11",
+    "nodemon": "^2.0.6",
+    "nyc": "^15.1.0",
+    "stripe": "^8.84.0"
+  },
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "chai-http": "^4.3.0",
+    "mocha": "^8.3.2"
+  }
+}

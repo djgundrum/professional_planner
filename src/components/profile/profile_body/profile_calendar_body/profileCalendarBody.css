@@ -1,0 +1,65 @@
+#profileCalendarDiv {
+  overflow-y: scroll;
+}
+.profileCalendars {
+  height: 200px;
+  width: 200px;
+  border-radius: 15px;
+  position: relative;
+  margin: 50px;
+  float: left;
+}
+#profileAddCalendar {
+  background-color: white;
+  line-height: 200px;
+  font-size: 75px;
+  text-align: center;
+  color: #cccccc;
+  cursor: pointer;
+}
+.profileEditCalendar {
+  width: 80%;
+  height: 40px;
+  background-color: #00000010;
+  margin: auto;
+  position: absolute;
+  bottom: 70px;
+  left: 0;
+  right: 0;
+  border-radius: 20px;
+  color: #00000050;
+  font-size: 18px;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  line-height: 40px;
+  cursor: pointer;
+}
+.profileDeleteCalendar {
+  width: 80%;
+  height: 40px;
+  background-color: #00000010;
+  margin: auto;
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  border-radius: 20px;
+  color: #00000050;
+  font-size: 18px;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  line-height: 40px;
+  cursor: pointer;
+}
+.profileCalendarNames {
+  font-size: 18px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #00000050;
+  margin: auto;
+  width: 80%;
+  margin-top: 30px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+}
