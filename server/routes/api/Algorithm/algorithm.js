@@ -14,7 +14,7 @@ const response = require("../../global/response");
 
 router.post("/", async (req, res) => {
   try {
-    let alg = await testEmpty();
+    let alg = await testEmptyInput();
 
     let r = new response("This is what was returned").body;
 
