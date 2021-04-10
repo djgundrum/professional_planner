@@ -141,6 +141,7 @@
   position: relative;
   top: 155px;
   margin: auto;
+  max-height: 200px;
 }
 #addContactInput {
   height: 25px;
@@ -168,4 +169,8 @@
   font-size: 16px;
   color: #999999;
   cursor: pointer;
+}
+#personsDiv {
+  max-height: 200px;
+  overflow-y: scroll;
 }

@@ -123,6 +123,7 @@ class CalendarControls extends Component {
                     updateCalendars={this.props.updateCalendars}
                     activeCalendars={this.props.activeCalendars}
                     view={this.props.view}
+                    mySchedules={this.props.mySchedules}
                   />
                 )}
 
@@ -136,6 +137,7 @@ class CalendarControls extends Component {
                   <MyTeamSchedules
                     updateTeamSchedule={this.props.updateTeamSchedule}
                     activeTeamSchedule={this.props.activeTeamSchedule}
+                    myTeamSchedules={this.props.myTeamSchedules}
                     view={this.props.view}
                   />
                 )}

@@ -9,39 +9,11 @@ import axios from "axios";
 import { Redirect } from "react-router";
 
 class Home extends Component {
-  constructor() {
-    super();
-    this.loadSchedulesToState();
-  }
   state = {
     //mySchedules and myEvents are hardcoded currently, will be loaded from API call
     //myEvents should only contain events from active calendars
-    mySchedules: [
-      {
-        id: 1,
-        name: "CalendarCalendarCalendar1",
-        time: "CT",
-        type: 1,
-        description: "#ff5135",
-        color: "",
-      },
-      {
-        id: 2,
-        name: "Calendar2",
-        time: "CT",
-        type: 1,
-        description: "#00bf50",
-        color: "",
-      },
-      {
-        id: 3,
-        name: "Calendar3",
-        time: "CT",
-        type: 1,
-        description: "#3fa9f5",
-        color: "",
-      },
-    ],
+    mySchedules: [],
+    myTeamSchedules: [],
     activeCalendars: [],
     activeTeamSchedule: [],
     view: "Calendar",
@@ -68,12 +40,59 @@ class Home extends Component {
       time: "",
     },
   };
+  componentDidMount() {
+    this.loadSchedulesToState();
+  }
+
   loadSchedulesToState = () => {
     let url1 = "/api/user/account";
+    let schedules = [];
+    let teamSchedules = [];
     axios.get(url1).then((result1) => {
       let url2 = `/api/events/guests/user/${result1.data.body.user.user.id}`;
       axios.get(url2).then((guestListResult) => {
-        console.log(guestListResult);
+        for (let i = 0; i < guestListResult.data.body.guests.length; i++) {
+          let url3 = `/api/schedules/${guestListResult.data.body.guests[i].schedule_id}`;
+          //let url3 = "/api/schedules";
+          axios.get(url3).then((result3) => {
+            console.log(result3);
+            //schedules = schedules.concat(result3.data.body.schedules);
+            result3.data.body.schedules.type == "Calendar"
+              ? (schedules = schedules.concat(result3.data.body.schedules))
+              : (teamSchedules = teamSchedules.concat(
+                  result3.data.body.schedules
+                ));
+            if (i == guestListResult.data.body.guests.length - 1) {
+              this.setState({
+                mySchedules: schedules,
+                //Change array to 'teamSchedules'
+                myTeamSchedules: [
+                  {
+                    id: 4,
+                    name: "Team ScheduleScheduleSchedule 1",
+                    time: "CT",
+                    type: 2,
+                    description: "#3fa9f5",
+                  },
+                  {
+                    id: 5,
+                    name: "Team Schedule 2",
+                    time: "CT",
+                    type: 2,
+                    description: "#3fa9f5",
+                  },
+                  {
+                    id: 6,
+                    name: "Team Schedule 3",
+                    time: "CT",
+                    type: 2,
+                    description: "#3fa9f5",
+                  },
+                ],
+              });
+            }
+          });
+        }
       });
     });
   };
@@ -201,6 +220,8 @@ class Home extends Component {
           toggleCreateCalendarScreen={this.toggleCreateCalendarScreen}
           isCreateTeamScheduleScreen={this.state.isCreateTeamScheduleScreen}
           toggleCreateTeamScheduleScreen={this.toggleCreateTeamScheduleScreen}
+          mySchedules={this.state.mySchedules}
+          myTeamSchedules={this.state.myTeamSchedules}
         />
         <CreateEvent
           mySchedules={this.state.mySchedules}

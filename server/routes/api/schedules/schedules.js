@@ -115,7 +115,9 @@ router.post("/create", (req, res) => {
       db.query(sql, p, false)
         .then((result) => {
           if (result.length > 0) {
-            return Promise.reject("A schedule with this name already exists");
+            return Promise.reject({
+              message: "A schedule with this name already exists",
+            });
           } else {
             sql =
               "insert into schedules (name, description, type, time, creator) values (?, ?, ?, ?, ?)";
@@ -232,7 +234,7 @@ router.get("/", (req, res) => {
     var rows;
 
     let sql =
-      "select s.id as id, s.name as name, s.description as description, s.time as time, et.name as type, et.description as type_description from schedules s inner join event_types et on s.type = et.id";
+      "select s.id as id, s.name as name, s.description as description, s.time as time, et.name as type, et.description as type_description from schedules s left join event_types et on s.type = et.id";
     let p = [];
 
     db.query(sql, p, false)
@@ -284,7 +286,7 @@ router.get("/:id", (req, res) => {
     let schedule_id = req.params.id;
 
     let sql =
-      "select s.id as id, s.name as name, s.description as description, s.time as time, et.name as type, et.description as type_description from schedules s inner join event_types et on s.type = et.id where s.id = ?";
+      "select s.id as id, s.name as name, s.description as description, s.time as time, et.name as type, et.description as type_description from schedules s left join event_types et on s.type = et.id where s.id = ?";
     let p = [schedule_id];
 
     db.query(sql, p, false)
@@ -297,7 +299,7 @@ router.get("/:id", (req, res) => {
           let r = new response(
             "Successfully retrieved the schedule from the database"
           ).body;
-          r.body.schedules = rows;
+          r.body.schedules = rows[0];
           return res.send(r);
         },
         (err) => {

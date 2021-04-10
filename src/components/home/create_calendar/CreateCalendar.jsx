@@ -74,7 +74,6 @@ class CreateCalendar extends Component {
   addCalendar = () => {
     let url1 = "/api/user/account";
     axios.get(url1).then((result1) => {
-      console.log(result1);
       let url2 = "/api/schedules/create";
       let data = {
         creator_id: result1.data.body.user.user.id,
@@ -91,6 +90,14 @@ class CreateCalendar extends Component {
             name: "",
             color: "#ff3200",
           });
+          let url3 = "/api/events/guests/add";
+          let data3 = {
+            user_id: result1.data.body.user.user.id,
+            schedule_id: result2.data.body.schedule.id,
+          };
+          axios.post(url3, data3).then((result3) => {
+            console.log(result3);
+          });
         }
       });
     });
@@ -101,7 +108,6 @@ class CreateCalendar extends Component {
     });
   };
   render() {
-    console.log(this.state.sharedContacts);
     return (
       <div
         id="createCalendarScreen"
@@ -161,19 +167,21 @@ class CreateCalendar extends Component {
             <div id="addContactButton" onClick={this.addContacts}>
               Add
             </div>
-            {this.state.sharedContacts.map((contact) => (
-              <div key={contact.id} className="personDiv">
-                <p>{contact.name ? contact.name : contact.email}</p>
-                <img
-                  src={xIcon}
-                  alt=""
-                  className="deletePerson"
-                  onClick={() => {
-                    this.deletePerson(contact.id);
-                  }}
-                />
-              </div>
-            ))}
+            <div id="personsDiv">
+              {this.state.sharedContacts.map((contact) => (
+                <div key={contact.id} className="personDiv">
+                  <p>{contact.name ? contact.name : contact.email}</p>
+                  <img
+                    src={xIcon}
+                    alt=""
+                    className="deletePerson"
+                    onClick={() => {
+                      this.deletePerson(contact.id);
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
 
           <div id="createCalendarScreenButton" onClick={this.addCalendar}>
