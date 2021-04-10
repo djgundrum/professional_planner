@@ -21,6 +21,96 @@ class ProfileBody extends Component {
   // }
   state = {
     user: {},
+    mySchedules: [],
+    myTeamSchedules: [],
+    isDeleteCalendarScreen: false,
+    calendarToDelete: ["", ""],
+  };
+  componentDidMount() {
+    this.loadSchedulesToState();
+  }
+
+  loadSchedulesToState = () => {
+    let url1 = "/api/user/account";
+    let schedules = [];
+    let teamSchedules = [];
+    axios.get(url1).then((result1) => {
+      let url2 = `/api/events/guests/user/${result1.data.body.user.user.id}`;
+      axios.get(url2).then((guestListResult) => {
+        for (let i = 0; i < guestListResult.data.body.guests.length; i++) {
+          let url3 = `/api/schedules/${guestListResult.data.body.guests[i].schedule_id}`;
+          //let url3 = "/api/schedules";
+          axios.get(url3).then((result3) => {
+            //schedules = schedules.concat(result3.data.body.schedules);
+            result3.data.body.schedules.type == "Calendar"
+              ? (schedules = schedules.concat(result3.data.body.schedules))
+              : (teamSchedules = teamSchedules.concat(
+                  result3.data.body.schedules
+                ));
+            if (i == guestListResult.data.body.guests.length - 1) {
+              console.log(schedules);
+              this.setState({
+                user: {
+                  id: result1.data.body.user.user.id,
+                  name: result1.data.body.user.user.name,
+                  email: result1.data.body.user.user.email,
+                  password: result1.data.body.user.user.id,
+                },
+                mySchedules: schedules,
+                //Change array to 'teamSchedules'
+                myTeamSchedules: [
+                  {
+                    id: 4,
+                    name: "Team ScheduleScheduleSchedule 1",
+                    time: "CT",
+                    type: 2,
+                    description: "#3fa9f5",
+                  },
+                  {
+                    id: 5,
+                    name: "Team Schedule 2",
+                    time: "CT",
+                    type: 2,
+                    description: "#3fa9f5",
+                  },
+                  {
+                    id: 6,
+                    name: "Team Schedule 3",
+                    time: "CT",
+                    type: 2,
+                    description: "#3fa9f5",
+                  },
+                ],
+              });
+            }
+          });
+        }
+      });
+    });
+  };
+  askDeleteCalendar = (pId, pName) => {
+    this.setState({
+      isDeleteCalendarScreen: !this.state.isDeleteCalendarScreen,
+      calendarToDelete: [pId, pName],
+    });
+  };
+  toggleDeleteCalendar = (pId) => {
+    if (pId) {
+      let url = "/api/schedules/delete";
+      axios.post(url, { schedule_id: pId }).then((result) => {
+        let url2 = "/api/events/guests/delete";
+        let data = {
+          schedule_id: pId,
+          user_id: this.state.user.id,
+        };
+        axios.post(url2, data).then((result2) => {
+          this.loadSchedulesToState();
+          this.askDeleteCalendar("", "");
+        });
+      });
+    } else {
+      this.askDeleteCalendar("", "");
+    }
   };
   render() {
     switch (this.props.activeScreen) {
@@ -64,9 +154,21 @@ class ProfileBody extends Component {
           </div>
         );
       case "calendar":
-        return <ProfileCalendarBody></ProfileCalendarBody>;
+        return (
+          <ProfileCalendarBody
+            mySchedules={this.state.mySchedules}
+            askDeleteCalendar={this.askDeleteCalendar}
+            toggleDeleteCalendar={this.toggleDeleteCalendar}
+            isDeleteCalendarScreen={this.state.isDeleteCalendarScreen}
+            calendarToDelete={this.state.calendarToDelete}
+          ></ProfileCalendarBody>
+        );
       case "team":
-        return <ProfileTeamBody></ProfileTeamBody>;
+        return (
+          <ProfileTeamBody
+            myTeamSchedules={this.state.myTeamSchedules}
+          ></ProfileTeamBody>
+        );
       case "contact":
         return <ProfileContactBody></ProfileContactBody>;
     }

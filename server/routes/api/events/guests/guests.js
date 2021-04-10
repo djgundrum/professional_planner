@@ -9,7 +9,6 @@ router.post("/add", (req, res) => {
     let db = new query();
 
     let user_id = req.body.user_id;
-    let event_id = req.body.event_id;
     let schedule_id = req.body.schedule_id;
 
     if (isEmpty(user_id) || (isEmpty(event_id) && isEmpty(schedule_id))) {
@@ -62,19 +61,19 @@ router.post("/delete", (req, res) => {
     let db = new query();
 
     let user_id = req.body.user_id;
-    let event_id = req.body.event_id;
+    let schedule_id = req.body.schedule_id;
 
-    if (isEmpty(user_id) || isEmpty(event_id)) {
+    if (isEmpty(user_id) || isEmpty(schedule_id)) {
       return res.send(
         new response(
           "The parameters provided were not valid",
           false,
-          `user_id: ${user_id}, event_id: ${event_id}`
+          `user_id: ${user_id}, schedule_id: ${schedule_id}`
         ).body
       );
     } else {
-      let sql = "delete from guests where event_id = ? and user_id = ?";
-      let p = [event_id, user_id];
+      let sql = "delete from guests where schedule_id = ? and user_id = ?";
+      let p = [schedule_id, user_id];
 
       db.query(sql, p, true)
         .then(() => {
