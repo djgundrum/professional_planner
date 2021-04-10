@@ -6,35 +6,7 @@ import axios from "axios";
 
 class ProfileCalendarBody extends Component {
   state = {
-    mySchedules: [
-      {
-        id: 1,
-        name: "CalendarCalendarCalendar1",
-        time: "CT",
-        type: 1,
-        description: "#ff5135",
-        color: "",
-      },
-      {
-        id: 2,
-        name: "Calendar2",
-        time: "CT",
-        type: 1,
-        description: "#00bf50",
-        color: "",
-      },
-      {
-        id: 3,
-        name: "Calendar3",
-        time: "CT",
-        type: 1,
-        description: "#3fa9f5",
-        color: "",
-      },
-    ],
     isCreateCalendarScreen: false,
-    isDeleteCalendarScreen: false,
-    calendarToDelete: ["", ""],
   };
   loadSchedulesToState = () => {
     let url1 = "/api/user/account";
@@ -69,18 +41,7 @@ class ProfileCalendarBody extends Component {
       isCreateCalendarScreen: !this.state.isCreateCalendarScreen,
     });
   };
-  askDeleteCalendar = (pId, pName) => {
-    this.setState({
-      isDeleteCalendarScreen: !this.state.isDeleteCalendarScreen,
-      calendarToDelete: [pId, pName],
-    });
-  };
-  toggleDeleteCalendar = (pId) => {
-    if (pId) {
-      //DELETE CALENDAR HERE
-    }
-    this.askDeleteCalendar("", "");
-  };
+
   render() {
     return (
       <>
@@ -88,7 +49,7 @@ class ProfileCalendarBody extends Component {
           <div className="profileCalendars" id="profileAddCalendar">
             +
           </div>
-          {this.state.mySchedules.map((calendar) => (
+          {this.props.mySchedules.map((calendar) => (
             <div
               key={"profileCalendar" + calendar.id}
               className="profileCalendars"
@@ -104,7 +65,7 @@ class ProfileCalendarBody extends Component {
               <div
                 className="profileDeleteCalendar"
                 onClick={() => {
-                  this.askDeleteCalendar(calendar.id, calendar.name);
+                  this.props.askDeleteCalendar(calendar.id, calendar.name);
                 }}
               >
                 Delete
@@ -113,15 +74,15 @@ class ProfileCalendarBody extends Component {
           ))}
         </div>
         <CreateCalendar
-          mySchedules={this.state.mySchedules}
+          mySchedules={this.props.mySchedules}
           timezones={this.state.timezones}
           toggleCreateCalendarScreen={this.toggleCreateCalendarScreen}
           isCreateCalendarScreen={this.state.isCreateCalendarScreen}
         />
-        {this.state.isDeleteCalendarScreen ? (
+        {this.props.isDeleteCalendarScreen ? (
           <ConfirmDelete
-            calendarToDelete={this.state.calendarToDelete}
-            toggleDeleteCalendar={this.toggleDeleteCalendar}
+            calendarToDelete={this.props.calendarToDelete}
+            toggleDeleteCalendar={this.props.toggleDeleteCalendar}
           />
         ) : (
           <></>
