@@ -96,7 +96,7 @@ class CreateCalendar extends Component {
             schedule_id: result2.data.body.schedule.id,
           };
           axios.post(url3, data3).then((result3) => {
-            //console.log(result3);
+            this.props.loadSchedulesToState();
           });
         }
       });

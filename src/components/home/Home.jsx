@@ -237,6 +237,7 @@ class Home extends Component {
           updateCreateCalendarInfo={this.updateCreateCalendarInfo}
           createCalendarInfo={this.state.createCalendarInfo}
           clearCreateCalendarInfo={this.clearCreateCalendarInfo}
+          loadSchedulesToState={this.loadSchedulesToState}
         />
       </div>
     );
