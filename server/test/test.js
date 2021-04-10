@@ -67,7 +67,7 @@ describe("User routes", () => {
         .send({ category: "Theme", preference_id: 1 })
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.should.have.property("valid").eql(true);
+          res.body.should.have.property("valid").eql(false);
           done();
         });
     });
@@ -85,7 +85,7 @@ describe("User routes", () => {
         })
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.should.have.property("valid").eql(true);
+          res.body.should.have.property("valid").eql(false);
           done();
         });
     });
@@ -95,7 +95,7 @@ describe("User routes", () => {
       chai
         .request(server)
         .post("/api/user/login")
-        .send({ email: "declan.gundrum.17@gmail.com", password: "Anyvipw1-" })
+        .send({ email: "declan.gundrum.17@gmail.com", password: "Redrider1" })
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.have.property("valid").eql(true);
@@ -109,10 +109,8 @@ describe("User routes", () => {
         .request(server)
         .post("/api/user/create_user")
         .send({
-          name: "Declan Gundrum",
           email: "test_email@gmail.com",
           password: "test",
-          role: 3,
         })
         .end((err, res) => {
           res.should.have.status(200);
@@ -126,7 +124,7 @@ describe("User routes", () => {
       chai
         .request(server)
         .post("/api/user/delete")
-        .send({ user_id: 100 })
+        .send({ user_id: 100, email: "test_email@gmail.com" })
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.have.property("valid").eql(true);
@@ -142,7 +140,7 @@ describe("User routes", () => {
         .send({})
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.should.have.property("valid").eql(true);
+          res.body.should.have.property("valid").eql(false);
           done();
         });
     });
@@ -155,7 +153,7 @@ describe("User routes", () => {
         .send({})
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.should.have.property("valid").eql(true);
+          res.body.should.have.property("valid").eql(false);
           done();
         });
     });
@@ -362,15 +360,15 @@ describe("Preference routes", () => {
         });
     });
   });
-  describe("/POST delte", () => {
+  describe("/POST delete", () => {
     it("api that deletes a given preference from the database", (done) => {
       chai
         .request(server)
         .post("/api/preferences/delete")
-        .send({ preference_id: 2 })
+        .send({ preference_id: 100 })
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.should.have.property("valid").eql(true);
+          res.body.should.have.property("valid").eql(false);
           done();
         });
     });
@@ -425,7 +423,12 @@ describe("Schedule routes", () => {
       chai
         .request(server)
         .post("/api/schedules/update")
-        .send({ name: "Justin", type: 2, schedule_id: 100 })
+        .send({
+          name: "Justin",
+          type: 2,
+          schedule_id: 100,
+          description: "Test schedule",
+        })
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.have.property("valid").eql(true);
@@ -438,10 +441,10 @@ describe("Schedule routes", () => {
       chai
         .request(server)
         .post("/api/schedules/create")
-        .send({ name: "Justin", type: 2 })
+        .send({ name: "Justin", type: 2, creator_id: 100 })
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.should.have.property("valid").eql(true);
+          res.body.should.have.property("valid").eql(false);
           done();
         });
     });

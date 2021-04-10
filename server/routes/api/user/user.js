@@ -531,22 +531,24 @@ router.post("/create_user", (req, res) => {
  * Deletes a specified user
  *
  * @param user_id int id of the user to be deleted
+ * @param email (string) email of the user to be deleted
  */
 router.post("/delete", (req, res) => {
   try {
     let db = new query();
     let user_id = req.body.user_id;
+    let email = req.body.email;
 
-    if (isEmpty(user_id)) {
+    if (isEmpty(user_id) && isEmpty(email)) {
       let r = new response(
         "The user was not specified correctly",
         false,
-        `user_id: ${user_id}`
+        `user_id: ${user_id}, email: ${email}`
       );
       return res.send(r.body);
     } else {
-      let sql = "delete from users where id = ?";
-      let p = [user_id];
+      let sql = "delete from users where id = ? or email = ?";
+      let p = [user_id, email];
 
       db.query(sql, p, true)
         .then(() => {

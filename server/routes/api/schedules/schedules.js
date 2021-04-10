@@ -25,13 +25,7 @@ router.post("/update", (req, res) => {
     let time = req.body.time;
     let schedule_id = req.body.schedule_id;
 
-    if (
-      isEmpty(name) ||
-      isEmpty(description) ||
-      isEmpty(type) ||
-      isEmpty(time) ||
-      isEmpty(schedule_id)
-    ) {
+    if (isEmpty(name) || isEmpty(type) || isEmpty(schedule_id)) {
       return res.send(
         new response(
           "Some of the required fields were not provided correctly",

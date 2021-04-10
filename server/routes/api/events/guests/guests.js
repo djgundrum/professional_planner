@@ -12,17 +12,18 @@ router.post("/add", (req, res) => {
     let event_id = req.body.event_id;
     let schedule_id = req.body.schedule_id;
 
-    if (isEmpty(user_id) || isEmpty(event_id)) {
+    if (isEmpty(user_id) || (isEmpty(event_id) && isEmpty(schedule_id))) {
       return res.send(
         new response(
           "The provided parameters were not valid",
           false,
-          `user_id: ${user_id}, event_id: ${event_id}`
+          `user_id: ${user_id}, event_id: ${event_id}, schedule_id: ${schedule_id}`
         ).body
       );
     } else {
-      let sql = "insert into guests (event_id, user_id) values (?, ?)";
-      let p = [event_id, user_id];
+      let sql =
+        "insert into guests (event_id, user_id, schedule_id) values (?, ?, ?)";
+      let p = [event_id, user_id, schedule_id];
 
       db.query(sql, p, true)
         .then(() => {
