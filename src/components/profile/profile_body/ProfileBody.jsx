@@ -34,10 +34,12 @@ class ProfileBody extends Component {
     let url1 = "/api/user/account";
     let schedules = [];
     let teamSchedules = [];
+    let isEmpty = true;
     axios.get(url1).then((result1) => {
       let url2 = `/api/events/guests/user/${result1.data.body.user.user.id}`;
       axios.get(url2).then((guestListResult) => {
         for (let i = 0; i < guestListResult.data.body.guests.length; i++) {
+          isEmpty = false;
           let url3 = `/api/schedules/${guestListResult.data.body.guests[i].schedule_id}`;
           //let url3 = "/api/schedules";
           axios.get(url3).then((result3) => {
@@ -47,6 +49,7 @@ class ProfileBody extends Component {
               : (teamSchedules = teamSchedules.concat(
                   result3.data.body.schedules
                 ));
+
             if (i == guestListResult.data.body.guests.length - 1) {
               console.log(schedules);
               this.setState({
@@ -83,6 +86,11 @@ class ProfileBody extends Component {
                 ],
               });
             }
+          });
+        }
+        if (isEmpty) {
+          this.setState({
+            mySchedules: [],
           });
         }
       });

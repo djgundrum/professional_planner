@@ -82,7 +82,7 @@ class CreateCalendar extends Component {
         description: this.props.createCalendarInfo.description,
       };
       axios.post(url2, data).then((result2) => {
-        console.log(result2);
+        //console.log(result2);
         if (result2.data.valid) {
           this.props.toggleCreateCalendarScreen();
           this.props.clearCreateCalendarInfo();
@@ -96,7 +96,7 @@ class CreateCalendar extends Component {
             schedule_id: result2.data.body.schedule.id,
           };
           axios.post(url3, data3).then((result3) => {
-            console.log(result3);
+            //console.log(result3);
           });
         }
       });
