@@ -38,61 +38,62 @@ class ProfileBody extends Component {
     axios.get(url1).then((result1) => {
       let url2 = `/api/events/guests/user/${result1.data.body.user.user.id}`;
       axios.get(url2).then((guestListResult) => {
-        for (let i = 0; i < guestListResult.data.body.guests.length; i++) {
+        //console.log(guestListResult.data.body.guests.length);
+
+        let getSchedule = (pX, pLength, nextFunc) => {
           isEmpty = false;
-          let url3 = `/api/schedules/${guestListResult.data.body.guests[i].schedule_id}`;
+          let url3 = `/api/schedules/${guestListResult.data.body.guests[pX].schedule_id}`;
           //let url3 = "/api/schedules";
           axios.get(url3).then((result3) => {
             //schedules = schedules.concat(result3.data.body.schedules);
-            result3.data.body.schedules.type == "Calendar"
-              ? (schedules = schedules.concat(result3.data.body.schedules))
-              : (teamSchedules = teamSchedules.concat(
-                  result3.data.body.schedules
-                ));
+            if (result3.data.valid) {
+              result3.data.body.schedules.type == "Calendar"
+                ? (schedules = schedules.concat(result3.data.body.schedules))
+                : (teamSchedules = teamSchedules.concat(
+                    result3.data.body.schedules
+                  ));
 
-            if (i == guestListResult.data.body.guests.length - 1) {
-              console.log(schedules);
-              this.setState({
-                user: {
-                  id: result1.data.body.user.user.id,
-                  name: result1.data.body.user.user.name,
-                  email: result1.data.body.user.user.email,
-                  password: result1.data.body.user.user.id,
-                },
-                mySchedules: schedules,
-                //Change array to 'teamSchedules'
-                myTeamSchedules: [
-                  {
-                    id: 4,
-                    name: "Team ScheduleScheduleSchedule 1",
-                    time: "CT",
-                    type: 2,
-                    description: "#3fa9f5",
+              if (pX === pLength - 1) {
+                this.setState({
+                  user: {
+                    id: result1.data.body.user.user.id,
+                    name: result1.data.body.user.user.name,
+                    email: result1.data.body.user.user.email,
+                    password: result1.data.body.user.user.id,
                   },
-                  {
-                    id: 5,
-                    name: "Team Schedule 2",
-                    time: "CT",
-                    type: 2,
-                    description: "#3fa9f5",
-                  },
-                  {
-                    id: 6,
-                    name: "Team Schedule 3",
-                    time: "CT",
-                    type: 2,
-                    description: "#3fa9f5",
-                  },
-                ],
-              });
+                  mySchedules: schedules,
+                  //Change array to 'teamSchedules'
+                  myTeamSchedules: [
+                    {
+                      id: 4,
+                      name: "Team ScheduleScheduleSchedule 1",
+                      time: "CT",
+                      type: 2,
+                      description: "#3fa9f5",
+                    },
+                    {
+                      id: 5,
+                      name: "Team Schedule 2",
+                      time: "CT",
+                      type: 2,
+                      description: "#3fa9f5",
+                    },
+                    {
+                      id: 6,
+                      name: "Team Schedule 3",
+                      time: "CT",
+                      type: 2,
+                      description: "#3fa9f5",
+                    },
+                  ],
+                });
+              } else {
+                nextFunc(pX + 1, pLength, nextFunc);
+              }
             }
           });
-        }
-        if (isEmpty) {
-          this.setState({
-            mySchedules: [],
-          });
-        }
+        };
+        getSchedule(0, guestListResult.data.body.guests.length, getSchedule);
       });
     });
   };
@@ -169,6 +170,7 @@ class ProfileBody extends Component {
             toggleDeleteCalendar={this.toggleDeleteCalendar}
             isDeleteCalendarScreen={this.state.isDeleteCalendarScreen}
             calendarToDelete={this.state.calendarToDelete}
+            loadSchedulesToState={this.loadSchedulesToState}
           ></ProfileCalendarBody>
         );
       case "team":

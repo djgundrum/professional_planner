@@ -7,7 +7,7 @@ import React, { Component } from "react";
 class CreateCalendar extends Component {
   state = {
     name: "",
-    color: "#ff3200",
+    color: "",
     //Needs to be updated
     sharedContacts: [],
     //0) red 1) orange 2) yellow 3) light green 4) dark green 5) light blue 6) dark blue 7) purple 8) pink 9) grey
@@ -88,7 +88,7 @@ class CreateCalendar extends Component {
           this.props.clearCreateCalendarInfo();
           this.setState({
             name: "",
-            color: "#ff3200",
+            color: "",
           });
           let url3 = "/api/events/guests/add";
           let data3 = {
@@ -100,6 +100,22 @@ class CreateCalendar extends Component {
           });
         }
       });
+    });
+  };
+  editCalendar = () => {
+    let url = "/api/schedules/update";
+    let data = {
+      name: this.state.name != "" ? this.state.name : this.props.calendarName,
+      description:
+        this.state.color != "" ? this.state.color : this.props.calendarColor,
+      type: this.props.calendarType,
+      schedule_id: this.props.calendarId,
+    };
+    axios.post(url, data).then((result) => {
+      if (result.data.valid) {
+        this.props.toggleCreateCalendarScreen();
+        this.props.loadSchedulesToState();
+      }
     });
   };
   updateFields = () => {
@@ -123,16 +139,28 @@ class CreateCalendar extends Component {
             src={xIcon}
             alt=""
             id="xIcon"
-            onClick={this.props.toggleCreateCalendarScreen}
+            onClick={() => {
+              this.setState({
+                name: "",
+                color: "",
+              });
+              this.props.toggleCreateCalendarScreen();
+            }}
           />
           <input
             type="text"
             id="calendarNameInput"
             placeholder="Calendar Name..."
-            value={this.state.name}
+            value={
+              this.props.calendarName
+                ? this.props.calendarName
+                : this.state.name
+            }
             onChange={(e) => {
               this.updateFields();
-              this.props.updateCreateCalendarInfo(e.target.value, "");
+              if (!this.props.isEdit) {
+                this.props.updateCreateCalendarInfo(e.target.value, "");
+              }
             }}
           />
           <div id="calendarColors">
@@ -141,7 +169,12 @@ class CreateCalendar extends Component {
                 key={color}
                 className="calendarColor"
                 style={
-                  this.state.color === color
+                  this.props.calendarColor === color && this.state.color === ""
+                    ? { backgroundColor: color, height: "26px", width: "26px" }
+                    : this.state.color === color ||
+                      (this.state.color === "" &&
+                        color === "#ff3200" &&
+                        !this.props.calendarColor)
                     ? { backgroundColor: color, height: "26px", width: "26px" }
                     : {
                         border: "2px solid " + color,
@@ -151,7 +184,9 @@ class CreateCalendar extends Component {
                 }
                 onClick={() => {
                   this.setState({ color: color });
-                  this.props.updateCreateCalendarInfo("", color);
+                  if (!this.props.isEdit) {
+                    this.props.updateCreateCalendarInfo("", color);
+                  }
                 }}
               ></div>
             ))}
@@ -184,8 +219,11 @@ class CreateCalendar extends Component {
             </div>
           </div>
 
-          <div id="createCalendarScreenButton" onClick={this.addCalendar}>
-            Create Calendar
+          <div
+            id="createCalendarScreenButton"
+            onClick={this.props.isEdit ? this.editCalendar : this.addCalendar}
+          >
+            {this.props.isEdit ? "Edit Calendar" : "Create Calendar"}
           </div>
         </div>
       </div>

@@ -51,48 +51,94 @@ class Home extends Component {
     axios.get(url1).then((result1) => {
       let url2 = `/api/events/guests/user/${result1.data.body.user.user.id}`;
       axios.get(url2).then((guestListResult) => {
-        for (let i = 0; i < guestListResult.data.body.guests.length; i++) {
-          let url3 = `/api/schedules/${guestListResult.data.body.guests[i].schedule_id}`;
+        let getSchedule = (pX, pLength, nextFunc) => {
+          let url3 = `/api/schedules/${guestListResult.data.body.guests[pX].schedule_id}`;
           //let url3 = "/api/schedules";
           axios.get(url3).then((result3) => {
-            console.log(result3);
             //schedules = schedules.concat(result3.data.body.schedules);
-            result3.data.body.schedules.type == "Calendar"
-              ? (schedules = schedules.concat(result3.data.body.schedules))
-              : (teamSchedules = teamSchedules.concat(
-                  result3.data.body.schedules
-                ));
-            if (i == guestListResult.data.body.guests.length - 1) {
-              this.setState({
-                mySchedules: schedules,
-                //Change array to 'teamSchedules'
-                myTeamSchedules: [
-                  {
-                    id: 4,
-                    name: "Team ScheduleScheduleSchedule 1",
-                    time: "CT",
-                    type: 2,
-                    description: "#3fa9f5",
-                  },
-                  {
-                    id: 5,
-                    name: "Team Schedule 2",
-                    time: "CT",
-                    type: 2,
-                    description: "#3fa9f5",
-                  },
-                  {
-                    id: 6,
-                    name: "Team Schedule 3",
-                    time: "CT",
-                    type: 2,
-                    description: "#3fa9f5",
-                  },
-                ],
-              });
+            if (result3.data.valid) {
+              result3.data.body.schedules.type == "Calendar"
+                ? (schedules = schedules.concat(result3.data.body.schedules))
+                : (teamSchedules = teamSchedules.concat(
+                    result3.data.body.schedules
+                  ));
+              if (pX == pLength - 1) {
+                this.setState({
+                  mySchedules: schedules,
+                  //Change array to 'teamSchedules'
+                  myTeamSchedules: [
+                    {
+                      id: 4,
+                      name: "Team ScheduleScheduleSchedule 1",
+                      time: "CT",
+                      type: 2,
+                      description: "#3fa9f5",
+                    },
+                    {
+                      id: 5,
+                      name: "Team Schedule 2",
+                      time: "CT",
+                      type: 2,
+                      description: "#3fa9f5",
+                    },
+                    {
+                      id: 6,
+                      name: "Team Schedule 3",
+                      time: "CT",
+                      type: 2,
+                      description: "#3fa9f5",
+                    },
+                  ],
+                });
+              } else {
+                nextFunc(pX + 1, pLength, nextFunc);
+              }
             }
           });
-        }
+        };
+        getSchedule(0, guestListResult.data.body.guests.length, getSchedule);
+        // for (let i = 0; i < guestListResult.data.body.guests.length; i++) {
+        //   let url3 = `/api/schedules/${guestListResult.data.body.guests[i].schedule_id}`;
+        //   //let url3 = "/api/schedules";
+        //   axios.get(url3).then((result3) => {
+        //     console.log(result3);
+        //     //schedules = schedules.concat(result3.data.body.schedules);
+        //     result3.data.body.schedules.type == "Calendar"
+        //       ? (schedules = schedules.concat(result3.data.body.schedules))
+        //       : (teamSchedules = teamSchedules.concat(
+        //           result3.data.body.schedules
+        //         ));
+        //     if (i == guestListResult.data.body.guests.length - 1) {
+        //       this.setState({
+        //         mySchedules: schedules,
+        //         //Change array to 'teamSchedules'
+        //         myTeamSchedules: [
+        //           {
+        //             id: 4,
+        //             name: "Team ScheduleScheduleSchedule 1",
+        //             time: "CT",
+        //             type: 2,
+        //             description: "#3fa9f5",
+        //           },
+        //           {
+        //             id: 5,
+        //             name: "Team Schedule 2",
+        //             time: "CT",
+        //             type: 2,
+        //             description: "#3fa9f5",
+        //           },
+        //           {
+        //             id: 6,
+        //             name: "Team Schedule 3",
+        //             time: "CT",
+        //             type: 2,
+        //             description: "#3fa9f5",
+        //           },
+        //         ],
+        //       });
+        //     }
+        //   });
+        // }
       });
     });
   };
