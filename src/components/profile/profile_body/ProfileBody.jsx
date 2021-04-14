@@ -97,6 +97,10 @@ class ProfileBody extends Component {
       });
     });
   };
+  updateProfileInfo = (pName) => {
+    if (pName != "") {
+    }
+  };
   askDeleteCalendar = (pId, pName) => {
     this.setState({
       isDeleteCalendarScreen: !this.state.isDeleteCalendarScreen,

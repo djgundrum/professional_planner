@@ -157,6 +157,7 @@ class Login extends Component {
             <p className="signInText">Password</p>
             <input
               type="text"
+              type="password"
               className="signInInput"
               onChange={(e) => {
                 this.setState({ signinPassword: e.target.value });
@@ -195,6 +196,7 @@ class Login extends Component {
             <p className="signInText">Password</p>
             <input
               type="text"
+              type="password"
               className="signInInput"
               onChange={(e) => {
                 this.setState({ signupPassword: e.target.value });
@@ -203,6 +205,7 @@ class Login extends Component {
             <p className="signInText">Confirm Password</p>
             <input
               type="text"
+              type="password"
               className="signInInput"
               onChange={(e) => {
                 this.setState({ signupConfirmPassword: e.target.value });

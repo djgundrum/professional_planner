@@ -1,0 +1,9 @@
+.calendarEvent {
+  position: relative;
+  top: 0;
+  height: 60px;
+  width: 100%;
+  border: 1px solid red;
+  margin: auto;
+  margin-top: 0px;
+}

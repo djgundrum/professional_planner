@@ -16,6 +16,14 @@ class Home extends Component {
     myTeamSchedules: [],
     activeCalendars: [],
     activeTeamSchedule: [],
+    myEvents: [
+      {
+        name: "Test",
+        schedule_id: 29,
+        time: "20210413 11:00",
+        timeEnd: "",
+      },
+    ],
     view: "Calendar",
     timeframe: "Week",
     dateInfo: {
