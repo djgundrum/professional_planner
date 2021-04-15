@@ -137,10 +137,6 @@ class CalendarColumn extends Component {
           } else {
             let is = true;
             for (let gs = 0; gs < groupStructure[g].length; gs++) {
-              console.log(eventsById);
-              console.log(
-                groupStructure[g][gs][groupStructure[g][gs].length - 1]
-              ); //do last
               if (
                 eventsById[groups[g][gg]].start >=
                 eventsById[
@@ -165,7 +161,6 @@ class CalendarColumn extends Component {
     for (let g = 0; g < groupStructure.length; g++) {
       for (let gg = 0; gg < groupStructure[g].length; gg++) {
         for (let ggg = 0; ggg < groupStructure[g][gg].length; ggg++) {
-          console.log(eventsById[groupStructure[g][gg][ggg]]);
           let thisStyle = {
             width: 100 / groupStructure[g].length + "%",
             height:

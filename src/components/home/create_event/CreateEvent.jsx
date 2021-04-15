@@ -17,16 +17,16 @@ class CreateEvent extends Component {
     timezone: "",
     timezoneOffset: "",
   };
-  addEvent = (pName, pDuration, pSchedule_id, pTime) => {
+  addEvent = (pName, pSchedule_id, pTime, pTimeEnd) => {
     //Send parameters
-    if (pName && pDuration && pSchedule_id && pTime) {
+    if (pName && pTimeEnd && pSchedule_id && pTime) {
       let url = "/api/events/create";
       let data = {
         name: pName,
         capacity: 1,
-        duration: pDuration,
         schedule_id: pSchedule_id,
         time: pTime,
+        time_end: pTimeEnd,
         type: 1,
       };
       axios.post(url, data).then((result) => {
@@ -101,11 +101,18 @@ class CreateEvent extends Component {
                 .value.replaceAll("-", "");
               let pTime2 = document.getElementById("startTimeInput").value;
               let pTime = pTime1 + " " + pTime2;
+
+              let pTimeEnd1 = document
+                .getElementById("endDateInput")
+                .value.replaceAll("-", "");
+              let pTimeEnd2 = document.getElementById("endTimeInput").value;
+              let pTimeEnd = pTimeEnd1 + " " + pTimeEnd2;
               console.log("name: " + pName);
               console.log("duration: " + pDuration);
               console.log("id: " + pSchedule_id);
               console.log("time: " + pTime);
-              //this.addEvent(pName, pDuration, pSchedule_id, pTime);
+              console.log("time_end: " + pTimeEnd);
+              this.addEvent(pName, pSchedule_id, pTime, pTimeEnd);
             }}
           >
             Create Event
