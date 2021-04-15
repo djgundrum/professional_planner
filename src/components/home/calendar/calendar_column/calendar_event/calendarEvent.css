@@ -1,9 +1,11 @@
 .calendarEvent {
   position: relative;
   top: 0;
-  height: 60px;
-  width: 100%;
-  border: 1px solid red;
+  height: 100%;
+  width: 50%;
   margin: auto;
   margin-top: 0px;
+  background-color: #999999;
+  border-radius: 10px;
+  opacity: 90%;
 }

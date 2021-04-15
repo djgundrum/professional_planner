@@ -5,24 +5,3 @@
 .hoverClass:hover {
   cursor: pointer;
 }
-
-#calendarTest {
-  width: 600px;
-  height: 1464px;
-  padding: 0 10px;
-  margin: 0 auto;
-  background: #ececec;
-  position: relative;
-  overflow: hidden;
-}
-
-.eventTest {
-  background: #fff;
-  color: #4b6ea8;
-  border: 1px solid #ccc;
-  border-left: 4px solid #4b6ea8;
-  position: absolute;
-  padding: 0 10px;
-  font-weight: bold;
-  font-size: 13px;
-}

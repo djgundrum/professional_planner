@@ -12,28 +12,48 @@ class Calendar extends Component {
     // In Team Schedule View, will be populated with events (type: 2)
     // On settings screen when creating team schedule, will be populated with blocks (employee blocks type:1, meeting blocks type: 3)
     // On generated team schedule screen, will be populated with employee events (type: 2), employee blocks (type: 1), and meeting blocks (type: 3)
-
     activeEvents: [
       {
         id: 1,
         name: "Test",
         schedule_id: 29,
-        time: "20210413 11:30",
-        timeEnd: "",
+        time: "20210413 12:00",
+        timeEnd: "20210413 12:30",
       },
       {
         id: 2,
         name: "Test2",
         schedule_id: 29,
-        time: "20210413 11:00",
-        timeEnd: "",
+        time: "20210413 10:00",
+        timeEnd: "20210413 12:30",
       },
       {
         id: 3,
         name: "Test3",
         schedule_id: 29,
-        time: "20210413 00:00",
-        timeEnd: "",
+        time: "20210413 11:00",
+        timeEnd: "20210413 13:30",
+      },
+      {
+        id: 4,
+        name: "Test3",
+        schedule_id: 29,
+        time: "20210413 06:00",
+        timeEnd: "20210413 11:30",
+      },
+      {
+        id: 5,
+        name: "Test3",
+        schedule_id: 29,
+        time: "20210413 04:00",
+        timeEnd: "20210413 6:00",
+      },
+      {
+        id: 6,
+        name: "Test3",
+        schedule_id: 29,
+        time: "20210413 12:45",
+        timeEnd: "20210413 14:00",
       },
     ],
   };
