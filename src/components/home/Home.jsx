@@ -16,14 +16,9 @@ class Home extends Component {
     myTeamSchedules: [],
     activeCalendars: [],
     activeTeamSchedule: [],
-    myEvents: [
-      {
-        name: "Test",
-        schedule_id: 29,
-        time: "20210413 11:00",
-        timeEnd: "",
-      },
-    ],
+    calendarEvents: [],
+    teamEvents: [],
+    activeEvents: [],
     view: "Calendar",
     timeframe: "Week",
     dateInfo: {
@@ -55,7 +50,9 @@ class Home extends Component {
   loadSchedulesToState = () => {
     let url1 = "/api/user/account";
     let schedules = [];
+    let cEvents = [];
     let teamSchedules = [];
+    let tEvents = [];
     axios.get(url1).then((result1) => {
       let url2 = `/api/events/guests/user/${result1.data.body.user.user.id}`;
       axios.get(url2).then((guestListResult) => {
@@ -65,42 +62,62 @@ class Home extends Component {
           axios.get(url3).then((result3) => {
             //schedules = schedules.concat(result3.data.body.schedules);
             if (result3.data.valid) {
-              result3.data.body.schedules.type == "Calendar"
-                ? (schedules = schedules.concat(result3.data.body.schedules))
-                : (teamSchedules = teamSchedules.concat(
-                    result3.data.body.schedules
-                  ));
-              if (pX == pLength - 1) {
-                this.setState({
-                  mySchedules: schedules,
-                  //Change array to 'teamSchedules'
-                  myTeamSchedules: [
-                    {
-                      id: 4,
-                      name: "Team ScheduleScheduleSchedule 1",
-                      time: "CT",
-                      type: 2,
-                      description: "#3fa9f5",
-                    },
-                    {
-                      id: 5,
-                      name: "Team Schedule 2",
-                      time: "CT",
-                      type: 2,
-                      description: "#3fa9f5",
-                    },
-                    {
-                      id: 6,
-                      name: "Team Schedule 3",
-                      time: "CT",
-                      type: 2,
-                      description: "#3fa9f5",
-                    },
-                  ],
-                });
-              } else {
-                nextFunc(pX + 1, pLength, nextFunc);
-              }
+              let url4 = `/api/events/schedule/${result3.data.body.schedules.id}`;
+              axios.get(url4).then((result4) => {
+                if (result4.data.valid) {
+                  if (result3.data.body.schedules.type === "Calendar") {
+                    schedules = schedules.concat(result3.data.body.schedules);
+                    for (let e = 0; e < result4.data.body.events.length; e++) {
+                      let ev = result4.data.body.events[e];
+                      ev.description = result3.data.body.schedules.description;
+                      cEvents = cEvents.concat(ev);
+                    }
+                  } else {
+                    teamSchedules = teamSchedules.concat(
+                      result3.data.body.schedules
+                    );
+                    for (let e = 0; e < result4.data.body.events.length; e++) {
+                      let ev = result4.data.body.events[e];
+                      ev.description = result3.data.body.schedules.description;
+                      tEvents = tEvents.concat(ev);
+                    }
+                  }
+
+                  if (pX == pLength - 1) {
+                    this.setState({
+                      mySchedules: schedules,
+                      calendarEvents: cEvents,
+                      teamEvents: tEvents,
+                      //Change array to 'teamSchedules'
+                      myTeamSchedules: [
+                        {
+                          id: 4,
+                          name: "Team ScheduleScheduleSchedule 1",
+                          time: "CT",
+                          type: 2,
+                          description: "#3fa9f5",
+                        },
+                        {
+                          id: 5,
+                          name: "Team Schedule 2",
+                          time: "CT",
+                          type: 2,
+                          description: "#3fa9f5",
+                        },
+                        {
+                          id: 6,
+                          name: "Team Schedule 3",
+                          time: "CT",
+                          type: 2,
+                          description: "#3fa9f5",
+                        },
+                      ],
+                    });
+                  } else {
+                    nextFunc(pX + 1, pLength, nextFunc);
+                  }
+                }
+              });
             }
           });
         };
@@ -213,8 +230,18 @@ class Home extends Component {
     if (!inArray) {
       newList.push([id, name]);
     }
+    let aEvents = [];
+    //console.log(newList);
+    for (let e = 0; e < this.state.calendarEvents.length; e++) {
+      for (let a = 0; a < newList.length; a++) {
+        if (this.state.calendarEvents[e].schedule_id === newList[a][0]) {
+          aEvents = aEvents.concat(this.state.calendarEvents[e]);
+        }
+      }
+    }
     this.setState({
       activeCalendars: newList,
+      activeEvents: aEvents,
     });
   };
   updateTeamSchedule = (id, name) => {
@@ -250,6 +277,7 @@ class Home extends Component {
     });
   };
   render() {
+    //console.log(this.state.activeEvents);
     return (
       <div id="homeScreen">
         <MenuBar
@@ -263,7 +291,15 @@ class Home extends Component {
           forwardTimeframe={this.forwardTimeframe}
           backwardTimeframe={this.backwardTimeframe}
         />
-        <Calendar dateInfo={this.state.dateInfo} />
+        <Calendar
+          dateInfo={this.state.dateInfo}
+          calendarEvents={this.state.calendarEvents}
+          teamEvents={this.state.teamEvents}
+          activeCalendars={this.state.activeCalendars}
+          activeTeamSchedule={this.state.activeTeamSchedule}
+          activeEvents={this.state.activeEvents}
+          view={this.state.view}
+        />
         <CalendarControls
           updateCalendars={this.updateCalendars}
           updateTeamSchedule={this.updateTeamSchedule}

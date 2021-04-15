@@ -4,7 +4,12 @@ import "./calendarEvent.css";
 class CalendarEvent extends Component {
   state = {};
   render() {
-    return <div className="calendarEvent"></div>;
+    return (
+      <div
+        className="calendarEvent"
+        style={{ backgroundColor: this.props.eventColor }}
+      ></div>
+    );
   }
 }
 

@@ -41,7 +41,7 @@ class CalendarColumn extends Component {
       event.start = Math.floor((eventTime / 24) * 1464);
 
       //gets end time offset in pixels
-      let eventTime2 = events[i].timeEnd.split(" ");
+      let eventTime2 = events[i].time_end.split(" ");
       eventTime2 = eventTime2[1].split(":");
       eventTime2 = parseFloat(eventTime2[0]) + parseFloat(eventTime2[1] / 60);
       event.end = Math.floor((eventTime2 / 24) * 1464);
@@ -49,6 +49,7 @@ class CalendarColumn extends Component {
       eventsById[event.id] = {
         start: event.start,
         end: event.end,
+        description: event.description,
       };
 
       // Checks if current event overlaps previous event
@@ -173,7 +174,9 @@ class CalendarColumn extends Component {
           };
           divs.push(
             <div style={thisStyle}>
-              <CalendarEvent></CalendarEvent>
+              <CalendarEvent
+                eventColor={eventsById[groupStructure[g][gg][ggg]].description}
+              ></CalendarEvent>
             </div>
           );
         }

@@ -30,7 +30,9 @@ class CreateEvent extends Component {
         type: 1,
       };
       axios.post(url, data).then((result) => {
-        this.props.toggleCreateEventScreen();
+        if (result.data.valid) {
+          this.props.toggleCreateEventScreen();
+        }
       });
     }
   };
@@ -107,11 +109,6 @@ class CreateEvent extends Component {
                 .value.replaceAll("-", "");
               let pTimeEnd2 = document.getElementById("endTimeInput").value;
               let pTimeEnd = pTimeEnd1 + " " + pTimeEnd2;
-              console.log("name: " + pName);
-              console.log("duration: " + pDuration);
-              console.log("id: " + pSchedule_id);
-              console.log("time: " + pTime);
-              console.log("time_end: " + pTimeEnd);
               this.addEvent(pName, pSchedule_id, pTime, pTimeEnd);
             }}
           >

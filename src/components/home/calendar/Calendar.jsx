@@ -55,9 +55,35 @@ class Calendar extends Component {
         time: "20210413 12:45",
         timeEnd: "20210413 14:00",
       },
+      {
+        id: 7,
+        name: "Test3",
+        schedule_id: 29,
+        time: "20210413 03:00",
+        timeEnd: "20210413 4:30",
+      },
     ],
   };
+  // componentDidMount() {
+  //   if (this.props.view === "Calendar") {
+  //     let aEvents = [];
+  //     for (let e = 0; e < this.props.calendarEvents.length; e++) {
+  //       for (let a = 0; a < this.props.activeCalendars; a++) {
+  //         if (
+  //           this.props.calendarEvents[e].schedule_id ===
+  //           this.props.activeCalendars[a].id
+  //         ) {
+  //           aEvents = aEvents.concat(this.props.calendarEvents[e]);
+  //         }
+  //       }
+  //     }
+  //     console.log("here");
+  //     this.setState({ activeEvents: aEvents });
+  //   } else {
+  //   }
+  // }
   render() {
+    //console.log(this.state.activeEvents);
     var times = [];
     var columns = [];
     var days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -79,12 +105,13 @@ class Calendar extends Component {
       }
       let thisDateString = thisDateInfo[0] + thisDateInfo[1] + thisDateInfo[2];
       let theseEvents = [];
-      for (let i = 0; i < this.state.activeEvents.length; i++) {
+      for (let i = 0; i < this.props.activeEvents.length; i++) {
+        console.log(this.props.activeEvents[i]);
         if (
-          this.state.activeEvents[i].time.substring(0, 8) == thisDateString ||
-          this.state.activeEvents[i].time.substring(0, 8) == thisDateString
+          this.props.activeEvents[i].time.substring(0, 8) == thisDateString ||
+          this.props.activeEvents[i].time.substring(0, 8) == thisDateString
         ) {
-          theseEvents = theseEvents.concat(this.state.activeEvents[i]);
+          theseEvents = theseEvents.concat(this.props.activeEvents[i]);
         }
       }
       let isToday = false;
