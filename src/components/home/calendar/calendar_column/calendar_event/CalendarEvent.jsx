@@ -7,7 +7,10 @@ class CalendarEvent extends Component {
     return (
       <div
         className="calendarEvent"
-        style={{ backgroundColor: this.props.eventColor }}
+        style={{ backgroundColor: this.props.eventInfo.description }}
+        onClick={() => {
+          this.props.toggleCreateEventScreen(true, this.props.eventInfo);
+        }}
       ></div>
     );
   }

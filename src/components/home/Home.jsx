@@ -42,6 +42,8 @@ class Home extends Component {
       description: "#ff3200",
       time: "",
     },
+    isCreateEventEdit: false,
+    isCreateEventInfo: {},
   };
   componentDidMount() {
     this.loadSchedulesToState();
@@ -263,8 +265,17 @@ class Home extends Component {
       ? this.setState({ timeframe: "Month" })
       : this.setState({ timeframe: "Week" });
   };
-  toggleCreateEventScreen = () => {
-    this.setState({ isCreateEventScreen: !this.state.isCreateEventScreen });
+  toggleCreateEventScreen = (isEdit, eventInfo) => {
+    console.log(isEdit);
+    console.log(eventInfo);
+    let test = isEdit ? true : false;
+    console.log("test: " + test);
+    this.setState({
+      isCreateEventScreen: !this.state.isCreateEventScreen,
+      isCreateEventEdit: isEdit ? true : false,
+      isCreateEventInfo: eventInfo,
+    });
+    console.log("here " + this.state.isCreateEventEdit);
   };
   toggleCreateCalendarScreen = () => {
     this.setState({
@@ -277,7 +288,7 @@ class Home extends Component {
     });
   };
   render() {
-    //console.log(this.state.activeEvents);
+    console.log("here2: " + this.state.isCreateEventEdit);
     return (
       <div id="homeScreen">
         <MenuBar
@@ -299,6 +310,7 @@ class Home extends Component {
           activeTeamSchedule={this.state.activeTeamSchedule}
           activeEvents={this.state.activeEvents}
           view={this.state.view}
+          toggleCreateEventScreen={this.toggleCreateEventScreen}
         />
         <CalendarControls
           updateCalendars={this.updateCalendars}
@@ -318,6 +330,8 @@ class Home extends Component {
           timezones={this.state.timezones}
           toggleCreateEventScreen={this.toggleCreateEventScreen}
           isCreateEventScreen={this.state.isCreateEventScreen}
+          isCreateEventEdit={this.state.isCreateEventEdit}
+          eventInfo={this.state.isCreateEventInfo}
         />
         <CreateCalendar
           mySchedules={this.state.mySchedules}

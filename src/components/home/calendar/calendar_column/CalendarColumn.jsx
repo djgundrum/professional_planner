@@ -50,6 +50,7 @@ class CalendarColumn extends Component {
         start: event.start,
         end: event.end,
         description: event.description,
+        name: event.name,
       };
 
       // Checks if current event overlaps previous event
@@ -173,141 +174,17 @@ class CalendarColumn extends Component {
             position: "absolute",
           };
           divs.push(
-            <div style={thisStyle}>
+            <div style={thisStyle} key={g + "" + gg + "" + ggg}>
               <CalendarEvent
-                eventColor={eventsById[groupStructure[g][gg][ggg]].description}
+                eventInfo={eventsById[groupStructure[g][gg][ggg]]}
+                toggleCreateEventScreen={this.props.toggleCreateEventScreen}
               ></CalendarEvent>
             </div>
           );
         }
       }
     }
-
-    // for (let g = 0; g < groups.length; g++) {
-    //   for (let gg = 0; gg < groups[g].length; gg++) {
-    //     let thisStyle = {
-    //       width: 100 / groups[g].length + "%",
-    //       height:
-    //         eventsById[groups[g][gg]].end -
-    //         eventsById[groups[g][gg]].start +
-    //         "px",
-    //       marginTop: eventsById[groups[g][gg]].start + "px",
-    //       left: (100 / groups[g].length) * gg + "%",
-    //       position: "absolute",
-    //       backgroundColor: "red",
-    //     };
-    //     divs.push(
-    //       <div style={thisStyle}>
-    //         <CalendarEvent></CalendarEvent>
-    //       </div>
-    //     );
-    //   }
-    // }
     return divs;
-
-    // // Creating conflict groups
-    // for (let y = 0; y < timeslots.length; y++) {
-    //   // Go through the current row of timeslots and find ids of schedule in row
-    //   let currentRowIds = [];
-    //   for (let x = 0; x < timeslots[0].length; x++) {
-    //     if (timeslots[y][x] != 0) {
-    //       currentRowIds.push(timeslots[y][x]);
-    //     }
-    //   }
-    //   // Go through all ids in the current row
-    //   for (let z = 0; z < currentRowIds.length; z++) {
-    //     // If the id is not in a conflict group yet
-
-    //     if (!groupIds[currentRowIds[z]]) {
-    //       // If the id is only one in row, create new group
-    //       console.log("current row: " + y + ", conflicts:" + currentRowIds[z]);
-    //       if (currentRowIds.length == 1) {
-    //         groupIds[currentRowIds[z]] = groups.length;
-    //         groups.push([currentRowIds[0]]);
-    //       }
-    //       // Otherwise, find the group of a conflicting id
-    //       else {
-    //         let found = false;
-    //         for (let zz = 0; zz < currentRowIds.length; zz++) {
-    //           if (z != zz && groupIds[currentRowIds[zz]]) {
-    //             console.log(currentRowIds[z] + ", " + currentRowIds[zz]);
-    //             groupIds[currentRowIds[z]] = groupIds[currentRowIds[zz]];
-    //             groups[groupIds[currentRowIds[z]]].push(currentRowIds[z]);
-    //             found = true;
-    //           }
-    //         }
-    //         if (!found) {
-    //           groupIds[currentRowIds[z]] = groups.length;
-    //           groups.push([currentRowIds[z]]);
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
-    // console.log(groups);
-    /*
-    // Step 3: Get each event it's horizontal position,
-    //         and figure out the max number of conflicts it has.
-    for (i = 0; i < 1464; i++) {
-      var next_hindex = 0;
-      var timeslotLength = timeslots[i].length;
-
-      // If there's at least one event in the timeslot,
-      // we know how many events we will have going across for that slot.
-      if (timeslotLength > 0) {
-        // Store the greatest concurrent event count (cevc) for each event.
-        for (j = 0; j < timeslotLength; j++) {
-          event = events[timeslots[i][j] - 1];
-
-          if (!event.cevc || event.cevc < timeslotLength) {
-            event.cevc = timeslotLength;
-
-            // Now is also a good time to coordinate horizontal ordering.
-            // If this is our first conflict, start at the current index.
-            if (!event.hindex) {
-              event.hindex = next_hindex;
-
-              // We also want to boost the index,
-              // so that whoever we conflict with doesn't get the same one.
-              next_hindex++;
-            }
-          }
-        }
-      }
-    }
-
-    // Step 4: Calculate event coordinates and dimensions,
-    // and generate DOM.
-    for (i = 0; i < events.length; i++) {
-      event = events[i];
-
-      // Height and y-coordinate are already known.
-      event.pxh = event.end - event.start;
-      event.pxy = event.start;
-
-      // Width is based on calendar width and the cevc.
-      event.pxw = 100 / event.cevc;
-
-      // Height uses the same calendar/cevc figure,
-      // multiplied by the horizontal index to prevent overlap.
-      event.pxx = event.hindex * event.pxw;
-
-      // Now, the easy part.
-      let thisStyle = {
-        width: event.pxw + "%",
-        height: event.pxh + "px",
-        top: event.pxy + "px",
-        left: event.pxx + "%",
-        position: "absolute",
-      };
-      divs.push(
-        <div style={thisStyle}>
-          <CalendarEvent></CalendarEvent>
-        </div>
-      );
-    }
-    return divs;
-    */
   };
   render() {
     var cells = [];
@@ -321,7 +198,6 @@ class CalendarColumn extends Component {
         ? cells.push(<CalendarCell isLast={false} />)
         : cells.push(<CalendarCell isLast={true} />);
     }
-
     return (
       <div
         className={
@@ -330,12 +206,7 @@ class CalendarColumn extends Component {
             : "calendarColumn calendarColumnNotLast"
         }
       >
-        <div className="columnOverlay">
-          {eventList}
-          {/* {this.props.theseEvents.map((event) => {
-            return <CalendarEvent eventInfo={event} />;
-          })} */}
-        </div>
+        <div className="columnOverlay">{eventList}</div>
         <div
           className={
             this.props.isToday

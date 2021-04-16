@@ -55,14 +55,18 @@ class CalendarControls extends Component {
               <div
                 id="addEventButton"
                 className="calendarControlsButton hoverClass"
-                onClick={this.props.toggleCreateEventScreen}
+                onClick={() => {
+                  this.props.toggleCreateEventScreen(false, {});
+                }}
               >
                 Create Event
               </div>
               <div
                 id="createCalendarButton"
                 className="calendarControlsButton hoverClass"
-                onClick={this.props.toggleCreateCalendarScreen}
+                onClick={() => {
+                  this.props.toggleCreateCalendarScreen();
+                }}
               >
                 Create Calendar
               </div>

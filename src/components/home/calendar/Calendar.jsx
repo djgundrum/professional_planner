@@ -12,78 +12,11 @@ class Calendar extends Component {
     // In Team Schedule View, will be populated with events (type: 2)
     // On settings screen when creating team schedule, will be populated with blocks (employee blocks type:1, meeting blocks type: 3)
     // On generated team schedule screen, will be populated with employee events (type: 2), employee blocks (type: 1), and meeting blocks (type: 3)
-    activeEvents: [
-      {
-        id: 1,
-        name: "Test",
-        schedule_id: 29,
-        time: "20210413 12:00",
-        timeEnd: "20210413 12:30",
-      },
-      {
-        id: 2,
-        name: "Test2",
-        schedule_id: 29,
-        time: "20210413 10:00",
-        timeEnd: "20210413 12:30",
-      },
-      {
-        id: 3,
-        name: "Test3",
-        schedule_id: 29,
-        time: "20210413 11:00",
-        timeEnd: "20210413 13:30",
-      },
-      {
-        id: 4,
-        name: "Test3",
-        schedule_id: 29,
-        time: "20210413 06:00",
-        timeEnd: "20210413 11:30",
-      },
-      {
-        id: 5,
-        name: "Test3",
-        schedule_id: 29,
-        time: "20210413 04:00",
-        timeEnd: "20210413 6:00",
-      },
-      {
-        id: 6,
-        name: "Test3",
-        schedule_id: 29,
-        time: "20210413 12:45",
-        timeEnd: "20210413 14:00",
-      },
-      {
-        id: 7,
-        name: "Test3",
-        schedule_id: 29,
-        time: "20210413 03:00",
-        timeEnd: "20210413 4:30",
-      },
-    ],
+    activeEvents: [],
   };
-  // componentDidMount() {
-  //   if (this.props.view === "Calendar") {
-  //     let aEvents = [];
-  //     for (let e = 0; e < this.props.calendarEvents.length; e++) {
-  //       for (let a = 0; a < this.props.activeCalendars; a++) {
-  //         if (
-  //           this.props.calendarEvents[e].schedule_id ===
-  //           this.props.activeCalendars[a].id
-  //         ) {
-  //           aEvents = aEvents.concat(this.props.calendarEvents[e]);
-  //         }
-  //       }
-  //     }
-  //     console.log("here");
-  //     this.setState({ activeEvents: aEvents });
-  //   } else {
-  //   }
-  // }
+
   render() {
-    //console.log(this.state.activeEvents);
+    console.log(this.state.activeEvents);
     var times = [];
     var columns = [];
     var days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -134,6 +67,7 @@ class Calendar extends Component {
           columnDateInfo={columnDateInfo}
           isToday={isToday}
           theseEvents={theseEvents}
+          toggleCreateEventScreen={this.props.toggleCreateEventScreen}
         />
       );
     }
@@ -148,7 +82,7 @@ class Calendar extends Component {
       <div id="calendarDiv">
         <div id="timeColumn">
           {times.map((time) => {
-            return <p>{time}</p>;
+            return <p key={time}>{time}</p>;
           })}
         </div>
         {columns}

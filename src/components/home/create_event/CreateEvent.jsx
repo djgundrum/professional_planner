@@ -49,6 +49,7 @@ class CreateEvent extends Component {
     });
   };
   render() {
+    console.log(this.props.eventInfo);
     return (
       <div
         id="createEventScreen"
@@ -64,13 +65,18 @@ class CreateEvent extends Component {
             src={xIcon}
             alt=""
             id="xIcon"
-            onClick={this.props.toggleCreateEventScreen}
+            onClick={() => {
+              this.props.toggleCreateEventScreen(false, {});
+            }}
           />
           <input
             type="text"
             id="eventNameInput"
             placeholder="Event Name..."
             onChange={this.updateFields}
+            value={
+              this.props.isCreateEventEdit ? this.props.eventInfo.name : ""
+            }
           />
           <img src={calendarIcon} alt="" id="calendarIcon" />
           <select id="calendarSelect">
