@@ -23,6 +23,7 @@ class CreateCalendar extends Component {
       "#ff7bd5",
       "#777777",
     ],
+    isEditLoad: true,
   };
   addContacts = () => {
     let contactString = document.getElementById("addContactInput").value;
@@ -50,6 +51,8 @@ class CreateCalendar extends Component {
             this.setState({
               //sharedContacts: this.state.sharedContacts.push(contactNames),
               sharedContacts: newContacts,
+              isEditLoad: false,
+              name: document.getElementById("calendarNameInput").value,
             });
           }
           if (errorNames.length > 0) {
@@ -97,6 +100,7 @@ class CreateCalendar extends Component {
           };
           axios.post(url3, data3).then((result3) => {
             this.props.loadSchedulesToState();
+            this.setState({ isEditLoad: true });
           });
         }
       });
@@ -115,12 +119,14 @@ class CreateCalendar extends Component {
       if (result.data.valid) {
         this.props.toggleCreateCalendarScreen();
         this.props.loadSchedulesToState();
+        this.setState({ isEditLoad: true });
       }
     });
   };
   updateFields = () => {
     this.setState({
       name: document.getElementById("calendarNameInput").value,
+      isEditLoad: false,
     });
   };
   render() {
@@ -143,6 +149,7 @@ class CreateCalendar extends Component {
               this.setState({
                 name: "",
                 color: "",
+                isEditLoad: true,
               });
               this.props.toggleCreateCalendarScreen();
             }}
@@ -152,7 +159,7 @@ class CreateCalendar extends Component {
             id="calendarNameInput"
             placeholder="Calendar Name..."
             value={
-              this.props.calendarName
+              this.props.calendarName && this.state.isEditLoad
                 ? this.props.calendarName
                 : this.state.name
             }
@@ -183,7 +190,11 @@ class CreateCalendar extends Component {
                       }
                 }
                 onClick={() => {
-                  this.setState({ color: color });
+                  this.setState({
+                    color: color,
+                    isEditLoad: false,
+                    name: document.getElementById("calendarNameInput").value,
+                  });
                   if (!this.props.isEdit) {
                     this.props.updateCreateCalendarInfo("", color);
                   }
@@ -212,6 +223,7 @@ class CreateCalendar extends Component {
                     className="deletePerson"
                     onClick={() => {
                       this.deletePerson(contact.id);
+                      this.setState({ isEditLoad: false });
                     }}
                   />
                 </div>

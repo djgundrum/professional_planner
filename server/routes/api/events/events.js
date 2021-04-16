@@ -383,6 +383,76 @@ router.get("/schedule/:id", (req, res) => {
   }
 });
 
+/**
+ * post: /api/events/update
+ *
+ * Updates an existing event
+ *
+ * @param id (int)
+ * @param name (string)
+ * @param schedule_id (int)
+ * @param time (string)
+ * @param time_end (string)
+ */
+router.post("/update", (req, res) => {
+  try {
+    let db = new query();
+
+    let id = req.body.id;
+    let name = req.body.name;
+    let schedule_id = req.body.schedule_id;
+    let time = req.body.time;
+    let time_end = req.body.time_end;
+
+    if (
+      isEmpty(id) ||
+      isEmpty(name) ||
+      isEmpty(schedule_id) ||
+      isEmpty(time) ||
+      isEmpty(time_end)
+    ) {
+      return res.send(
+        new response(
+          "Some of the required fields were not provided correctly",
+          false,
+          `id: ${id} name: ${name} schedule_id: ${schedule_id} time: ${time} time_end: ${time_end}`
+        ).body
+      );
+    } else {
+      let sql =
+        "update events set name = ?, schedule_id = ?, time = ?, time_end = ? where id = ?";
+      let p = [name, schedule_id, time, time_end, id];
+
+      db.query(sql, p, true)
+        .then(() => {
+          return db.end();
+        })
+        .then(
+          () => {
+            return res.send(
+              new response(`The Event: ${name} was updated successfully`).body
+            );
+          },
+          (err) => {
+            console.log("There was an error updating the event");
+            console.log(err.message);
+            return res.send(
+              new response(
+                "There was an error updating the event",
+                false,
+                err.message
+              )
+            );
+          }
+        );
+    }
+  } catch (err) {
+    return res.send(
+      new response("There was an error updating the event", false, err.message)
+    );
+  }
+});
+
 function isEmpty(str) {
   return str === "" || str === undefined || str === null;
 }

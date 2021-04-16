@@ -124,48 +124,6 @@ class Home extends Component {
           });
         };
         getSchedule(0, guestListResult.data.body.guests.length, getSchedule);
-        // for (let i = 0; i < guestListResult.data.body.guests.length; i++) {
-        //   let url3 = `/api/schedules/${guestListResult.data.body.guests[i].schedule_id}`;
-        //   //let url3 = "/api/schedules";
-        //   axios.get(url3).then((result3) => {
-        //     console.log(result3);
-        //     //schedules = schedules.concat(result3.data.body.schedules);
-        //     result3.data.body.schedules.type == "Calendar"
-        //       ? (schedules = schedules.concat(result3.data.body.schedules))
-        //       : (teamSchedules = teamSchedules.concat(
-        //           result3.data.body.schedules
-        //         ));
-        //     if (i == guestListResult.data.body.guests.length - 1) {
-        //       this.setState({
-        //         mySchedules: schedules,
-        //         //Change array to 'teamSchedules'
-        //         myTeamSchedules: [
-        //           {
-        //             id: 4,
-        //             name: "Team ScheduleScheduleSchedule 1",
-        //             time: "CT",
-        //             type: 2,
-        //             description: "#3fa9f5",
-        //           },
-        //           {
-        //             id: 5,
-        //             name: "Team Schedule 2",
-        //             time: "CT",
-        //             type: 2,
-        //             description: "#3fa9f5",
-        //           },
-        //           {
-        //             id: 6,
-        //             name: "Team Schedule 3",
-        //             time: "CT",
-        //             type: 2,
-        //             description: "#3fa9f5",
-        //           },
-        //         ],
-        //       });
-        //     }
-        //   });
-        // }
       });
     });
   };
@@ -233,7 +191,6 @@ class Home extends Component {
       newList.push([id, name]);
     }
     let aEvents = [];
-    //console.log(newList);
     for (let e = 0; e < this.state.calendarEvents.length; e++) {
       for (let a = 0; a < newList.length; a++) {
         if (this.state.calendarEvents[e].schedule_id === newList[a][0]) {
@@ -266,16 +223,11 @@ class Home extends Component {
       : this.setState({ timeframe: "Week" });
   };
   toggleCreateEventScreen = (isEdit, eventInfo) => {
-    console.log(isEdit);
-    console.log(eventInfo);
-    let test = isEdit ? true : false;
-    console.log("test: " + test);
     this.setState({
       isCreateEventScreen: !this.state.isCreateEventScreen,
       isCreateEventEdit: isEdit ? true : false,
       isCreateEventInfo: eventInfo,
     });
-    console.log("here " + this.state.isCreateEventEdit);
   };
   toggleCreateCalendarScreen = () => {
     this.setState({
@@ -288,7 +240,6 @@ class Home extends Component {
     });
   };
   render() {
-    console.log("here2: " + this.state.isCreateEventEdit);
     return (
       <div id="homeScreen">
         <MenuBar
@@ -332,6 +283,7 @@ class Home extends Component {
           isCreateEventScreen={this.state.isCreateEventScreen}
           isCreateEventEdit={this.state.isCreateEventEdit}
           eventInfo={this.state.isCreateEventInfo}
+          loadSchedulesToState={this.loadSchedulesToState}
         />
         <CreateCalendar
           mySchedules={this.state.mySchedules}

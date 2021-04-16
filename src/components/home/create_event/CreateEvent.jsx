@@ -16,6 +16,7 @@ class CreateEvent extends Component {
     endTime: "",
     timezone: "",
     timezoneOffset: "",
+    editOnLoad: true,
   };
   addEvent = (pName, pSchedule_id, pTime, pTimeEnd) => {
     //Send parameters
@@ -32,6 +33,29 @@ class CreateEvent extends Component {
       axios.post(url, data).then((result) => {
         if (result.data.valid) {
           this.props.toggleCreateEventScreen();
+
+          //This did not fix reloading events on create
+          this.props.loadSchedulesToState();
+        }
+      });
+    }
+  };
+  updateEvent = (pName, pSchedule_id, pTime, pTimeEnd, pId) => {
+    if (pName && pTimeEnd && pSchedule_id && pTime) {
+      let url = "/api/events/update";
+      let data = {
+        name: pName,
+        schedule_id: pSchedule_id,
+        time: pTime,
+        time_end: pTimeEnd,
+        id: pId,
+      };
+      axios.post(url, data).then((result) => {
+        if (result.data.valid) {
+          this.props.toggleCreateEventScreen();
+
+          //This did not fix reloading events on edit
+          this.props.loadSchedulesToState();
         }
       });
     }
@@ -44,12 +68,33 @@ class CreateEvent extends Component {
       startTime: document.getElementById("startTimeInput").value,
       endDate: document.getElementById("endDateInput").value,
       endTime: document.getElementById("endTimeInput").value,
-      timezone: document.getElementById("timezoneSelect").value,
-      timezoneOffset: "",
+      editOnLoad: false,
+      // timezone: document.getElementById("timezoneSelect").value,
+      // timezoneOffset: "",
     });
   };
   render() {
-    console.log(this.props.eventInfo);
+    let editStartDate = this.state.startDate;
+    let editStartTime = this.state.startTime;
+    let editEndDate = this.state.endDate;
+    let editEndTime = this.state.endTime;
+
+    if (this.props.isCreateEventEdit && this.state.editOnLoad) {
+      editStartDate =
+        this.props.eventInfo.time.substring(0, 4) +
+        "-" +
+        this.props.eventInfo.time.substring(4, 6) +
+        "-" +
+        this.props.eventInfo.time.substring(6, 8);
+      editStartTime = this.props.eventInfo.time.substring(9);
+      editEndDate =
+        this.props.eventInfo.time_end.substring(0, 4) +
+        "-" +
+        this.props.eventInfo.time_end.substring(4, 6) +
+        "-" +
+        this.props.eventInfo.time_end.substring(6, 8);
+      editEndTime = this.props.eventInfo.time_end.substring(9);
+    }
     return (
       <div
         id="createEventScreen"
@@ -75,32 +120,61 @@ class CreateEvent extends Component {
             placeholder="Event Name..."
             onChange={this.updateFields}
             value={
-              this.props.isCreateEventEdit ? this.props.eventInfo.name : ""
+              this.props.isCreateEventEdit && this.state.editOnLoad
+                ? this.props.eventInfo.name
+                : this.state.name
             }
           />
           <img src={calendarIcon} alt="" id="calendarIcon" />
-          <select id="calendarSelect">
+          <select
+            id="calendarSelect"
+            onChange={this.updateFields}
+            value={
+              this.props.isCreateEventEdit && this.state.editOnLoad
+                ? this.props.eventInfo.schedule
+                : this.state.calendar
+            }
+          >
             {this.props.mySchedules.map((schedule) => (
               <option value={schedule.id}>{schedule.name}</option>
             ))}
           </select>
           <p id="startText">Start: </p>
-          <input type="date" id="startDateInput" />
-          <input type="time" id="startTimeInput" />
+          <input
+            type="date"
+            id="startDateInput"
+            onChange={this.updateFields}
+            value={editStartDate}
+          />
+          <input
+            type="time"
+            id="startTimeInput"
+            onChange={this.updateFields}
+            value={editStartTime}
+          />
           <p id="endText">End: </p>
-          <input type="date" id="endDateInput" />
-          <input type="time" id="endTimeInput" />
-          <img src={timezoneIcon} alt="" id="timezoneIcon" />
+          <input
+            type="date"
+            id="endDateInput"
+            onChange={this.updateFields}
+            value={editEndDate}
+          />
+          <input
+            type="time"
+            id="endTimeInput"
+            onChange={this.updateFields}
+            value={editEndTime}
+          />
+          {/* <img src={timezoneIcon} alt="" id="timezoneIcon" />
           <select id="timezoneSelect">
             {this.props.timezones.map((timezone) => (
               <option value={timezone}>{timezone}</option>
             ))}
-          </select>
+          </select> */}
           <div
             id="createEventScreenButton"
             onClick={() => {
               let pName = document.getElementById("eventNameInput").value;
-              let pDuration = "";
               let pSchedule_id = document.getElementById("calendarSelect")
                 .value;
 
@@ -115,10 +189,20 @@ class CreateEvent extends Component {
                 .value.replaceAll("-", "");
               let pTimeEnd2 = document.getElementById("endTimeInput").value;
               let pTimeEnd = pTimeEnd1 + " " + pTimeEnd2;
-              this.addEvent(pName, pSchedule_id, pTime, pTimeEnd);
+              if (this.props.isCreateEventEdit) {
+                this.updateEvent(
+                  pName,
+                  pSchedule_id,
+                  pTime,
+                  pTimeEnd,
+                  this.props.eventInfo.id
+                );
+              } else {
+                this.addEvent(pName, pSchedule_id, pTime, pTimeEnd);
+              }
             }}
           >
-            Create Event
+            {this.props.isCreateEventEdit ? "Edit Event" : "Create Event"}
           </div>
         </div>
       </div>

@@ -14,9 +14,7 @@ class Calendar extends Component {
     // On generated team schedule screen, will be populated with employee events (type: 2), employee blocks (type: 1), and meeting blocks (type: 3)
     activeEvents: [],
   };
-
   render() {
-    console.log(this.state.activeEvents);
     var times = [];
     var columns = [];
     var days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -39,7 +37,6 @@ class Calendar extends Component {
       let thisDateString = thisDateInfo[0] + thisDateInfo[1] + thisDateInfo[2];
       let theseEvents = [];
       for (let i = 0; i < this.props.activeEvents.length; i++) {
-        console.log(this.props.activeEvents[i]);
         if (
           this.props.activeEvents[i].time.substring(0, 8) == thisDateString ||
           this.props.activeEvents[i].time.substring(0, 8) == thisDateString

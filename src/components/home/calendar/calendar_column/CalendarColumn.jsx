@@ -47,10 +47,14 @@ class CalendarColumn extends Component {
       event.end = Math.floor((eventTime2 / 24) * 1464);
 
       eventsById[event.id] = {
+        id: event.id,
         start: event.start,
         end: event.end,
         description: event.description,
         name: event.name,
+        schedule: event.schedule_id,
+        time: events[i].time,
+        time_end: events[i].time_end,
       };
 
       // Checks if current event overlaps previous event
