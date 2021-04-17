@@ -112,6 +112,15 @@ class CreateEvent extends Component {
             id="xIcon"
             onClick={() => {
               this.props.toggleCreateEventScreen(false, {});
+              this.setState({
+                name: "",
+                calendar: "",
+                startDate: "",
+                startTime: "",
+                endDate: "",
+                endTime: "",
+                editOnLoad: true,
+              });
             }}
           />
           <input
