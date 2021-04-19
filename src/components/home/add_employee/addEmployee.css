@@ -1,0 +1,89 @@
+#addEmployeeScreen {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  z-index: 5;
+}
+#addEmployeeBackground {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+  opacity: 0.8;
+}
+#addEmployeeDiv {
+  position: absolute;
+  width: 500px;
+  height: 250px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: white;
+  border-radius: 20px;
+}
+#xIconE {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  height: 20px;
+  opacity: 50%;
+  cursor: pointer;
+}
+#employeeNameInput {
+  position: relative;
+  margin-top: 30px;
+  margin-left: 75px;
+  height: 30px;
+  border: 0px;
+  border-bottom: 1px solid #999999;
+  width: 350px;
+  font-size: 25px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #999999;
+}
+#employeeNameInput:focus {
+  outline: none;
+}
+#employeeNameInput::placeholder {
+  color: #cccccc;
+}
+#calendarIcon {
+  position: absolute;
+  top: 90px;
+  left: 75px;
+  height: 30px;
+  opacity: 50%;
+}
+#calendarSelectE {
+  position: absolute;
+  top: 90px;
+  left: 120px;
+  height: 30px;
+  opacity: 50%;
+  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  width: 200px;
+  border: 0px;
+  color: #666666;
+}
+
+#addEmployeeScreenButton {
+  background-color: #29abe2;
+  width: 200px;
+  height: 40px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  bottom: 30px;
+  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  color: #f4f4f4;
+  border-radius: 20px;
+  line-height: 40px;
+  cursor: pointer;
+}

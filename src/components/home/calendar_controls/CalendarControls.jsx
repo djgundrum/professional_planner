@@ -38,7 +38,7 @@ class CalendarControls extends Component {
               <div
                 id="backToCalendar"
                 className="calendarControlsButton hoverClass"
-                onClick={this.props.toggleCreateEventScreen}
+                onClick={this.props.toggleAddEmployeeScreen}
               >
                 Add Employees
               </div>
@@ -95,11 +95,12 @@ class CalendarControls extends Component {
                   <EmployeeList
                     updateCalendars={this.props.updateCalendars}
                     activeCalendars={this.props.activeCalendars}
+                    employees={this.props.employees}
                     view={this.props.view}
                   />
                 )}
 
-                <div onClick={this.toggleTeamSchedules}>
+                {/* <div onClick={this.toggleTeamSchedules}>
                   <CalendarControlsDropdown
                     title="Meeting Blocks"
                     propShow={this.state.showTeamSchedules}
@@ -111,7 +112,7 @@ class CalendarControls extends Component {
                     activeTeamSchedule={this.props.activeTeamSchedule}
                     view={this.props.view}
                   />
-                )}
+                )} */}
               </>
             ) : (
               <>

@@ -6,7 +6,7 @@ import CreateEvent from "./create_event/CreateEvent";
 import "./home.css";
 import CreateCalendar from "./create_calendar/CreateCalendar";
 import axios from "axios";
-import { Redirect } from "react-router";
+import AddEmployee from "./add_employee/AddEmployee";
 
 class Home extends Component {
   state = {
@@ -44,6 +44,9 @@ class Home extends Component {
     },
     isCreateEventEdit: false,
     isCreateEventInfo: {},
+    isAddEmployeeScreen: false,
+    employees: [],
+    employeeIdCount: 0,
   };
   componentDidMount() {
     this.loadSchedulesToState();
@@ -239,6 +242,30 @@ class Home extends Component {
       isCreateTeamScheduleScreen: !this.state.isCreateTeamScheduleScreen,
     });
   };
+  toggleAddEmployeeScreen = () => {
+    if (this.state.isAddEmployeeScreen) {
+      document.getElementById("employeeNameInput").value = "";
+      document.getElementById("calendarSelectE").selectedIndex = 0;
+    }
+    this.setState({
+      isAddEmployeeScreen: !this.state.isAddEmployeeScreen,
+    });
+  };
+  addEmployee = (newEmployee) => {
+    let newnewEmployee = {
+      id: this.state.employeeIdCount + 1,
+      name: newEmployee.name,
+      calendar_id: newEmployee.calendar_id,
+      calendar_name: newEmployee.calendar_name,
+      calendar_description: newEmployee.calendar_description,
+    };
+    this.toggleAddEmployeeScreen();
+    this.setState({
+      employees: this.state.employees.concat(newnewEmployee),
+      employeeIdCount: this.state.employeeIdCount + 1,
+    });
+  };
+  removeEmployee = () => {};
   render() {
     return (
       <div id="homeScreen">
@@ -273,8 +300,10 @@ class Home extends Component {
           toggleCreateCalendarScreen={this.toggleCreateCalendarScreen}
           isCreateTeamScheduleScreen={this.state.isCreateTeamScheduleScreen}
           toggleCreateTeamScheduleScreen={this.toggleCreateTeamScheduleScreen}
+          toggleAddEmployeeScreen={this.toggleAddEmployeeScreen}
           mySchedules={this.state.mySchedules}
           myTeamSchedules={this.state.myTeamSchedules}
+          employees={this.state.employees}
         />
         <CreateEvent
           mySchedules={this.state.mySchedules}
@@ -295,6 +324,13 @@ class Home extends Component {
           clearCreateCalendarInfo={this.clearCreateCalendarInfo}
           loadSchedulesToState={this.loadSchedulesToState}
         />
+        <AddEmployee
+          mySchedules={this.state.mySchedules}
+          isAddEmployeeScreen={this.state.isAddEmployeeScreen}
+          toggleAddEmployeeScreen={this.toggleAddEmployeeScreen}
+          addEmployee={this.addEmployee}
+          removeEmployee={this.removeEmployee}
+        ></AddEmployee>
       </div>
     );
   }
