@@ -22,23 +22,61 @@ class CalendarControls extends Component {
   toggleContacts = () => {
     this.setState({ showContacts: !this.state.showContacts });
   };
+
   render() {
+    let noHours = true;
+    let hoursToShow = [];
+    let isChain = true;
+    let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    for (let x = 0; x < this.props.hours.length; x++) {
+      if (this.props.hours[x].start != "") {
+        noHours = false;
+        if (hoursToShow.length === 0) {
+          hoursToShow.push({
+            startDay: x,
+            endDay: x,
+            startTime: this.props.hours[x].start,
+            endTime: this.props.hours[x].end,
+          });
+        } else {
+          if (
+            this.props.hours[x].start ===
+              hoursToShow[hoursToShow.length - 1].startTime &&
+            isChain
+          ) {
+            hoursToShow[hoursToShow.length - 1].endDay = x;
+          } else {
+            hoursToShow.push({
+              startDay: x,
+              endDay: x,
+              startTime: this.props.hours[x].start,
+              endTime: this.props.hours[x].end,
+            });
+          }
+        }
+        isChain = true;
+      } else {
+        isChain = false;
+      }
+    }
     return (
       <div id="calendarControls">
         <div id="calendarControlsTop">
           {this.props.isCreateTeamScheduleScreen ? (
             <>
               <div
-                id="addEmployeesButton"
+                id="backToCalendar"
                 className="calendarControlsButton hoverClass"
                 onClick={this.props.toggleCreateTeamScheduleScreen}
               >
                 Back
               </div>
               <div
-                id="backToCalendar"
+                id="addEmployeesButton"
                 className="calendarControlsButton hoverClass"
-                onClick={this.props.toggleAddEmployeeScreen}
+                onClick={() => {
+                  this.props.toggleAddEmployeeScreen(false);
+                }}
               >
                 Add Employees
               </div>
@@ -80,7 +118,14 @@ class CalendarControls extends Component {
             </>
           )}
         </div>
-        <div id="calendarControlsBottom" className="scrollbox">
+        <div
+          id="calendarControlsBottom"
+          className={
+            this.props.isCreateTeamScheduleScreen
+              ? "scrollbox calendarControlsBottom1"
+              : "scrollbox calendarControlsBottom2"
+          }
+        >
           <div id="calendarControlsBottomContent" className="scrollbox-content">
             {this.props.isCreateTeamScheduleScreen ? (
               <>
@@ -97,8 +142,91 @@ class CalendarControls extends Component {
                     activeCalendars={this.props.activeCalendars}
                     employees={this.props.employees}
                     view={this.props.view}
+                    toggleAddEmployeeScreen={this.props.toggleAddEmployeeScreen}
                   />
                 )}
+                <div id="generateSettingsDiv">
+                  <div id="hoursDiv" className="generateSettingSection">
+                    <div>
+                      <p>Maximum # Hours:</p>
+                      <input type="text" maxLength="2" />
+                    </div>
+                    <div>
+                      <p>Minimum # Hours:</p>
+                      <input type="text" maxLength="2" />
+                    </div>
+                    <div>
+                      <p>Preferred # Hours:</p>
+                      <input type="text" maxLength="2" />
+                    </div>
+                  </div>
+                  <div id="shiftLengthDiv" className="generateSettingSection">
+                    <div>
+                      <p>Maximum Shift Length:</p>
+                      <input type="text" maxLength="2" />
+                    </div>
+                    <div>
+                      <p>Minimum Shift Length:</p>
+                      <input type="text" maxLength="2" />
+                    </div>
+                    <div>
+                      <p>Preferred Shift Length:</p>
+                      <input type="text" maxLength="2" />
+                    </div>
+                  </div>
+                  <div
+                    id="employeeNumberDiv"
+                    className="generateSettingSection"
+                  >
+                    <div>
+                      <p>Maximum # Employees:</p>
+                      <input type="text" maxLength="2" />
+                    </div>
+                    <div>
+                      <p>Minimum # Employees:</p>
+                      <input type="text" maxLength="2" />
+                    </div>
+                    <div>
+                      <p>Preferred # Employees:</p>
+                      <input type="text" maxLength="2" />
+                    </div>
+                  </div>
+                  {noHours ? (
+                    <div
+                      id="weeklyHoursDiv"
+                      className="generateSettingSection generateSettingSectionHeight"
+                    >
+                      <div onClick={this.props.toggleEditHoursScreen}>
+                        <p id="addHoursText">Add Hours</p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div id="weeklyHoursDiv" className="generateSettingSection">
+                      <div
+                        id="hoursListDiv"
+                        onClick={this.props.toggleEditHoursScreen}
+                      >
+                        {hoursToShow.map((item) => (
+                          <p>
+                            {item.startDay === item.endDay
+                              ? days[item.startDay] +
+                                ": " +
+                                this.props.formatTime(item.startTime) +
+                                " - " +
+                                this.props.formatTime(item.endTime)
+                              : days[item.startDay] +
+                                " - " +
+                                days[item.endDay] +
+                                ": " +
+                                this.props.formatTime(item.startTime) +
+                                " - " +
+                                this.props.formatTime(item.endTime)}
+                          </p>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
 
                 {/* <div onClick={this.toggleTeamSchedules}>
                   <CalendarControlsDropdown
@@ -160,6 +288,19 @@ class CalendarControls extends Component {
             )}
           </div>
         </div>
+        {this.props.isCreateTeamScheduleScreen ? (
+          <div id="generateButtonsDiv">
+            <div
+              id="generateSchedulesEditButton"
+              className="editScheduleDisabled"
+            >
+              Edit Schedule
+            </div>
+            <div id="generateSchedulesButton">Generate Schedules</div>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
     );
   }

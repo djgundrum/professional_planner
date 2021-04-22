@@ -7,6 +7,7 @@ import "./home.css";
 import CreateCalendar from "./create_calendar/CreateCalendar";
 import axios from "axios";
 import AddEmployee from "./add_employee/AddEmployee";
+import EditHours from "./calendar_controls/edit_hours/EditHours";
 
 class Home extends Component {
   state = {
@@ -45,8 +46,41 @@ class Home extends Component {
     isCreateEventEdit: false,
     isCreateEventInfo: {},
     isAddEmployeeScreen: false,
+    isEmployeeEdit: false,
     employees: [],
     employeeIdCount: 0,
+    editEmployeeID: "",
+    isEditHoursScreen: false,
+    hours: [
+      {
+        start: "",
+        end: "",
+      },
+      {
+        start: "",
+        end: "",
+      },
+      {
+        start: "",
+        end: "",
+      },
+      {
+        start: "",
+        end: "",
+      },
+      {
+        start: "",
+        end: "",
+      },
+      {
+        start: "",
+        end: "",
+      },
+      {
+        start: "",
+        end: "",
+      },
+    ],
   };
   componentDidMount() {
     this.loadSchedulesToState();
@@ -242,14 +276,26 @@ class Home extends Component {
       isCreateTeamScheduleScreen: !this.state.isCreateTeamScheduleScreen,
     });
   };
-  toggleAddEmployeeScreen = () => {
+  toggleAddEmployeeScreen = (isEdit, editEmployee) => {
     if (this.state.isAddEmployeeScreen) {
       document.getElementById("employeeNameInput").value = "";
       document.getElementById("calendarSelectE").selectedIndex = 0;
     }
-    this.setState({
-      isAddEmployeeScreen: !this.state.isAddEmployeeScreen,
-    });
+    if (isEdit) {
+      document.getElementById("employeeNameInput").value = editEmployee.name;
+      document.getElementById("calendarSelectE").value =
+        editEmployee.calendar_id;
+      this.setState({
+        isAddEmployeeScreen: !this.state.isAddEmployeeScreen,
+        isEmployeeEdit: isEdit ? true : false,
+        editEmployeeID: editEmployee.id,
+      });
+    } else {
+      this.setState({
+        isAddEmployeeScreen: !this.state.isAddEmployeeScreen,
+        isEmployeeEdit: isEdit ? true : false,
+      });
+    }
   };
   addEmployee = (newEmployee) => {
     let newnewEmployee = {
@@ -259,13 +305,74 @@ class Home extends Component {
       calendar_name: newEmployee.calendar_name,
       calendar_description: newEmployee.calendar_description,
     };
-    this.toggleAddEmployeeScreen();
+    this.toggleAddEmployeeScreen(false);
     this.setState({
       employees: this.state.employees.concat(newnewEmployee),
       employeeIdCount: this.state.employeeIdCount + 1,
     });
   };
-  removeEmployee = () => {};
+  editEmployee = (editEmployee) => {
+    //console.log(this.state.employees);
+    //console.log(editEmployee);
+    let index = 0;
+    for (let e = 0; e < this.state.employees.length; e++) {
+      if (this.state.employees[e].id === editEmployee.id) {
+        index = e;
+        break;
+      }
+    }
+    let tempEs = this.state.employees;
+    tempEs[index] = editEmployee;
+    this.toggleAddEmployeeScreen(false);
+    this.setState({
+      employees: tempEs,
+    });
+  };
+  deleteEmployee = (removeId) => {
+    let index = 0;
+    for (let e = 0; e < this.state.employees.length; e++) {
+      if (this.state.employees[e].id === removeId) {
+        index = e;
+        break;
+      }
+    }
+    let tempEs = this.state.employees;
+    tempEs.splice(index, 1);
+    this.toggleAddEmployeeScreen(false);
+    this.setState({
+      employees: tempEs,
+    });
+  };
+  toggleEditHoursScreen = () => {
+    this.setState({
+      isEditHoursScreen: !this.state.isEditHoursScreen,
+    });
+  };
+  updateHours = (activeDays, start, end) => {
+    let newHours = this.state.hours;
+    for (let a = 0; a < activeDays.length; a++) {
+      if (activeDays[a]) {
+        newHours[a].start = start;
+        newHours[a].end = end;
+      }
+    }
+    this.setState({
+      hours: newHours,
+    });
+  };
+  formatTime = (time) => {
+    let start = parseInt(time.substring(0, 2));
+    let end = time.substring(3, 5);
+    if (start === 0) {
+      return "12:" + end + " AM";
+    } else if (start < 12) {
+      return start + ":" + end + " AM";
+    } else if (start === 12) {
+      return start + ":" + end + " PM";
+    }
+    start = start % 12;
+    return start + ":" + end + " PM";
+  };
   render() {
     return (
       <div id="homeScreen">
@@ -304,6 +411,9 @@ class Home extends Component {
           mySchedules={this.state.mySchedules}
           myTeamSchedules={this.state.myTeamSchedules}
           employees={this.state.employees}
+          hours={this.state.hours}
+          toggleEditHoursScreen={this.toggleEditHoursScreen}
+          formatTime={this.formatTime}
         />
         <CreateEvent
           mySchedules={this.state.mySchedules}
@@ -327,10 +437,20 @@ class Home extends Component {
         <AddEmployee
           mySchedules={this.state.mySchedules}
           isAddEmployeeScreen={this.state.isAddEmployeeScreen}
+          isEmployeeEdit={this.state.isEmployeeEdit}
           toggleAddEmployeeScreen={this.toggleAddEmployeeScreen}
           addEmployee={this.addEmployee}
-          removeEmployee={this.removeEmployee}
+          editEmployee={this.editEmployee}
+          deleteEmployee={this.deleteEmployee}
+          editEmployeeID={this.state.editEmployeeID}
         ></AddEmployee>
+        <EditHours
+          isEditHoursScreen={this.state.isEditHoursScreen}
+          toggleEditHoursScreen={this.toggleEditHoursScreen}
+          updateHours={this.updateHours}
+          hours={this.state.hours}
+          formatTime={this.formatTime}
+        ></EditHours>
       </div>
     );
   }

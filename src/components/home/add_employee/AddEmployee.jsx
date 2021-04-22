@@ -6,9 +6,7 @@ import React, { Component } from "react";
 import axios from "axios";
 
 class CreateEvent extends Component {
-  state = {
-    employees: [],
-  };
+  state = {};
 
   render() {
     return (
@@ -27,7 +25,7 @@ class CreateEvent extends Component {
             alt=""
             id="xIconE"
             onClick={() => {
-              this.props.toggleAddEmployeeScreen();
+              this.props.toggleAddEmployeeScreen(false);
             }}
           />
           <input
@@ -54,22 +52,52 @@ class CreateEvent extends Component {
               <option value={schedule.id}>{schedule.name}</option>
             ))}
           </select>
-
-          <div
-            id="addEmployeeScreenButton"
-            onClick={() => {
-              let sel = document.getElementById("calendarSelectE");
-              let text = sel.options[sel.selectedIndex].text;
-              let newEmployee = {
-                name: document.getElementById("employeeNameInput").value,
-                calendar_id: sel.value,
-                calendar_name: text,
-              };
-              this.props.addEmployee(newEmployee);
-            }}
-          >
-            Add Employee
-          </div>
+          {!this.props.isEmployeeEdit ? (
+            <div
+              id="addEmployeeScreenButton"
+              onClick={() => {
+                let sel = document.getElementById("calendarSelectE");
+                let text = sel.options[sel.selectedIndex].text;
+                let newEmployee = {
+                  name: document.getElementById("employeeNameInput").value,
+                  calendar_id: sel.value,
+                  calendar_name: text,
+                };
+                this.props.addEmployee(newEmployee);
+              }}
+            >
+              Add Employee
+            </div>
+          ) : (
+            <div>
+              <div
+                id="editEmployeeScreenButton"
+                className="editEmployeeButton"
+                onClick={() => {
+                  let sel = document.getElementById("calendarSelectE");
+                  let text = sel.options[sel.selectedIndex].text;
+                  let newEmployee = {
+                    id: this.props.editEmployeeID,
+                    name: document.getElementById("employeeNameInput").value,
+                    calendar_id: sel.value,
+                    calendar_name: text,
+                  };
+                  this.props.editEmployee(newEmployee);
+                }}
+              >
+                Edit
+              </div>
+              <div
+                id="deleteEmployeeScreenButton"
+                className="editEmployeeButton"
+                onClick={() => {
+                  this.props.deleteEmployee(this.props.editEmployeeID);
+                }}
+              >
+                Delete
+              </div>
+            </div>
+          )}
         </div>
       </div>
     );

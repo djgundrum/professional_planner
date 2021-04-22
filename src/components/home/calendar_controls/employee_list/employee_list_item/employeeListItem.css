@@ -37,4 +37,16 @@
   float: left;
   margin: 0;
   margin-left: 10px;
+  width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#editEmployeeIcon {
+  height: 60%;
+  top: 10%;
+  position: absolute;
+  right: 20px;
+  opacity: 40%;
+  cursor: pointer;
 }

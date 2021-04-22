@@ -87,3 +87,27 @@
   line-height: 40px;
   cursor: pointer;
 }
+.editEmployeeButton {
+  background-color: #29abe2;
+  width: 100px;
+  height: 40px;
+  position: absolute;
+  bottom: 30px;
+  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  color: #f4f4f4;
+  border-radius: 20px;
+  line-height: 40px;
+  cursor: pointer;
+}
+#editEmployeeScreenButton {
+  left: 0px;
+  right: 120px;
+  margin: auto;
+}
+#deleteEmployeeScreenButton {
+  left: 120px;
+  right: 0px;
+  margin: auto;
+}
