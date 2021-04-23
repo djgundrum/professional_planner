@@ -21,7 +21,7 @@ class Login extends Component {
     isLoggedIn: false,
   };
   forgot_password = () => {
-    let email = "declan.gundrum.17@gmail.com";
+    let email = this.state.signinEmail;
 
     if (email === "") {
       this.setState({
