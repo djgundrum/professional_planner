@@ -304,13 +304,7 @@ router.post("/update_user", (req, res) => {
     let id = req.session.user.id;
     let rounds = 10;
 
-    if (
-      isEmpty(name) ||
-      isEmpty(email) ||
-      isEmpty(password) ||
-      isEmpty(role) ||
-      isEmpty(id)
-    ) {
+    if (isEmpty(name) || isEmpty(email) || isEmpty(role) || isEmpty(id)) {
       let r = new response(
         "Some of the parameters are not valid",
         false,
@@ -320,9 +314,16 @@ router.post("/update_user", (req, res) => {
     } else {
       generate_hash(password, rounds)
         .then((hash) => {
-          let sql =
-            "update users set name = ?, email = ?, password = ?, role = ? where id = ?";
-          let p = [name, email, hash, role, id];
+          var sql;
+          var p;
+          if (isEmpty(req.body.password)) {
+            sql = "update users set name = ?, email = ?, role = ? where id = ?";
+            p = [name, email, role, id];
+          } else {
+            sql =
+              "update users set name = ?, email = ?, password = ?, role = ? where id = ?";
+            p = [name, email, hash, role, id];
+          }
 
           return db.query(sql, p, true);
         })
