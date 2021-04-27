@@ -36,10 +36,15 @@ class Calendar extends Component {
       }
       let thisDateString = thisDateInfo[0] + thisDateInfo[1] + thisDateInfo[2];
       let theseEvents = [];
+      console.log(this.props.activeEvents);
       for (let i = 0; i < this.props.activeEvents.length; i++) {
         if (
           this.props.activeEvents[i].time.substring(0, 8) == thisDateString ||
-          this.props.activeEvents[i].time.substring(0, 8) == thisDateString
+          this.props.activeEvents[i].time_end.substring(0, 8) ==
+            thisDateString ||
+          (this.props.activeEvents[i].time.substring(0, 8) < thisDateString &&
+            this.props.activeEvents[i].time_end.substring(0, 8) >
+              thisDateString)
         ) {
           theseEvents = theseEvents.concat(this.props.activeEvents[i]);
         }
@@ -62,6 +67,7 @@ class Calendar extends Component {
         <CalendarColumn
           isLast={c !== 6 ? false : true}
           columnDateInfo={columnDateInfo}
+          columnDate={thisDate}
           isToday={isToday}
           theseEvents={theseEvents}
           toggleCreateEventScreen={this.props.toggleCreateEventScreen}

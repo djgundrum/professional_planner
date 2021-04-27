@@ -15,6 +15,8 @@ const response = require("../../global/response");
 router.post("/", async (req, res) => {
   try {
     //let alg = await testEmptyInput();
+    let constraints = req.body.constraints;
+    let employees = req.body.employees;
     let alg = await algorithm(constraints, employees);
     let r = new response("This is what was returned").body;
 

@@ -34,11 +34,29 @@
   height: 100px;
   width: 80%;
   margin: 100px 10% 50px 10%;
-  background-color: white;
-  box-shadow: 5px 5px 5px #cccccc;
   position: relative;
-  border-radius: 15px;
   padding-top: 10px;
+}
+.editProfileDiv {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  height: 20px;
+  width: 20px;
+}
+.editProfileIcon {
+  height: 100%;
+  opacity: 50%;
+  cursor: pointer;
+}
+.editProfileSave {
+  margin: 0;
+  position: relative;
+  right: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  color: #999999;
+  cursor: pointer;
 }
 .accountTitle {
   font-size: 18px;
@@ -86,10 +104,10 @@
 #changePasswordDiv {
   background-color: #29abe2;
   height: 40px;
-  width: 80px;
+  width: 200px;
   position: absolute;
-  right: 15px;
-  bottom: 15px;
+  top: 15px;
+  left: 15px;
   border-radius: 10px;
   text-align: center;
   line-height: 40px;

@@ -33,8 +33,13 @@ class CreateEvent extends Component {
       axios.post(url, data).then((result) => {
         if (result.data.valid) {
           this.props.toggleCreateEventScreen();
-
-          //This did not fix reloading events on create
+          this.setState({
+            startDate: "",
+            startTime: "",
+            endDate: "",
+            endTime: "",
+            editOnLoad: true,
+          });
           this.props.loadSchedulesToState();
         }
       });
@@ -53,8 +58,13 @@ class CreateEvent extends Component {
       axios.post(url, data).then((result) => {
         if (result.data.valid) {
           this.props.toggleCreateEventScreen();
-
-          //This did not fix reloading events on edit
+          this.setState({
+            startDate: "",
+            startTime: "",
+            endDate: "",
+            endTime: "",
+            editOnLoad: true,
+          });
           this.props.loadSchedulesToState();
         }
       });

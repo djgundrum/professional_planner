@@ -300,6 +300,9 @@ router.post("/update_user", (req, res) => {
     let name = req.body.name;
     let email = req.body.email;
     let password = req.body.password;
+    if (isEmpty(password)) {
+      password = "empty";
+    }
     let role = req.body.role;
     let id = req.session.user.id;
     let rounds = 10;
@@ -332,6 +335,8 @@ router.post("/update_user", (req, res) => {
         })
         .then(
           () => {
+            req.session.user.name = name;
+            req.session.user.email = email;
             return res.send(
               new response("The user was updated successfully.").body
             );

@@ -30,21 +30,43 @@ class CalendarColumn extends Component {
       return 0;
     });
 
+    Date.prototype.yyyymmdd = function () {
+      var mm = this.getMonth() + 1; // getMonth() is zero-based
+      var dd = this.getDate();
+
+      return [
+        this.getFullYear(),
+        (mm > 9 ? "" : "0") + mm,
+        (dd > 9 ? "" : "0") + dd,
+      ].join("");
+    };
+
+    let columnDateString = this.props.columnDate.yyyymmdd();
+
     // Step 2: Arrange the events by timeslot.
     for (i = 0; i < eventsLength; i++) {
       event = events[i];
 
       //gets start time offset in pixels
-      let eventTime = events[i].time.split(" ");
-      eventTime = eventTime[1].split(":");
-      eventTime = parseFloat(eventTime[0]) + parseFloat(eventTime[1] / 60);
-      event.start = Math.floor((eventTime / 24) * 1464);
+
+      if (event.time.substring(0, 8) < columnDateString) {
+        event.start = 0;
+      } else {
+        let eventTime = events[i].time.split(" ");
+        eventTime = eventTime[1].split(":");
+        eventTime = parseFloat(eventTime[0]) + parseFloat(eventTime[1] / 60);
+        event.start = Math.floor((eventTime / 24) * 1464);
+      }
 
       //gets end time offset in pixels
-      let eventTime2 = events[i].time_end.split(" ");
-      eventTime2 = eventTime2[1].split(":");
-      eventTime2 = parseFloat(eventTime2[0]) + parseFloat(eventTime2[1] / 60);
-      event.end = Math.floor((eventTime2 / 24) * 1464);
+      if (event.time_end.substring(0, 8) > columnDateString) {
+        event.end = 1464;
+      } else {
+        let eventTime2 = events[i].time_end.split(" ");
+        eventTime2 = eventTime2[1].split(":");
+        eventTime2 = parseFloat(eventTime2[0]) + parseFloat(eventTime2[1] / 60);
+        event.end = Math.floor((eventTime2 / 24) * 1464);
+      }
 
       eventsById[event.id] = {
         id: event.id,
@@ -196,7 +218,6 @@ class CalendarColumn extends Component {
     if (this.props.theseEvents[0]) {
       eventList = this.testEvents(this.props.theseEvents);
     }
-
     for (let c = 1; c <= 24; c++) {
       c !== 24
         ? cells.push(<CalendarCell isLast={false} />)

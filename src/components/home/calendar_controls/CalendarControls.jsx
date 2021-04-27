@@ -42,6 +42,8 @@ class CalendarControls extends Component {
           if (
             this.props.hours[x].start ===
               hoursToShow[hoursToShow.length - 1].startTime &&
+            this.props.hours[x].end ===
+              hoursToShow[hoursToShow.length - 1].endTime &&
             isChain
           ) {
             hoursToShow[hoursToShow.length - 1].endDay = x;
@@ -148,30 +150,30 @@ class CalendarControls extends Component {
                 <div id="generateSettingsDiv">
                   <div id="hoursDiv" className="generateSettingSection">
                     <div>
-                      <p>Maximum # Hours:</p>
-                      <input type="text" maxLength="2" />
+                      <p>Maximum Daily Hours:</p>
+                      <input type="text" maxLength="2" id="maxHrsInput" />
                     </div>
                     <div>
-                      <p>Minimum # Hours:</p>
-                      <input type="text" maxLength="2" />
+                      <p>Minimum Daily Hours:</p>
+                      <input type="text" maxLength="2" id="minHrsInput" />
                     </div>
                     <div>
-                      <p>Preferred # Hours:</p>
-                      <input type="text" maxLength="2" />
+                      <p>Preferred Weekly Hours:</p>
+                      <input type="text" maxLength="2" id="prefHrsInput" />
                     </div>
                   </div>
                   <div id="shiftLengthDiv" className="generateSettingSection">
                     <div>
                       <p>Maximum Shift Length:</p>
-                      <input type="text" maxLength="2" />
+                      <input type="text" maxLength="2" id="maxShiftInput" />
                     </div>
                     <div>
                       <p>Minimum Shift Length:</p>
-                      <input type="text" maxLength="2" />
+                      <input type="text" maxLength="2" id="minShiftInput" />
                     </div>
                     <div>
                       <p>Preferred Shift Length:</p>
-                      <input type="text" maxLength="2" />
+                      <input type="text" maxLength="2" id="prefShiftInput" />
                     </div>
                   </div>
                   <div
@@ -180,15 +182,15 @@ class CalendarControls extends Component {
                   >
                     <div>
                       <p>Maximum # Employees:</p>
-                      <input type="text" maxLength="2" />
+                      <input type="text" maxLength="2" id="maxEmployInput" />
                     </div>
                     <div>
                       <p>Minimum # Employees:</p>
-                      <input type="text" maxLength="2" />
+                      <input type="text" maxLength="2" id="minEmployInput" />
                     </div>
                     <div>
                       <p>Preferred # Employees:</p>
-                      <input type="text" maxLength="2" />
+                      <input type="text" maxLength="2" id="prefEmployInput" />
                     </div>
                   </div>
                   {noHours ? (
@@ -296,7 +298,14 @@ class CalendarControls extends Component {
             >
               Edit Schedule
             </div>
-            <div id="generateSchedulesButton">Generate Schedules</div>
+            <div
+              id="generateSchedulesButton"
+              onClick={() => {
+                this.props.generateSchedules();
+              }}
+            >
+              Generate Schedules
+            </div>
           </div>
         ) : (
           <></>

@@ -51,6 +51,7 @@ class Home extends Component {
     employeeIdCount: 0,
     editEmployeeID: "",
     isEditHoursScreen: false,
+    hoursStartDate: "",
     hours: [
       {
         start: "",
@@ -152,6 +153,9 @@ class Home extends Component {
                         },
                       ],
                     });
+                    if (this.state.activeCalendars.length != 0) {
+                      this.updateActiveEvents();
+                    }
                   } else {
                     nextFunc(pX + 1, pLength, nextFunc);
                   }
@@ -160,7 +164,18 @@ class Home extends Component {
             }
           });
         };
-        getSchedule(0, guestListResult.data.body.guests.length, getSchedule);
+        if (guestListResult.data.body.guests.length > 0) {
+          getSchedule(0, guestListResult.data.body.guests.length, getSchedule);
+        } else {
+          this.setState({
+            user: result1.data.body.user.user,
+            tempName: result1.data.body.user.user.name,
+            tempEmail: result1.data.body.user.user.email,
+            mySchedules: schedules,
+            //Change array to 'teamSchedules'
+            myTeamSchedules: teamSchedules,
+          });
+        }
       });
     });
   };
@@ -240,6 +255,22 @@ class Home extends Component {
       activeEvents: aEvents,
     });
   };
+  updateActiveEvents = () => {
+    let aEvents = [];
+    for (let e = 0; e < this.state.calendarEvents.length; e++) {
+      for (let a = 0; a < this.state.activeCalendars.length; a++) {
+        if (
+          this.state.calendarEvents[e].schedule_id ===
+          this.state.activeCalendars[a][0]
+        ) {
+          aEvents = aEvents.concat(this.state.calendarEvents[e]);
+        }
+      }
+    }
+    this.setState({
+      activeEvents: aEvents,
+    });
+  };
   updateTeamSchedule = (id, name) => {
     this.state.activeTeamSchedule[0] === id
       ? this.setState({
@@ -272,9 +303,47 @@ class Home extends Component {
     });
   };
   toggleCreateTeamScheduleScreen = () => {
-    this.setState({
-      isCreateTeamScheduleScreen: !this.state.isCreateTeamScheduleScreen,
-    });
+    if (this.state.isCreateTeamScheduleScreen) {
+      this.setState({
+        isCreateTeamScheduleScreen: !this.state.isCreateTeamScheduleScreen,
+        dateInfo: {
+          currentDate: new Date(),
+          startDate: new Date(
+            new Date().getTime() - new Date().getDay() * 24 * 60 * 60 * 1000
+          ),
+          endDate: new Date(
+            new Date().getTime() +
+              (6 - new Date().getDay()) * 24 * 60 * 60 * 1000
+          ),
+        },
+      });
+    } else {
+      let teamSundayDate = new Date(
+        new Date().getTime() - new Date().getDay() * 24 * 60 * 60 * 1000
+      );
+      let teamSaturdayDate = new Date(
+        new Date().getTime() + (6 - new Date().getDay()) * 24 * 60 * 60 * 1000
+      );
+      if (this.state.hoursStartDate != "") {
+        teamSundayDate = new Date();
+        teamSundayDate.setTime(
+          this.state.hoursStartDate.getTime() - 24 * 60 * 60 * 1000
+        );
+        teamSaturdayDate = new Date();
+        teamSaturdayDate.setTime(
+          this.state.hoursStartDate.getTime() + 5 * 24 * 60 * 60 * 1000
+        );
+      }
+      this.setState({
+        isCreateTeamScheduleScreen: !this.state.isCreateTeamScheduleScreen,
+
+        dateInfo: {
+          currentDate: new Date(),
+          startDate: teamSundayDate,
+          endDate: teamSaturdayDate,
+        },
+      });
+    }
   };
   toggleAddEmployeeScreen = (isEdit, editEmployee) => {
     if (this.state.isAddEmployeeScreen) {
@@ -295,6 +364,35 @@ class Home extends Component {
         isAddEmployeeScreen: !this.state.isAddEmployeeScreen,
         isEmployeeEdit: isEdit ? true : false,
       });
+    }
+  };
+  updateHoursStartDate = (start) => {
+    let teamSundayDate = new Date(
+      new Date().getTime() - new Date().getDay() * 24 * 60 * 60 * 1000
+    );
+    let teamSaturdayDate = new Date(
+      new Date().getTime() + (6 - new Date().getDay()) * 24 * 60 * 60 * 1000
+    );
+
+    for (let i = 0; i < 7; i++) {
+      let d = new Date();
+
+      d.setTime(start.getTime() + (i + 1) * 24 * 60 * 60 * 1000);
+      //d.setDate(start.getDate() + 1 + i);
+      if (d.getDay() == 1) {
+        teamSundayDate = new Date();
+        teamSundayDate.setTime(d.getTime() - 24 * 60 * 60 * 1000);
+        teamSaturdayDate = new Date();
+        teamSaturdayDate.setTime(d.getTime() + 5 * 24 * 60 * 60 * 1000);
+        this.setState({
+          hoursStartDate: d,
+          dateInfo: {
+            currentDate: new Date(),
+            startDate: teamSundayDate,
+            endDate: teamSaturdayDate,
+          },
+        });
+      }
     }
   };
   addEmployee = (newEmployee) => {
@@ -373,6 +471,96 @@ class Home extends Component {
     start = start % 12;
     return start + ":" + end + " PM";
   };
+  generateSchedules = () => {
+    let maxHrs = document.getElementById("maxHrsInput").value;
+    let minHrs = document.getElementById("minHrsInput").value;
+    let prefHrs = document.getElementById("prefHrsInput").value;
+    let maxShift = document.getElementById("maxShiftInput").value;
+    let minShift = document.getElementById("minShiftInput").value;
+    let prefShift = document.getElementById("prefShiftInput").value;
+    let maxEmploy = document.getElementById("maxEmployInput").value;
+    let minEmploy = document.getElementById("minEmployInput").value;
+    let prefEmploy = document.getElementById("prefEmployInput").value;
+    if (
+      maxHrs != "" &&
+      minHrs != "" &&
+      prefHrs != "" &&
+      maxShift != "" &&
+      minShift != "" &&
+      prefShift != "" &&
+      maxEmploy != "" &&
+      minEmploy != "" &&
+      prefEmploy != ""
+    ) {
+      let hrs = [];
+      for (let i = 1; i <= 5; i++) {
+        if (this.state.hours[i].start == "") {
+          hrs[i] = [0, 0];
+        } else {
+          let hr0 = this.state.hours[i].start;
+          let hr1 = parseInt(hr0.substring(0, 2));
+          let hr2 = parseInt(hr0.substring(3, 5)) / 60;
+          let hr00 = this.state.hours[i].end;
+          let hr11 = parseInt(hr00.substring(0, 2));
+          let hr22 = parseInt(hr00.substring(3, 5)) / 60;
+          hrs[i] = [hr1 + hr2, hr11 + hr22];
+        }
+      }
+      console.log(hrs);
+      let constraints = {
+        minHrs: minHrs,
+        maxHrs: maxHrs,
+        minShift: minShift,
+        maxShift: maxShift,
+        normalShift: prefShift,
+        minEmployees: minEmploy,
+        maxEmployees: maxEmploy,
+        prefferedNumberOfEmployees: prefEmploy,
+        businessHrs: {
+          m: { start: hrs[1][0], end: hrs[1][1] },
+          t: { start: hrs[2][0], end: hrs[2][1] },
+          w: { start: hrs[3][0], end: hrs[3][1] },
+          r: { start: hrs[4][0], end: hrs[4][1] },
+          f: { start: hrs[5][0], end: hrs[5][1] },
+        },
+      };
+      let index = 0;
+      let addConflicts = (index) => {
+        if (index == this.state.employees.length) {
+          //End here
+        } else {
+          let url = `/api/events/schedule/${this.state.employees[index].calendar_id}`;
+          axios.get(url).then((result) => {
+            console.log(result);
+            addConflicts(index + 1);
+          });
+        }
+      };
+      addConflicts(0);
+      let employees = {
+        e0001: {
+          preferredMinHrs: 3,
+          preferredMaxHrs: 6,
+          preferredHrs: 10,
+          conflicts: {
+            m: [],
+            t: [],
+            w: [],
+            r: [],
+            f: [],
+          },
+        },
+      };
+      let data = {
+        constraints: constraints,
+        employees: employees,
+      };
+      let url = "/api/algorithm";
+      axios.post(url, data).then((result) => {
+        console.log(result);
+      });
+    }
+  };
   render() {
     return (
       <div id="homeScreen">
@@ -386,6 +574,8 @@ class Home extends Component {
           dateInfo={this.state.dateInfo}
           forwardTimeframe={this.forwardTimeframe}
           backwardTimeframe={this.backwardTimeframe}
+          isCreateTeamScheduleScreen={this.state.isCreateTeamScheduleScreen}
+          hoursStartDate={this.state.hoursStartDate}
         />
         <Calendar
           dateInfo={this.state.dateInfo}
@@ -414,6 +604,7 @@ class Home extends Component {
           hours={this.state.hours}
           toggleEditHoursScreen={this.toggleEditHoursScreen}
           formatTime={this.formatTime}
+          generateSchedules={this.generateSchedules}
         />
         <CreateEvent
           mySchedules={this.state.mySchedules}
@@ -450,6 +641,8 @@ class Home extends Component {
           updateHours={this.updateHours}
           hours={this.state.hours}
           formatTime={this.formatTime}
+          updateHoursStartDate={this.updateHoursStartDate}
+          hoursStartDate={this.state.hoursStartDate}
         ></EditHours>
       </div>
     );

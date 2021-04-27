@@ -96,7 +96,7 @@
   border-radius: 20px;
   float: left;
   text-align: center;
-  margin-left: 15px;
+  margin-left: 33px;
   line-height: 40px;
   color: #cccccc;
   font-family: Arial, Helvetica, sans-serif;
@@ -108,4 +108,26 @@
 }
 .dayCircleOff {
   background-color: #eeeeee;
+}
+#weekRangeDiv {
+  width: 80%;
+  margin: auto;
+  position: relative;
+}
+#weekRangeDiv p {
+  margin: 80px 0px 30px 0px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  color: #999999;
+}
+#weekRangeDiv input {
+  margin: 5px 10px 0px 10px;
+  height: 30px;
+  font-size: 20px;
+  color: #999999;
+  font-family: Arial, Helvetica, sans-serif;
+  padding-top: 4px;
+  position: absolute;
+  top: -12px;
+  left: 60px;
 }

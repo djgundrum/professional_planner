@@ -28,6 +28,17 @@ class EditHours extends Component {
     }
   };
   render() {
+    let weekDates = ["", "", "", "", ""];
+    if (this.props.hoursStartDate != "") {
+      for (let i = 0; i < 5; i++) {
+        let d = new Date();
+        //d.setDate(this.props.hoursStartDate.getDate() + i);
+        d.setTime(
+          this.props.hoursStartDate.getTime() + i * 24 * 60 * 60 * 1000
+        );
+        weekDates[i] = d.getMonth() + 1 + "/" + d.getDate();
+      }
+    }
     return (
       <div
         id="editHoursScreen"
@@ -53,18 +64,6 @@ class EditHours extends Component {
             }}
           />
           <div id="dayCirclesDiv">
-            <div
-              className={
-                this.state.activeDays[0]
-                  ? "dayCircle dayCircleOn"
-                  : "dayCircle dayCircleOff"
-              }
-              onClick={() => {
-                this.toggleDay(0);
-              }}
-            >
-              S
-            </div>
             <div
               className={
                 this.state.activeDays[1]
@@ -125,18 +124,6 @@ class EditHours extends Component {
             >
               F
             </div>
-            <div
-              className={
-                this.state.activeDays[6]
-                  ? "dayCircle dayCircleOn"
-                  : "dayCircle dayCircleOff"
-              }
-              onClick={() => {
-                this.toggleDay(6);
-              }}
-            >
-              S
-            </div>
           </div>
           <div id="editHoursTimeDiv">
             <p>Start: </p>
@@ -152,74 +139,78 @@ class EditHours extends Component {
           >
             Set
           </div>
-          <div id="sundayDiv" className="editHoursDayDiv">
-            <p>
-              {this.props.hours[0].start != ""
-                ? "Sunday: " +
-                  this.props.formatTime(this.props.hours[0].start) +
-                  " - " +
-                  this.props.formatTime(this.props.hours[0].end)
-                : ""}
-            </p>
+          <div id="weekRangeDiv">
+            <p>Start:</p>
+            <input
+              type="date"
+              onChange={(e) => {
+                this.props.updateHoursStartDate(e.target.valueAsDate);
+              }}
+            />
           </div>
           <div id="mondayDiv" className="editHoursDayDiv">
             <p>
               {this.props.hours[1].start != ""
-                ? "Monday: " +
+                ? "Monday" +
+                  " " +
+                  weekDates[0] +
+                  ": " +
                   this.props.formatTime(this.props.hours[1].start) +
                   " - " +
                   this.props.formatTime(this.props.hours[1].end)
-                : "Monday: "}
+                : "Monday" + " " + weekDates[0] + ": "}
             </p>
           </div>
           <div id="tuesdayDiv" className="editHoursDayDiv">
             <p>
               {this.props.hours[2].start != ""
-                ? "Tuesday: " +
+                ? "Tuesday" +
+                  " " +
+                  weekDates[1] +
+                  ": " +
                   this.props.formatTime(this.props.hours[2].start) +
                   " - " +
                   this.props.formatTime(this.props.hours[2].end)
-                : "Tuesday: "}
+                : "Tuesday" + " " + weekDates[1] + ": "}
             </p>
           </div>
           <div id="wednesdayDiv" className="editHoursDayDiv">
             <p>
               {this.props.hours[3].start != ""
-                ? "Wednesday: " +
+                ? "Wednesday" +
+                  " " +
+                  weekDates[2] +
+                  ": " +
                   this.props.formatTime(this.props.hours[3].start) +
                   " - " +
                   this.props.formatTime(this.props.hours[3].end)
-                : "Wednesday: "}
+                : "Wednesday" + " " + weekDates[2] + ": "}
             </p>
           </div>
           <div id="thursdayDiv" className="editHoursDayDiv">
             <p>
               {this.props.hours[4].start != ""
-                ? "Thursday: " +
+                ? "Thursday" +
+                  " " +
+                  weekDates[3] +
+                  ": " +
                   this.props.formatTime(this.props.hours[4].start) +
                   " - " +
                   this.props.formatTime(this.props.hours[4].end)
-                : "Thursday: "}
+                : "Thursday" + " " + weekDates[3] + ": "}
             </p>
           </div>
           <div id="fridayDiv" className="editHoursDayDiv">
             <p>
               {this.props.hours[5].start != ""
-                ? "Friday: " +
+                ? "Friday" +
+                  " " +
+                  weekDates[4] +
+                  ": " +
                   this.props.formatTime(this.props.hours[5].start) +
                   " - " +
                   this.props.formatTime(this.props.hours[5].end)
-                : "Friday: "}
-            </p>
-          </div>
-          <div id="saturdayDiv" className="editHoursDayDiv">
-            <p>
-              {this.props.hours[6].start != ""
-                ? "Saturday: " +
-                  this.props.formatTime(this.props.hours[6].start) +
-                  " - " +
-                  this.props.formatTime(this.props.hours[6].end)
-                : "Saturday: "}
+                : "Friday" + " " + weekDates[4] + ": "}
             </p>
           </div>
         </div>

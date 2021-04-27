@@ -4,6 +4,7 @@ import ProfileCalendarBody from "./profile_calendar_body/ProfileCalendarBody";
 import ProfileTeamBody from "./profile_team_body/ProfileTeamBody";
 import ProfileContactBody from "./profile_contact_body/ProfileContactBody";
 import axios from "axios";
+import editIcon from "../../images/editIcon.svg";
 import { Redirect } from "react-router";
 
 class ProfileBody extends Component {
@@ -25,6 +26,10 @@ class ProfileBody extends Component {
     myTeamSchedules: [],
     isDeleteCalendarScreen: false,
     calendarToDelete: ["", ""],
+    isEditingName: false,
+    isEditingEmail: false,
+    tempName: "",
+    tempEmail: "",
   };
   componentDidMount() {
     this.loadSchedulesToState();
@@ -36,10 +41,10 @@ class ProfileBody extends Component {
     let teamSchedules = [];
     let isEmpty = true;
     axios.get(url1).then((result1) => {
+      console.log(result1);
       let url2 = `/api/events/guests/user/${result1.data.body.user.user.id}`;
       axios.get(url2).then((guestListResult) => {
         //console.log(guestListResult.data.body.guests.length);
-
         let getSchedule = (pX, pLength, nextFunc) => {
           isEmpty = false;
           let url3 = `/api/schedules/${guestListResult.data.body.guests[pX].schedule_id}`;
@@ -55,12 +60,9 @@ class ProfileBody extends Component {
 
               if (pX === pLength - 1) {
                 this.setState({
-                  user: {
-                    id: result1.data.body.user.user.id,
-                    name: result1.data.body.user.user.name,
-                    email: result1.data.body.user.user.email,
-                    password: result1.data.body.user.user.id,
-                  },
+                  user: result1.data.body.user.user,
+                  tempName: result1.data.body.user.user.name,
+                  tempEmail: result1.data.body.user.user.email,
                   mySchedules: schedules,
                   //Change array to 'teamSchedules'
                   myTeamSchedules: [
@@ -93,7 +95,18 @@ class ProfileBody extends Component {
             }
           });
         };
-        getSchedule(0, guestListResult.data.body.guests.length, getSchedule);
+        if (guestListResult.data.body.guests.length > 0) {
+          getSchedule(0, guestListResult.data.body.guests.length, getSchedule);
+        } else {
+          this.setState({
+            user: result1.data.body.user.user,
+            tempName: result1.data.body.user.user.name,
+            tempEmail: result1.data.body.user.user.email,
+            mySchedules: schedules,
+            //Change array to 'teamSchedules'
+            myTeamSchedules: teamSchedules,
+          });
+        }
       });
     });
   };
@@ -125,6 +138,55 @@ class ProfileBody extends Component {
       this.askDeleteCalendar("", "");
     }
   };
+  toggleEditName = (isSave) => {
+    this.setState({
+      isEditingName: !this.state.isEditingName,
+    });
+    if (isSave) {
+      this.saveInfo();
+    }
+  };
+  toggleEditEmail = (isSave) => {
+    this.setState({
+      isEditingEmail: !this.state.isEditingEmail,
+    });
+    if (isSave) {
+      this.saveInfo();
+    }
+  };
+  updateName = () => {
+    this.setState({
+      tempName: document.getElementById("editNameInput").value,
+    });
+  };
+  updateEmail = () => {
+    this.setState({
+      tempEmail: document.getElementById("editEmailInput").value,
+    });
+  };
+  saveInfo = () => {
+    let uName = this.state.user.name;
+    let uEmail = this.state.user.email;
+    if (
+      document.getElementById("editNameInput").value != uName ||
+      document.getElementById("editEmailInput").value != uEmail
+    ) {
+      uName = document.getElementById("editNameInput").value;
+      uEmail = document.getElementById("editEmailInput").value;
+      let url = "/api/user/update_user";
+      let data = {
+        id: this.state.user.id,
+        name: uName,
+        email: uEmail,
+        role: this.state.user.role,
+      };
+      axios.post(url, data).then((result) => {
+        console.log(result);
+        if (result.data.valid) {
+        }
+      });
+    }
+  };
   render() {
     switch (this.props.activeScreen) {
       case "information":
@@ -133,36 +195,80 @@ class ProfileBody extends Component {
             <div id="profileNamesDiv">
               <div id="profileFirstDiv">
                 <p className="accountTitle">First Name</p>
+                <div className="editProfileDiv">
+                  {this.state.isEditingName ? (
+                    <p
+                      className="editProfileSave"
+                      onClick={() => {
+                        this.toggleEditName(true);
+                      }}
+                    >
+                      Save
+                    </p>
+                  ) : (
+                    <img
+                      src={editIcon}
+                      className="editProfileIcon"
+                      alt=""
+                      onClick={() => {
+                        this.toggleEditName(false);
+                      }}
+                    />
+                  )}
+                </div>
                 <input
                   type="text"
                   name=""
-                  id=""
+                  id="editNameInput"
                   className="accountInput"
-                  value={this.state.user.name}
+                  value={this.state.tempName}
+                  onChange={this.updateName}
+                  disabled={this.state.isEditingName ? false : true}
                 />
               </div>
               <div id="profileEmailDiv">
                 <p className="accountTitle">Email</p>
+                <div className="editProfileDiv">
+                  {this.state.isEditingEmail ? (
+                    <p
+                      className="editProfileSave"
+                      onClick={() => {
+                        this.toggleEditEmail(true);
+                      }}
+                    >
+                      Save
+                    </p>
+                  ) : (
+                    <img
+                      src={editIcon}
+                      className="editProfileIcon"
+                      alt=""
+                      onClick={() => {
+                        this.toggleEditEmail(false);
+                      }}
+                    />
+                  )}
+                </div>
                 <input
                   type="text"
                   name=""
-                  id=""
+                  id="editEmailInput"
                   className="accountInput"
-                  value={this.state.user.email}
+                  value={this.state.tempEmail}
+                  onChange={this.updateEmail}
+                  disabled={this.state.isEditingEmail ? false : true}
                 />
               </div>
             </div>
             <div id="profilePasswordDiv">
-              <p className="accountTitle">Password</p>
-              <input
-                type="password"
-                name=""
-                id=""
-                className="accountInput"
-                value={this.state.user.password}
-                disabled={true}
-              />
-              <div id="changePasswordDiv">Change</div>
+              <div
+                id="changePasswordDiv"
+                onClick={() => {
+                  this.props.toggleChangePasswordScreen(this.state.user);
+                }}
+              >
+                Change Password
+              </div>
             </div>
           </div>
         );

@@ -17,8 +17,8 @@ function App() {
         <Route exact path="/login" component={Login} />
         <Route exact path="/test" component={Test} />
         <ProtectedRoute exact={true} path="/profile" component={Profile} />
-        <ProtectedRoute
-          exact={true}
+        <Route
+          exact
           path="/forgot_password/:hash"
           component={Forgot_Password}
         />
