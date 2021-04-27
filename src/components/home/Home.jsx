@@ -48,6 +48,8 @@ class Home extends Component {
     isAddEmployeeScreen: false,
     isEmployeeEdit: false,
     employees: [],
+    employeeEvents: [],
+    generatedEvents: [],
     employeeIdCount: 0,
     editEmployeeID: "",
     isEditHoursScreen: false,
@@ -396,22 +398,55 @@ class Home extends Component {
     }
   };
   addEmployee = (newEmployee) => {
+    let colors = [
+      "#ff3200",
+      "#ff7f0a",
+      "#ffe174",
+      "#4bdf00",
+      "#009f1a",
+      "#0acbff",
+      "#5f71ff",
+      "#dd5fff",
+      "#ff7bd5",
+      "#777777",
+    ];
     let newnewEmployee = {
       id: this.state.employeeIdCount + 1,
       name: newEmployee.name,
+      description: colors[this.state.employeeIdCount % 10],
       calendar_id: newEmployee.calendar_id,
       calendar_name: newEmployee.calendar_name,
       calendar_description: newEmployee.calendar_description,
     };
     this.toggleAddEmployeeScreen(false);
-    this.setState({
-      employees: this.state.employees.concat(newnewEmployee),
-      employeeIdCount: this.state.employeeIdCount + 1,
-    });
+    let newEmployeeList = this.state.employees.concat(newnewEmployee);
+
+    let employeeEvents = [];
+    let loadEmployeeEvents = (i) => {
+      if (i == newEmployeeList.length) {
+        this.setState({
+          employees: newEmployeeList,
+          employeeIdCount: this.state.employeeIdCount + 1,
+          employeeEvents: employeeEvents,
+        });
+      } else {
+        let url = `/api/events/schedule/${newEmployeeList[i].calendar_id}`;
+        axios.get(url).then((result) => {
+          if (result.data.valid) {
+            for (let e = 0; e < result.data.body.events.length; e++) {
+              let tempE = result.data.body.events[e];
+              tempE.description = newEmployeeList[i].description;
+              tempE.type_description = "employeeEvent";
+              employeeEvents.push(tempE);
+            }
+            loadEmployeeEvents(i + 1);
+          }
+        });
+      }
+    };
+    loadEmployeeEvents(0);
   };
   editEmployee = (editEmployee) => {
-    //console.log(this.state.employees);
-    //console.log(editEmployee);
     let index = 0;
     for (let e = 0; e < this.state.employees.length; e++) {
       if (this.state.employees[e].id === editEmployee.id) {
@@ -436,10 +471,31 @@ class Home extends Component {
     }
     let tempEs = this.state.employees;
     tempEs.splice(index, 1);
-    this.toggleAddEmployeeScreen(false);
-    this.setState({
-      employees: tempEs,
-    });
+
+    let employeeEvents = [];
+    let loadEmployeeEvents2 = (i) => {
+      if (i == tempEs.length) {
+        this.toggleAddEmployeeScreen(false);
+        this.setState({
+          employees: tempEs,
+          employeeEvents: employeeEvents,
+        });
+      } else {
+        let url = `/api/events/schedule/${tempEs[i].calendar_id}`;
+        axios.get(url).then((result) => {
+          if (result.data.valid) {
+            for (let e = 0; e < result.data.body.events.length; e++) {
+              let tempE = result.data.body.events[e];
+              tempE.description = tempEs[i].description;
+              tempE.type_description = "employeeEvent";
+              employeeEvents.push(tempE);
+            }
+            loadEmployeeEvents2(i + 1);
+          }
+        });
+      }
+    };
+    loadEmployeeEvents2(0);
   };
   toggleEditHoursScreen = () => {
     this.setState({
@@ -472,6 +528,7 @@ class Home extends Component {
     return start + ":" + end + " PM";
   };
   generateSchedules = () => {
+    let dayLetters = ["", "m", "t", "w", "r", "f"];
     let maxHrs = document.getElementById("maxHrsInput").value;
     let minHrs = document.getElementById("minHrsInput").value;
     let prefHrs = document.getElementById("prefHrsInput").value;
@@ -481,6 +538,27 @@ class Home extends Component {
     let maxEmploy = document.getElementById("maxEmployInput").value;
     let minEmploy = document.getElementById("minEmployInput").value;
     let prefEmploy = document.getElementById("prefEmployInput").value;
+    let generatedEvents = [];
+    Date.prototype.yyyymmdd = function () {
+      var mm = this.getMonth() + 1; // getMonth() is zero-based
+      var dd = this.getDate();
+
+      return [
+        this.getFullYear(),
+        (mm > 9 ? "" : "0") + mm,
+        (dd > 9 ? "" : "0") + dd,
+      ].join("");
+    };
+    let intToDate = function (day, d) {
+      let first = Math.floor(d);
+      let second = d - Math.floor(d);
+      second = Math.ceil(second.toFixed(5) * 60);
+      second = second.toString();
+      if (second.length == 1) {
+        second = "0" + second;
+      }
+      return day.yyyymmdd() + " " + first + ":" + second;
+    };
     if (
       maxHrs != "" &&
       minHrs != "" &&
@@ -506,7 +584,6 @@ class Home extends Component {
           hrs[i] = [hr1 + hr2, hr11 + hr22];
         }
       }
-      console.log(hrs);
       let constraints = {
         minHrs: minHrs,
         maxHrs: maxHrs,
@@ -524,41 +601,152 @@ class Home extends Component {
           f: { start: hrs[5][0], end: hrs[5][1] },
         },
       };
-      let index = 0;
+      let employees = {};
       let addConflicts = (index) => {
         if (index == this.state.employees.length) {
-          //End here
+          let data = {
+            constraints: constraints,
+            employees: employees,
+          };
+          let dayLetters = ["m", "t", "w", "r", "f"];
+          let url = "/api/algorithm";
+          axios.post(url, data).then((result) => {
+            console.log(result.data.body.response);
+            for (let x = 0; x < 5; x++) {
+              for (
+                let y = 0;
+                y < result.data.body.response[dayLetters[x]].length;
+                y++
+              ) {
+                if (result.data.body.response[dayLetters[x]][y][0] != -1) {
+                  let tDate = new Date();
+                  tDate.setTime(
+                    this.state.dateInfo.startDate.getTime() +
+                      (x + 1) * 24 * 60 * 60 * 1000
+                  );
+                  let tStart =
+                    result.data.body.response[dayLetters[x]][y][1][0];
+                  let tEnd = result.data.body.response[dayLetters[x]][y][1][1];
+
+                  let time0 = intToDate(tDate, tStart);
+                  let time_end0 = intToDate(tDate, tEnd);
+                  let tEvent = {
+                    capacity: 1,
+                    description: "#111111",
+                    end: (tEnd / 24) * 1464,
+                    id: x + "" + y,
+                    name: "",
+                    schedule_id: "",
+                    start: (tStart / 24) * 1464,
+                    time: time0,
+                    time_end: time_end0,
+                    type: "TeamSchedule",
+                    type_description: "",
+                  };
+                  generatedEvents.push(tEvent);
+                }
+              }
+            }
+            this.setState({ generatedEvents: generatedEvents });
+          });
         } else {
           let url = `/api/events/schedule/${this.state.employees[index].calendar_id}`;
           axios.get(url).then((result) => {
-            console.log(result);
+            let ee = "e" + index;
+            let tempEmployee = {
+              preferredMinHrs: 3,
+              preferredMaxHrs: 6,
+              preferredHrs: 10,
+              conflicts: {
+                m: [],
+                t: [],
+                w: [],
+                r: [],
+                f: [],
+              },
+            };
+
+            //Go through all events in employee's calendar
+            for (let e = 0; e < result.data.body.events.length; e++) {
+              //Go through all days in the work week
+              for (let d = 1; d < 6; d++) {
+                let tempDate = new Date();
+                tempDate.setTime(
+                  this.state.dateInfo.startDate.getTime() +
+                    d * 24 * 60 * 60 * 1000
+                );
+                //tempDate is the date of the current column
+                tempDate = tempDate.yyyymmdd();
+
+                //If the event's date starts and ends on tempDate, add the conflict
+                if (
+                  result.data.body.events[e].time.substring(0, 8) == tempDate &&
+                  result.data.body.events[e].time_end.substring(0, 8) ==
+                    tempDate
+                ) {
+                  let startInt0 = result.data.body.events[e].time.substring(
+                    9,
+                    14
+                  );
+                  let startInt1 = parseInt(startInt0.substring(0, 2));
+                  let startInt2 = parseInt(startInt0.substring(3, 5)) / 60;
+                  let endInt0 = result.data.body.events[e].time_end.substring(
+                    9,
+                    14
+                  );
+                  let endInt1 = parseInt(endInt0.substring(0, 2));
+                  let endInt2 = parseInt(endInt0.substring(3, 5)) / 60;
+                  startInt0 = startInt1 + startInt2;
+                  endInt0 = endInt1 + endInt2;
+                  tempEmployee.conflicts[dayLetters[d]].push([
+                    startInt0,
+                    endInt0,
+                  ]);
+                }
+                //If the event starts before tempDate and ends after tempDate, add a conflict that lasts all day
+                else if (
+                  result.data.body.events[e].time.substring(0, 8) < tempDate &&
+                  result.data.body.events[e].time_end.substring(0, 8) > tempDate
+                ) {
+                  tempEmployee.conflicts[dayLetters[d]].push([0, 23.9]);
+                }
+                //If the event starts before tempDate and ends on tempDate, add a conflict that goes all day until the end time
+                else if (
+                  result.data.body.events[e].time.substring(0, 8) < tempDate &&
+                  result.data.body.events[e].time_end.substring(0, 8) ==
+                    tempDate
+                ) {
+                  let endInt0 = result.data.body.events[e].time_end.substring(
+                    9,
+                    14
+                  );
+                  let endInt1 = parseInt(endInt0.substring(0, 2));
+                  let endInt2 = parseInt(endInt0.substring(3, 5)) / 60;
+                  endInt0 = endInt1 + endInt2;
+                  tempEmployee.conflicts[dayLetters[d]].push([0, endInt0]);
+                }
+                //If the event starts on tempDate and ends after tempDate, add a conflict that starts at the time and goes the rest of the day
+                else if (
+                  result.data.body.events[e].time.substring(0, 8) == tempDate &&
+                  result.data.body.events[e].time_end.substring(0, 8) > tempDate
+                ) {
+                  let startInt0 = result.data.body.events[e].time.substring(
+                    9,
+                    14
+                  );
+                  let startInt1 = parseInt(startInt0.substring(0, 2));
+                  let startInt2 = parseInt(startInt0.substring(3, 5)) / 60;
+                  startInt0 = startInt1 + startInt2;
+                  tempEmployee.conflicts[dayLetters[d]].push([startInt0, 23.9]);
+                }
+              }
+            }
+            employees[ee] = tempEmployee;
             addConflicts(index + 1);
           });
         }
       };
       addConflicts(0);
-      let employees = {
-        e0001: {
-          preferredMinHrs: 3,
-          preferredMaxHrs: 6,
-          preferredHrs: 10,
-          conflicts: {
-            m: [],
-            t: [],
-            w: [],
-            r: [],
-            f: [],
-          },
-        },
-      };
-      let data = {
-        constraints: constraints,
-        employees: employees,
-      };
-      let url = "/api/algorithm";
-      axios.post(url, data).then((result) => {
-        console.log(result);
-      });
     }
   };
   render() {
@@ -586,6 +774,10 @@ class Home extends Component {
           activeEvents={this.state.activeEvents}
           view={this.state.view}
           toggleCreateEventScreen={this.toggleCreateEventScreen}
+          isCreateTeamScheduleScreen={this.state.isCreateTeamScheduleScreen}
+          employees={this.state.employees}
+          employeeEvents={this.state.employeeEvents}
+          generatedEvents={this.state.generatedEvents}
         />
         <CalendarControls
           updateCalendars={this.updateCalendars}

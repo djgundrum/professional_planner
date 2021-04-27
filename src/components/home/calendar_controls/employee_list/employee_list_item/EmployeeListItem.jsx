@@ -13,7 +13,10 @@ class EmployeeListItem extends Component {
           </p>
         </div>
         <div className="employeeBlock">
-          <div className="employeeBlockColor"></div>
+          <div
+            className="employeeBlockColor"
+            style={{ backgroundColor: this.props.employee.description }}
+          ></div>
           <p className="employeeBlockName">
             {this.props.employee.calendar_name}
           </p>

@@ -77,6 +77,7 @@ class CalendarColumn extends Component {
         schedule: event.schedule_id,
         time: events[i].time,
         time_end: events[i].time_end,
+        type_description: events[i].type_description,
       };
 
       // Checks if current event overlaps previous event

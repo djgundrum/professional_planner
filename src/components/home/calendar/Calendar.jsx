@@ -2,6 +2,7 @@ import "./calendar.css";
 
 import React, { Component } from "react";
 import CalendarColumn from "./calendar_column/CalendarColumn";
+import axios from "axios";
 
 class Calendar extends Component {
   state = {
@@ -36,17 +37,48 @@ class Calendar extends Component {
       }
       let thisDateString = thisDateInfo[0] + thisDateInfo[1] + thisDateInfo[2];
       let theseEvents = [];
-      console.log(this.props.activeEvents);
-      for (let i = 0; i < this.props.activeEvents.length; i++) {
-        if (
-          this.props.activeEvents[i].time.substring(0, 8) == thisDateString ||
-          this.props.activeEvents[i].time_end.substring(0, 8) ==
-            thisDateString ||
-          (this.props.activeEvents[i].time.substring(0, 8) < thisDateString &&
-            this.props.activeEvents[i].time_end.substring(0, 8) >
-              thisDateString)
-        ) {
-          theseEvents = theseEvents.concat(this.props.activeEvents[i]);
+
+      if (!this.props.isCreateTeamScheduleScreen) {
+        for (let i = 0; i < this.props.activeEvents.length; i++) {
+          if (
+            this.props.activeEvents[i].time.substring(0, 8) == thisDateString ||
+            this.props.activeEvents[i].time_end.substring(0, 8) ==
+              thisDateString ||
+            (this.props.activeEvents[i].time.substring(0, 8) < thisDateString &&
+              this.props.activeEvents[i].time_end.substring(0, 8) >
+                thisDateString)
+          ) {
+            theseEvents = theseEvents.concat(this.props.activeEvents[i]);
+          }
+        }
+      } else {
+        for (let i = 0; i < this.props.employeeEvents.length; i++) {
+          if (
+            this.props.employeeEvents[i].time.substring(0, 8) ==
+              thisDateString ||
+            this.props.employeeEvents[i].time_end.substring(0, 8) ==
+              thisDateString ||
+            (this.props.employeeEvents[i].time.substring(0, 8) <
+              thisDateString &&
+              this.props.employeeEvents[i].time_end.substring(0, 8) >
+                thisDateString)
+          ) {
+            theseEvents = theseEvents.concat(this.props.employeeEvents[i]);
+          }
+        }
+        for (let i = 0; i < this.props.generatedEvents.length; i++) {
+          if (
+            this.props.generatedEvents[i].time.substring(0, 8) ==
+              thisDateString ||
+            this.props.generatedEvents[i].time_end.substring(0, 8) ==
+              thisDateString ||
+            (this.props.generatedEvents[i].time.substring(0, 8) <
+              thisDateString &&
+              this.props.generatedEvents[i].time_end.substring(0, 8) >
+                thisDateString)
+          ) {
+            theseEvents = theseEvents.concat(this.props.generatedEvents[i]);
+          }
         }
       }
       let isToday = false;
