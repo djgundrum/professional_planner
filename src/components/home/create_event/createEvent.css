@@ -167,3 +167,20 @@
   line-height: 40px;
   cursor: pointer;
 }
+#removeEventButton {
+  width: 198px;
+  height: 38px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  bottom: 90px;
+  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  color: #29abe2;
+  border-radius: 20px;
+  border: 1px solid #29abe2;
+  line-height: 40px;
+  cursor: pointer;
+}

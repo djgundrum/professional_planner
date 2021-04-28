@@ -52,7 +52,12 @@ class MenuBar extends Component {
     }
     return (
       <div id="menuBar">
-        <p id="activeCalendarsTopLeft">
+        <p
+          id="activeCalendarsTopLeft"
+          style={{
+            display: this.props.isCreateTeamScheduleScreen ? "none" : "block",
+          }}
+        >
           {this.props.view === "Calendar"
             ? this.props.activeCalendars.length > 0
               ? this.props.activeCalendars.length > 1

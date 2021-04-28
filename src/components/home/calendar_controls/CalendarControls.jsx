@@ -96,7 +96,7 @@ class CalendarControls extends Component {
                 id="addEventButton"
                 className="calendarControlsButton hoverClass"
                 onClick={() => {
-                  this.props.toggleCreateEventScreen(false, {});
+                  this.props.toggleCreateEventScreen(false, {}, false);
                 }}
               >
                 Create Event
@@ -293,10 +293,19 @@ class CalendarControls extends Component {
         {this.props.isCreateTeamScheduleScreen ? (
           <div id="generateButtonsDiv">
             <div
-              id="generateSchedulesEditButton"
-              className="editScheduleDisabled"
+              id="exportScheduleButton"
+              className={
+                this.props.isSave
+                  ? "exportScheduleActive"
+                  : "exportScheduleDisabled"
+              }
+              onClick={() => {
+                //if (this.props.isSave) {
+                this.props.toggleExportScreen();
+                //}
+              }}
             >
-              Edit Schedule
+              Export Schedule
             </div>
             <div
               id="generateSchedulesButton"
@@ -304,7 +313,7 @@ class CalendarControls extends Component {
                 this.props.generateSchedules();
               }}
             >
-              Generate Schedules
+              Generate Schedule
             </div>
           </div>
         ) : (

@@ -32,7 +32,7 @@ class CreateEvent extends Component {
       };
       axios.post(url, data).then((result) => {
         if (result.data.valid) {
-          this.props.toggleCreateEventScreen();
+          this.props.toggleCreateEventScreen(false, {}, false);
           this.setState({
             startDate: "",
             startTime: "",
@@ -47,27 +47,39 @@ class CreateEvent extends Component {
   };
   updateEvent = (pName, pSchedule_id, pTime, pTimeEnd, pId) => {
     if (pName && pTimeEnd && pSchedule_id && pTime) {
-      let url = "/api/events/update";
-      let data = {
-        name: pName,
-        schedule_id: pSchedule_id,
-        time: pTime,
-        time_end: pTimeEnd,
-        id: pId,
-      };
-      axios.post(url, data).then((result) => {
-        if (result.data.valid) {
-          this.props.toggleCreateEventScreen();
-          this.setState({
-            startDate: "",
-            startTime: "",
-            endDate: "",
-            endTime: "",
-            editOnLoad: true,
-          });
-          this.props.loadSchedulesToState();
-        }
-      });
+      if (this.props.isUpdatingGenerated) {
+        this.props.updateGeneratedEvent(
+          pName,
+          pSchedule_id,
+          pTime,
+          pTimeEnd,
+          pId,
+          false
+        );
+        this.props.toggleCreateEventScreen(false, {}, false);
+      } else {
+        let url = "/api/events/update";
+        let data = {
+          name: pName,
+          schedule_id: pSchedule_id,
+          time: pTime,
+          time_end: pTimeEnd,
+          id: pId,
+        };
+        axios.post(url, data).then((result) => {
+          if (result.data.valid) {
+            this.props.toggleCreateEventScreen(false, {}, false);
+            this.setState({
+              startDate: "",
+              startTime: "",
+              endDate: "",
+              endTime: "",
+              editOnLoad: true,
+            });
+            this.props.loadSchedulesToState();
+          }
+        });
+      }
     }
   };
   updateFields = () => {
@@ -121,7 +133,7 @@ class CreateEvent extends Component {
             alt=""
             id="xIcon"
             onClick={() => {
-              this.props.toggleCreateEventScreen(false, {});
+              this.props.toggleCreateEventScreen(false, {}, false);
               this.setState({
                 name: "",
                 calendar: "",
@@ -190,6 +202,25 @@ class CreateEvent extends Component {
               <option value={timezone}>{timezone}</option>
             ))}
           </select> */}
+          <div
+            id="removeEventButton"
+            style={{
+              display: this.props.isUpdatingGenerated ? "block" : "none",
+            }}
+            onClick={() => {
+              this.props.updateGeneratedEvent(
+                "",
+                "",
+                "",
+                "",
+                this.props.eventInfo.id,
+                true
+              );
+              this.props.toggleCreateEventScreen(false, {}, false);
+            }}
+          >
+            Remove Event
+          </div>
           <div
             id="createEventScreenButton"
             onClick={() => {

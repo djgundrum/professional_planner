@@ -5,7 +5,7 @@ import calendarIcon from "../../images/calendarIcon.svg";
 import React, { Component } from "react";
 import axios from "axios";
 
-class CreateEvent extends Component {
+class AddEmployee extends Component {
   state = {};
 
   render() {
@@ -104,4 +104,4 @@ class CreateEvent extends Component {
   }
 }
 
-export default CreateEvent;
+export default AddEmployee;

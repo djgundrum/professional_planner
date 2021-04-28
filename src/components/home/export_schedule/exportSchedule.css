@@ -1,0 +1,167 @@
+#exportScreen {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  z-index: 5;
+}
+#exportBackground {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+  opacity: 0.8;
+}
+#exportDiv {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: white;
+  border-radius: 20px;
+}
+#xIconE {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  height: 20px;
+  opacity: 50%;
+  cursor: pointer;
+}
+#scheduleNameInput {
+  position: relative;
+  margin-top: 30px;
+  margin-left: 75px;
+  height: 30px;
+  border: 0px;
+  border-bottom: 1px solid #999999;
+  width: 350px;
+  font-size: 25px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #999999;
+}
+#scheduleNameInput:focus {
+  outline: none;
+}
+#scheduleNameInput::placeholder {
+  color: #cccccc;
+}
+
+#shareDiv2 {
+  position: absolute;
+  top: 140px;
+  left: 75px;
+  width: 350px;
+}
+#addPersonDiv2 {
+  float: left;
+  height: 30px;
+  width: 30px;
+  opacity: 50%;
+  border-radius: 15px;
+}
+
+#addPersonIcon2 {
+  height: 120%;
+}
+#shareWithText2 {
+  float: left;
+  height: 30px;
+  opacity: 50%;
+  margin: 0;
+  margin-left: 10px;
+  margin-right: 5px;
+  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 28px;
+}
+
+#exportScreenButton {
+  background-color: #29abe2;
+  width: 200px;
+  height: 40px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  bottom: 30px;
+  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  color: #f4f4f4;
+  border-radius: 20px;
+  line-height: 40px;
+  cursor: pointer;
+}
+
+.personDiv {
+  height: 30px;
+  background-color: #eeeeee;
+  float: left;
+  border-radius: 15px;
+  margin: 0px 5px 10px 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 30px;
+  color: #999999;
+}
+.personDiv p {
+  float: left;
+  margin: 0;
+  max-width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.deletePerson {
+  float: left;
+  height: 16px;
+  margin-top: 7px;
+  margin-left: 7px;
+  opacity: 70%;
+  cursor: pointer;
+}
+#shareContacts2 {
+  width: 70%;
+  position: relative;
+  top: 155px;
+  margin: auto;
+  max-height: 200px;
+}
+#addContactInput2 {
+  height: 25px;
+  width: 80%;
+  position: absolute;
+  top: -45px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  color: #999999;
+  border: 1px solid #aaaaaa;
+}
+#addContactInput2:focus {
+  outline: 1px solid #cccccc;
+}
+#addContactButton2 {
+  height: 30px;
+  width: 16%;
+  position: absolute;
+  top: -46px;
+  right: 0;
+  background-color: #eeeeee;
+  line-height: 30px;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  color: #999999;
+  cursor: pointer;
+}
+#personsDiv2 {
+  max-height: 200px;
+  overflow-y: scroll;
+}

@@ -93,15 +93,24 @@ class CreateCalendar extends Component {
             name: "",
             color: "",
           });
+
           let url3 = "/api/events/guests/add";
           let data3 = {
             user_id: result1.data.body.user.user.id,
             schedule_id: result2.data.body.schedule.id,
           };
-          axios.post(url3, data3).then((result3) => {
-            this.props.loadSchedulesToState();
-            this.setState({ isEditLoad: true });
-          });
+          // Adds yourself to guest list
+          axios.post(url3, data3).then((result3) => {});
+          // Adds everyone in specified to guest list
+          for (let i = 0; i < this.state.sharedContacts.length; i++) {
+            let data3 = {
+              user_id: this.state.sharedContacts[i].id,
+              schedule_id: result2.data.body.schedule.id,
+            };
+            axios.post(url3, data3).then((result3) => {});
+          }
+          this.props.loadSchedulesToState();
+          this.setState({ isEditLoad: true });
         }
       });
     });

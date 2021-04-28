@@ -68,7 +68,7 @@
 .generateSettingSectionHeight {
   height: 120px;
 }
-#generateSchedulesEditButton {
+#exportScheduleButton {
   height: 40px;
   width: 240px;
   border-radius: 20px;
@@ -79,12 +79,12 @@
   line-height: 40px;
   text-align: center;
 }
-.editScheduleDisabled {
+.exportScheduleDisabled {
   border: 1px solid #cccccc;
   color: #cccccc;
   cursor: default;
 }
-.editScheduleActive {
+.exportScheduleActive {
   border: 1px solid #29abe2;
   color: #29abe2;
   cursor: pointer;

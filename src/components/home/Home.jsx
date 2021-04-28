@@ -8,11 +8,14 @@ import CreateCalendar from "./create_calendar/CreateCalendar";
 import axios from "axios";
 import AddEmployee from "./add_employee/AddEmployee";
 import EditHours from "./calendar_controls/edit_hours/EditHours";
+import ExportSchedule from "./export_schedule/ExportSchedule";
+import Loading from "../global/loading/loading";
 
 class Home extends Component {
   state = {
     //mySchedules and myEvents are hardcoded currently, will be loaded from API call
     //myEvents should only contain events from active calendars
+    isLoading: true,
     mySchedules: [],
     myTeamSchedules: [],
     activeCalendars: [],
@@ -53,7 +56,10 @@ class Home extends Component {
     employeeIdCount: 0,
     editEmployeeID: "",
     isEditHoursScreen: false,
+    isUpdatingGenerated: false,
     hoursStartDate: "",
+    isExportScreen: false,
+    isSave: false,
     hours: [
       {
         start: "",
@@ -85,6 +91,7 @@ class Home extends Component {
       },
     ],
   };
+
   componentDidMount() {
     this.loadSchedulesToState();
   }
@@ -127,6 +134,7 @@ class Home extends Component {
 
                   if (pX == pLength - 1) {
                     this.setState({
+                      isLoading: false,
                       mySchedules: schedules,
                       calendarEvents: cEvents,
                       teamEvents: tEvents,
@@ -273,6 +281,30 @@ class Home extends Component {
       activeEvents: aEvents,
     });
   };
+  updateGeneratedEvent = (
+    pName,
+    pSchedule_id,
+    pTime,
+    pTimeEnd,
+    pId,
+    isRemove
+  ) => {
+    for (let g = 0; g < this.state.generatedEvents.length; g++) {
+      if (this.state.generatedEvents[g].id == pId) {
+        let tempEvents = this.state.generatedEvents;
+        let tempEvent = tempEvents.splice(g, 1)[0];
+        if (!isRemove) {
+          tempEvent.name = pName;
+          tempEvent.schedule_id = pSchedule_id;
+          tempEvent.time = pTime;
+          tempEvent.time_end = pTimeEnd;
+          tempEvents.push(tempEvent);
+        }
+
+        this.setState({ generatedEvents: tempEvents });
+      }
+    }
+  };
   updateTeamSchedule = (id, name) => {
     this.state.activeTeamSchedule[0] === id
       ? this.setState({
@@ -292,11 +324,17 @@ class Home extends Component {
       ? this.setState({ timeframe: "Month" })
       : this.setState({ timeframe: "Week" });
   };
-  toggleCreateEventScreen = (isEdit, eventInfo) => {
+  toggleCreateEventScreen = (isEdit, eventInfo, isGenerated) => {
     this.setState({
+      isUpdatingGenerated: isGenerated,
       isCreateEventScreen: !this.state.isCreateEventScreen,
       isCreateEventEdit: isEdit ? true : false,
       isCreateEventInfo: eventInfo,
+    });
+  };
+  toggleExportScreen = () => {
+    this.setState({
+      isExportScreen: !this.state.isExportScreen,
     });
   };
   toggleCreateCalendarScreen = () => {
@@ -611,7 +649,6 @@ class Home extends Component {
           let dayLetters = ["m", "t", "w", "r", "f"];
           let url = "/api/algorithm";
           axios.post(url, data).then((result) => {
-            console.log(result.data.body.response);
             for (let x = 0; x < 5; x++) {
               for (
                 let y = 0;
@@ -630,29 +667,52 @@ class Home extends Component {
 
                   let time0 = intToDate(tDate, tStart);
                   let time_end0 = intToDate(tDate, tEnd);
+
+                  let tNameString =
+                    result.data.body.response[dayLetters[x]][y][0];
+                  let tNameArray = tNameString.split("|@|");
+                  let colors = [
+                    "#ff3200",
+                    "#ff7f0a",
+                    "#ffe174",
+                    "#4bdf00",
+                    "#009f1a",
+                    "#0acbff",
+                    "#5f71ff",
+                    "#dd5fff",
+                    "#ff7bd5",
+                    "#777777",
+                  ];
+                  let tName = tNameArray[1];
+                  let tDesc = colors[(tNameArray[0] - 1) % 10];
                   let tEvent = {
                     capacity: 1,
-                    description: "#111111",
-                    end: (tEnd / 24) * 1464,
+                    description: tDesc,
+                    //end: (tEnd / 24) * 1464,
                     id: x + "" + y,
-                    name: "",
+                    name: tName,
                     schedule_id: "",
-                    start: (tStart / 24) * 1464,
+                    //start: (tStart / 24) * 1464,
                     time: time0,
                     time_end: time_end0,
                     type: "TeamSchedule",
-                    type_description: "",
+                    type_description: "generatedEvent",
                   };
                   generatedEvents.push(tEvent);
                 }
               }
             }
-            this.setState({ generatedEvents: generatedEvents });
+            this.setState({ generatedEvents: generatedEvents, isSave: true });
           });
         } else {
           let url = `/api/events/schedule/${this.state.employees[index].calendar_id}`;
           axios.get(url).then((result) => {
-            let ee = "e" + index;
+            let ee =
+              this.state.employees[index].id +
+              "|@|" +
+              this.state.employees[index].name +
+              "|@|" +
+              index;
             let tempEmployee = {
               preferredMinHrs: 3,
               preferredMaxHrs: 6,
@@ -797,6 +857,8 @@ class Home extends Component {
           toggleEditHoursScreen={this.toggleEditHoursScreen}
           formatTime={this.formatTime}
           generateSchedules={this.generateSchedules}
+          isSave={this.state.isSave}
+          toggleExportScreen={this.toggleExportScreen}
         />
         <CreateEvent
           mySchedules={this.state.mySchedules}
@@ -806,6 +868,9 @@ class Home extends Component {
           isCreateEventEdit={this.state.isCreateEventEdit}
           eventInfo={this.state.isCreateEventInfo}
           loadSchedulesToState={this.loadSchedulesToState}
+          isUpdatingGenerated={this.state.isUpdatingGenerated}
+          generatedEvents={this.state.generatedEvents}
+          updateGeneratedEvent={this.updateGeneratedEvent}
         />
         <CreateCalendar
           mySchedules={this.state.mySchedules}
@@ -836,6 +901,13 @@ class Home extends Component {
           updateHoursStartDate={this.updateHoursStartDate}
           hoursStartDate={this.state.hoursStartDate}
         ></EditHours>
+        <ExportSchedule
+          isExportScreen={this.state.isExportScreen}
+          toggleExportScreen={this.toggleExportScreen}
+          generatedEvents={this.state.generatedEvents}
+          loadSchedulesToState={this.loadSchedulesToState}
+        ></ExportSchedule>
+        <Loading loading={this.state.isLoading}></Loading>
       </div>
     );
   }
