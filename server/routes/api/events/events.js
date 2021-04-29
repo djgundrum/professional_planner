@@ -66,18 +66,24 @@ router.post("/delete", (req, res) => {
  *
  * Create a new event in the database
  *
+ * *Required
  * @param name (string) name of the event
  * @param capacity (int) Capacity of people that are allowed at the event (can also be the amount of people on a shift)
  * @param time_end (int) The amount of time in minutes that the meeting will be
  * @param schedule_id (int) The id of the schedule that this event will be a part of
  * @param type (int) The id of what type of event this is (event_type table)
  *
- * @param description (string) OPTIONAL The description of the current
- * @param time (datetime) OPTIONAL The starting time of the event
+ * *Optional
+ * @param description (string) The description of the current
+ * @param time (datetime) The starting time of the event
+ *
+ * *Return
+ * @event Event object that was just created
  */
 router.post("/create", (req, res) => {
   try {
     let db = new query();
+    var rows;
 
     let name = req.body.name;
     let description = req.body.description;
@@ -108,13 +114,22 @@ router.post("/create", (req, res) => {
 
       db.query(sql, p, true)
         .then(() => {
+          sql =
+            "select e.id as id, e.name as name, e.description as description, e.capacity as capacity, e.time_end as time_end, e.schedule_id as schedule_id, e.time as time, et.name as type, et.description as type_description from events e  inner join event_types et on e.type = et.id where e.name = ?";
+          p = [name];
+
+          return db.query(sql, p, false);
+        })
+        .then((result) => {
+          rows = result;
           return db.end();
         })
         .then(
           () => {
-            return res.send(
-              new response("The event was successfully created").body
-            );
+            let r = new response("The event was successfully created").body;
+            if (rows.length > 0) r.body.event = rows[rows.length - 1];
+            else r.body.event = null;
+            return res.send(r);
           },
           (err) => {
             return res.send(
@@ -388,15 +403,20 @@ router.get("/schedule/:id", (req, res) => {
  *
  * Updates an existing event
  *
+ * *Required
  * @param id (int)
  * @param name (string)
  * @param schedule_id (int)
  * @param time (string)
  * @param time_end (string)
+ *
+ * *Return
+ * @event Event object with all the updated information
  */
 router.post("/update", (req, res) => {
   try {
     let db = new query();
+    var rows;
 
     let id = req.body.id;
     let name = req.body.name;
@@ -425,13 +445,21 @@ router.post("/update", (req, res) => {
 
       db.query(sql, p, true)
         .then(() => {
+          sql =
+            "select e.id as id, e.name as name, e.description as description, e.capacity as capacity, e.time_end as time_end, e.schedule_id as schedule_id, e.time as time, et.name as type, et.description as type_description from events e  inner join event_types et on e.type = et.id where e.id = ?";
+          p = [id];
+
+          return db.query(sql, p, false);
+        })
+        .then((result) => {
+          rows = result;
           return db.end();
         })
         .then(
           () => {
-            return res.send(
-              new response(`The Event: ${name} was updated successfully`).body
-            );
+            let r = new response("The event was successfully updated").body;
+            r.body.event = rows[0];
+            return res.send(r);
           },
           (err) => {
             console.log("There was an error updating the event");
