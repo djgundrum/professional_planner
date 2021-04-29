@@ -47,13 +47,17 @@ class CreateCalendar extends Component {
         }
         if (i == contacts.length - 1) {
           if (contactNames.length > 0) {
-            let newContacts = this.state.sharedContacts.concat(contactNames);
-            this.setState({
-              //sharedContacts: this.state.sharedContacts.push(contactNames),
-              sharedContacts: newContacts,
-              isEditLoad: false,
-              name: document.getElementById("calendarNameInput").value,
-            });
+            if (this.props.calendarContacts) {
+              this.props.updateCalendarContacts(contactNames, false, "");
+            } else {
+              let newContacts = this.state.sharedContacts.concat(contactNames);
+              this.setState({
+                //sharedContacts: this.state.sharedContacts.push(contactNames),
+                sharedContacts: newContacts,
+                isEditLoad: false,
+                name: document.getElementById("calendarNameInput").value,
+              });
+            }
           }
           if (errorNames.length > 0) {
             console.log("Email does not exist");
@@ -64,13 +68,17 @@ class CreateCalendar extends Component {
     }
   };
   deletePerson = (pId) => {
-    let newContacts = this.state.sharedContacts;
-    for (let i = 0; i < newContacts.length; i++) {
-      if (newContacts[i].id == pId) {
-        newContacts.splice(i, 1);
-        this.setState({
-          sharedContacts: newContacts,
-        });
+    if (this.props.calendarContacts) {
+      this.props.updateCalendarContacts([], true, pId);
+    } else {
+      let newContacts = this.state.sharedContacts;
+      for (let i = 0; i < newContacts.length; i++) {
+        if (newContacts[i].id == pId) {
+          newContacts.splice(i, 1);
+          this.setState({
+            sharedContacts: newContacts,
+          });
+        }
       }
     }
   };
@@ -109,7 +117,7 @@ class CreateCalendar extends Component {
             };
             axios.post(url3, data3).then((result3) => {});
           }
-          this.props.loadSchedulesToState();
+          this.props.updateSchedulesInState(result2.data.body.schedule);
           this.setState({ isEditLoad: true });
         }
       });
@@ -126,9 +134,31 @@ class CreateCalendar extends Component {
     };
     axios.post(url, data).then((result) => {
       if (result.data.valid) {
-        this.props.toggleCreateCalendarScreen();
-        this.props.loadSchedulesToState();
-        this.setState({ isEditLoad: true });
+        let url2 = `/api/events/guests/schedule/${this.props.calendarId}`;
+        axios.get(url2).then((result2) => {
+          for (let x = 0; x < result2.data.body.guests.length; x++) {
+            let isStillHere = false;
+            for (let y = 0; y < this.props.calendarContacts.length; y++) {
+              if (
+                result2.data.body.guests[x].user_id ==
+                this.props.calendarContacts[y].id
+              ) {
+                isStillHere = true;
+              }
+            }
+            if (!isStillHere) {
+              let url3 = "/api/events/guests/delete";
+              let data3 = {
+                user_id: result2.data.body.guests[x].user_id,
+                schedule_id: this.props.calendarId,
+              };
+              axios.post(url3, data3).then((result3) => {});
+            }
+          }
+          this.props.toggleCreateCalendarScreen();
+          this.props.loadSchedulesToState();
+          this.setState({ isEditLoad: true });
+        });
       }
     });
   };
@@ -139,6 +169,10 @@ class CreateCalendar extends Component {
     });
   };
   render() {
+    let thisContactList = this.state.sharedContacts;
+    if (this.props.calendarContacts) {
+      thisContactList = this.props.calendarContacts;
+    }
     return (
       <div
         id="createCalendarScreen"
@@ -223,8 +257,15 @@ class CreateCalendar extends Component {
               Add
             </div>
             <div id="personsDiv">
-              {this.state.sharedContacts.map((contact) => (
-                <div key={contact.id} className="personDiv">
+              {thisContactList.map((contact) => (
+                <div
+                  key={contact.id}
+                  className="personDiv"
+                  style={{
+                    display:
+                      this.props.user.id == contact.id ? "none" : "block",
+                  }}
+                >
                   <p>{contact.name ? contact.name : contact.email}</p>
                   <img
                     src={xIcon}
@@ -232,7 +273,7 @@ class CreateCalendar extends Component {
                     className="deletePerson"
                     onClick={() => {
                       this.deletePerson(contact.id);
-                      this.setState({ isEditLoad: false });
+                      //this.setState({ isEditLoad: false });
                     }}
                   />
                 </div>

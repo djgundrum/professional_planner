@@ -45,8 +45,7 @@ class CalendarColumn extends Component {
 
     // Step 2: Arrange the events by timeslot.
     for (i = 0; i < eventsLength; i++) {
-      event = events[i];
-
+      let event = events[i];
       //gets start time offset in pixels
 
       if (event.time.substring(0, 8) < columnDateString) {
@@ -67,7 +66,6 @@ class CalendarColumn extends Component {
         eventTime2 = parseFloat(eventTime2[0]) + parseFloat(eventTime2[1] / 60);
         event.end = Math.floor((eventTime2 / 24) * 1464);
       }
-
       eventsById[event.id] = {
         id: event.id,
         start: event.start,
@@ -186,7 +184,7 @@ class CalendarColumn extends Component {
         groupStructure[g] = [[groups[g][0]]];
       }
     }
-    //console.log(groupStructure);
+
     for (let g = 0; g < groupStructure.length; g++) {
       for (let gg = 0; gg < groupStructure[g].length; gg++) {
         for (let ggg = 0; ggg < groupStructure[g][gg].length; ggg++) {

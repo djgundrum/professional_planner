@@ -3,48 +3,49 @@ import "./profileTeamBody.css";
 import ConfirmDelete from "../confirm_delete/ConfirmDelete";
 
 class ProfileTeamBody extends Component {
-  state = {
-    isDeleteCalendarScreen: false,
-    calendarToDelete: ["", ""],
-  };
-  askDeleteCalendar = (pId, pName) => {
-    this.setState({
-      isDeleteCalendarScreen: !this.state.isDeleteCalendarScreen,
-      calendarToDelete: [pId, pName],
-    });
-  };
-  toggleDeleteCalendar = (pId) => {
-    if (pId) {
-      //DELETE CALENDAR HERE
-    }
-    this.askDeleteCalendar("", "");
-  };
+  state = {};
   render() {
     return (
       <>
         <div id="profileTeamDiv" className="profileBodies">
-          <div className="profileTeams" id="profileAddTeam">
-            +
-          </div>
           {this.props.myTeamSchedules.map((calendar) => (
             <div key={"profileTeam" + calendar.id} className="profileTeams">
               <p className="profileTeamNames">{calendar.name}</p>
-              <div className="profileEditTeam">Edit</div>
-              <div
-                className="profileDeleteTeam"
-                onClick={() => {
-                  this.askDeleteCalendar(calendar.id, calendar.name);
-                }}
-              >
-                Delete
-              </div>
+              {this.props.user.id == calendar.creator_id ? (
+                <div
+                  className="profileDeleteTeam"
+                  onClick={() => {
+                    this.props.askDeleteCalendar(
+                      calendar.id,
+                      calendar.name,
+                      false
+                    );
+                  }}
+                >
+                  Delete
+                </div>
+              ) : (
+                <div
+                  className="profileDeleteTeam"
+                  onClick={() => {
+                    this.props.askDeleteCalendar(
+                      calendar.id,
+                      calendar.name,
+                      true
+                    );
+                  }}
+                >
+                  Remove
+                </div>
+              )}
             </div>
           ))}
         </div>
-        {this.state.isDeleteCalendarScreen ? (
+        {this.props.isDeleteCalendarScreen ? (
           <ConfirmDelete
-            calendarToDelete={this.state.calendarToDelete}
-            toggleDeleteCalendar={this.toggleDeleteCalendar}
+            isRemove={this.props.isRemove}
+            calendarToDelete={this.props.calendarToDelete}
+            toggleDeleteCalendar={this.props.toggleDeleteCalendar}
           />
         ) : (
           <></>

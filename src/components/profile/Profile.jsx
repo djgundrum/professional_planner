@@ -4,12 +4,17 @@ import ProfileBody from "./profile_body/ProfileBody";
 import "./profile.css";
 import xIcon from "../images/x.svg";
 import axios from "axios";
+import Loading from "../global/loading/loading";
 
 class Profile extends Component {
   state = {
+    isLoading: true,
     activeScreen: "information",
     isChangePassword: false,
     updateUser: {},
+  };
+  isLoadingOff = () => {
+    this.setState({ isLoading: false });
   };
   updateScreen = (p) => {
     this.setState({ activeScreen: p });
@@ -26,6 +31,7 @@ class Profile extends Component {
     return (
       <>
         <div id="profileScreen">
+          <Loading loading={this.state.isLoading}></Loading>
           <ProfileNav
             activeScreen={this.state.activeScreen}
             updateScreen={this.updateScreen}
@@ -34,6 +40,7 @@ class Profile extends Component {
             activeScreen={this.state.activeScreen}
             updateScreen={this.updateScreen}
             toggleChangePasswordScreen={this.toggleChangePasswordScreen}
+            isLoadingOff={this.isLoadingOff}
           ></ProfileBody>
         </div>
         <div

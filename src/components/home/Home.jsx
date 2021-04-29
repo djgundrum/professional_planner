@@ -15,6 +15,10 @@ class Home extends Component {
   state = {
     //mySchedules and myEvents are hardcoded currently, will be loaded from API call
     //myEvents should only contain events from active calendars
+    user: {
+      name: "",
+      email: "",
+    },
     isLoading: true,
     mySchedules: [],
     myTeamSchedules: [],
@@ -95,7 +99,6 @@ class Home extends Component {
   componentDidMount() {
     this.loadSchedulesToState();
   }
-
   loadSchedulesToState = () => {
     let url1 = "/api/user/account";
     let schedules = [];
@@ -133,35 +136,14 @@ class Home extends Component {
                   }
 
                   if (pX == pLength - 1) {
+                    console.log(result1.data.body.user.user);
                     this.setState({
+                      user: result1.data.body.user.user,
                       isLoading: false,
                       mySchedules: schedules,
                       calendarEvents: cEvents,
                       teamEvents: tEvents,
-                      //Change array to 'teamSchedules'
-                      myTeamSchedules: [
-                        {
-                          id: 4,
-                          name: "Team ScheduleScheduleSchedule 1",
-                          time: "CT",
-                          type: 2,
-                          description: "#3fa9f5",
-                        },
-                        {
-                          id: 5,
-                          name: "Team Schedule 2",
-                          time: "CT",
-                          type: 2,
-                          description: "#3fa9f5",
-                        },
-                        {
-                          id: 6,
-                          name: "Team Schedule 3",
-                          time: "CT",
-                          type: 2,
-                          description: "#3fa9f5",
-                        },
-                      ],
+                      myTeamSchedules: teamSchedules,
                     });
                     if (this.state.activeCalendars.length != 0) {
                       this.updateActiveEvents();
@@ -182,11 +164,96 @@ class Home extends Component {
             tempName: result1.data.body.user.user.name,
             tempEmail: result1.data.body.user.user.email,
             mySchedules: schedules,
-            //Change array to 'teamSchedules'
             myTeamSchedules: teamSchedules,
           });
         }
       });
+    });
+  };
+  updateSchedulesInState = (schedule) => {
+    if (schedule.type == 1) {
+      for (let i = 0; i < this.state.mySchedules; i++) {
+        if (schedule.id == this.state.mySchedules[i].id) {
+          let tempSchedules = this.state.mySchedules;
+          tempSchedules[i] = schedule;
+          this.setState({ mySchedules: tempSchedules });
+          return;
+        }
+      }
+      let tempSchedules = this.state.mySchedules;
+      tempSchedules.push(schedule);
+      this.setState({ mySchedules: tempSchedules });
+    } else {
+      for (let i = 0; i < this.state.myTeamSchedules; i++) {
+        if (schedule.id == this.state.myTeamSchedules[i].id) {
+          let tempSchedules = this.state.myTeamSchedules;
+          tempSchedules[i] = schedule;
+          this.setState({ myTeamSchedules: tempSchedules });
+          return;
+        }
+      }
+      let tempSchedules = this.state.myTeamSchedules;
+      tempSchedules.push(schedule);
+      this.setState({ myTeamSchedules: tempSchedules });
+    }
+  };
+  updateEventsInState = (event) => {
+    console.log(event);
+    let url = `/api/schedules/${event.schedule_id}`;
+    axios.get(url).then((result) => {
+      event.description = result.data.body.schedules.description;
+      if (event.type == "Calendar") {
+        for (let i = 0; i < this.state.calendarEvents.length; i++) {
+          if (event.id == this.state.calendarEvents[i].id) {
+            let tempEvents = this.state.calendarEvents;
+            tempEvents[i] = event;
+            let aEvents = [];
+            for (let e = 0; e < tempEvents.length; e++) {
+              for (let a = 0; a < this.state.activeCalendars.length; a++) {
+                if (
+                  tempEvents[e].schedule_id === this.state.activeCalendars[a][0]
+                ) {
+                  aEvents = aEvents.concat(tempEvents[e]);
+                }
+              }
+            }
+            this.setState({
+              calendarEvents: tempEvents,
+              activeEvents: aEvents,
+            });
+            return;
+          }
+        }
+        // let tempEvents = this.state.calendarEvents;
+        // tempEvents.push(event);
+
+        // let aEvents = [];
+        // for (let e = 0; e < tempEvents.length; e++) {
+        //   for (let a = 0; a < this.state.activeCalendars.length; a++) {
+        //     if (
+        //       tempEvents[e].schedule_id === this.state.activeCalendars[a][0]
+        //     ) {
+        //       aEvents = aEvents.concat(tempEvents[e]);
+        //     }
+        //   }
+        // }
+        // this.setState({
+        //   calendarEvents: tempEvents,
+        //   activeEvents: aEvents,
+        // });
+      } else {
+        for (let i = 0; i < this.state.teamEvents; i++) {
+          if (event.id == this.state.teamEvents[i].id) {
+            let tempEvents = this.state.teamEvents;
+            tempEvents[i] = event;
+            this.setState({ teamEvents: tempEvents });
+            return;
+          }
+        }
+        let tempEvents = this.state.teamEvents;
+        tempEvents.push(event);
+        this.setState({ teamEvents: tempEvents });
+      }
     });
   };
   updateCreateCalendarInfo = (pName, pDescription) => {
@@ -306,18 +373,54 @@ class Home extends Component {
     }
   };
   updateTeamSchedule = (id, name) => {
-    this.state.activeTeamSchedule[0] === id
-      ? this.setState({
+    let aEvents = [];
+    if (id == "") {
+      for (let e = 0; e < this.state.teamEvents.length; e++) {
+        if (
+          this.state.teamEvents[e].schedule_id ===
+          this.state.activeTeamSchedule[0]
+        ) {
+          aEvents = aEvents.concat(this.state.teamEvents[e]);
+        }
+      }
+      this.setState({
+        activeEvents: aEvents,
+      });
+    } else {
+      if (this.state.activeTeamSchedule[0] === id) {
+        this.setState({
           activeTeamSchedule: [],
-        })
-      : this.setState({
-          activeTeamSchedule: [id, name],
+          activeEvents: aEvents,
         });
+      } else {
+        for (let e = 0; e < this.state.teamEvents.length; e++) {
+          if (this.state.teamEvents[e].schedule_id === id) {
+            aEvents = aEvents.concat(this.state.teamEvents[e]);
+          }
+        }
+        this.setState({
+          activeTeamSchedule: [id, name],
+          activeEvents: aEvents,
+        });
+      }
+    }
+  };
+  unshare = (user_id, schedule_id) => {
+    let url = "/api/events/guests/delete";
+    let data = {
+      user_id: user_id,
+      schedule_id: schedule_id,
+    };
+    axios.post(url, data).then((result) => {});
   };
   switchView = () => {
-    this.state.view === "Calendar"
-      ? this.setState({ view: "Team Schedule" })
-      : this.setState({ view: "Calendar" });
+    if (this.state.view === "Calendar") {
+      this.setState({ view: "Team Schedule" });
+      this.updateTeamSchedule("", "");
+    } else {
+      this.setState({ view: "Calendar" });
+      this.updateCalendars("", "");
+    }
   };
   switchTimeframe = () => {
     this.state.timeframe === "Week"
@@ -824,6 +927,7 @@ class Home extends Component {
           backwardTimeframe={this.backwardTimeframe}
           isCreateTeamScheduleScreen={this.state.isCreateTeamScheduleScreen}
           hoursStartDate={this.state.hoursStartDate}
+          user={this.state.user}
         />
         <Calendar
           dateInfo={this.state.dateInfo}
@@ -871,6 +975,7 @@ class Home extends Component {
           isUpdatingGenerated={this.state.isUpdatingGenerated}
           generatedEvents={this.state.generatedEvents}
           updateGeneratedEvent={this.updateGeneratedEvent}
+          updateEventsInState={this.updateEventsInState}
         />
         <CreateCalendar
           mySchedules={this.state.mySchedules}
@@ -881,6 +986,7 @@ class Home extends Component {
           createCalendarInfo={this.state.createCalendarInfo}
           clearCreateCalendarInfo={this.clearCreateCalendarInfo}
           loadSchedulesToState={this.loadSchedulesToState}
+          updateSchedulesInState={this.updateSchedulesInState}
         />
         <AddEmployee
           mySchedules={this.state.mySchedules}
@@ -906,6 +1012,7 @@ class Home extends Component {
           toggleExportScreen={this.toggleExportScreen}
           generatedEvents={this.state.generatedEvents}
           loadSchedulesToState={this.loadSchedulesToState}
+          updateSchedulesInState={this.updateSchedulesInState}
         ></ExportSchedule>
         <Loading loading={this.state.isLoading}></Loading>
       </div>

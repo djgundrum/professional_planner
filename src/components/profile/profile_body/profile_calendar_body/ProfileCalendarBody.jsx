@@ -48,20 +48,35 @@ class ProfileCalendarBody extends Component {
       editCalendarContacts: pContacts,
     });
   };
-
+  updateCalendarContacts = (contactsList, isDelete, pId) => {
+    let tempContacts = this.state.editCalendarContacts;
+    if (isDelete) {
+      for (let i = 0; i < tempContacts.length; i++) {
+        if (tempContacts[i].id == pId) {
+          tempContacts.splice(i, 1);
+          this.setState({
+            editCalendarContacts: tempContacts,
+          });
+          return;
+        }
+      }
+    } else {
+      for (let i = 0; i < contactsList.length; i++) {
+        tempContacts.push({
+          id: contactsList[i].id,
+          name: contactsList[i].name,
+          email: contactsList[i].email,
+        });
+      }
+      this.setState({
+        editCalendarContacts: tempContacts,
+      });
+    }
+  };
   render() {
     return (
       <>
         <div id="profileCalendarDiv" className="profileBodies">
-          <div
-            className="profileCalendars"
-            id="profileAddCalendar"
-            onClick={() => {
-              this.toggleCreateCalendarScreen();
-            }}
-          >
-            +
-          </div>
           {this.props.mySchedules.map((calendar) => (
             <div
               key={"profileCalendar" + calendar.id}
@@ -69,27 +84,66 @@ class ProfileCalendarBody extends Component {
               style={{ backgroundColor: calendar.description + "99" }}
             >
               <p className="profileCalendarNames">{calendar.name}</p>
-              <div
-                className="profileEditCalendar"
-                onClick={() => {
-                  this.toggleCreateCalendarScreen(
-                    calendar.id,
-                    calendar.name,
-                    calendar.description,
-                    []
-                  );
-                }}
-              >
-                Edit
-              </div>
-              <div
-                className="profileDeleteCalendar"
-                onClick={() => {
-                  this.props.askDeleteCalendar(calendar.id, calendar.name);
-                }}
-              >
-                Delete
-              </div>
+              {this.props.user.id == calendar.creator_id ? (
+                <div
+                  className="profileEditCalendar"
+                  onClick={() => {
+                    let url = `/api/events/guests/schedule/${calendar.id}`;
+                    axios.get(url).then((result) => {
+                      let tempContacts = [];
+                      let addGuestToContacts = (i) => {
+                        if (i < result.data.body.guests.length) {
+                          let url2 = `/api/user/id/${result.data.body.guests[i].user_id}`;
+                          axios.get(url2).then((result2) => {
+                            tempContacts.push(result2.data.body.user);
+                            addGuestToContacts(i + 1);
+                          });
+                        } else {
+                          this.toggleCreateCalendarScreen(
+                            calendar.id,
+                            calendar.name,
+                            calendar.description,
+                            tempContacts
+                          );
+                        }
+                      };
+                      addGuestToContacts(0);
+                    });
+                  }}
+                >
+                  Edit
+                </div>
+              ) : (
+                <></>
+              )}
+
+              {this.props.user.id == calendar.creator_id ? (
+                <div
+                  className="profileDeleteCalendar"
+                  onClick={() => {
+                    this.props.askDeleteCalendar(
+                      calendar.id,
+                      calendar.name,
+                      false
+                    );
+                  }}
+                >
+                  Delete
+                </div>
+              ) : (
+                <div
+                  className="profileDeleteCalendar"
+                  onClick={() => {
+                    this.props.askDeleteCalendar(
+                      calendar.id,
+                      calendar.name,
+                      true
+                    );
+                  }}
+                >
+                  Remove
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -101,12 +155,17 @@ class ProfileCalendarBody extends Component {
           calendarId={this.state.editCalendarId}
           calendarName={this.state.editCalendarName}
           calendarColor={this.state.editCalendarColor}
+          calendarContacts={this.state.editCalendarContacts}
           calendarType={1}
           loadSchedulesToState={this.props.loadSchedulesToState}
+          updateSchedulesInState={this.props.updateSchedulesInState}
           isEdit={true}
+          updateCalendarContacts={this.updateCalendarContacts}
+          user={this.props.user}
         />
         {this.props.isDeleteCalendarScreen ? (
           <ConfirmDelete
+            isRemove={this.props.isRemove}
             calendarToDelete={this.props.calendarToDelete}
             toggleDeleteCalendar={this.props.toggleDeleteCalendar}
           />

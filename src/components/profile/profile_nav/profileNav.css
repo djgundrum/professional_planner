@@ -23,7 +23,6 @@
 .profileNavOption:hover {
   background-color: #ffffff10;
   cursor: pointer;
-  transform: scale(1.1);
 }
 .profileNavOption div {
   height: 20px;

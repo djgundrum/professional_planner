@@ -4,7 +4,7 @@
   width: 100%;
   background-color: #000000;
   opacity: 0.8;
-  z-index: 5;
+  z-index: 35;
 }
 
 #confirmDeleteDiv {
@@ -18,7 +18,7 @@
   transform: translateY(-50%);
   background-color: white;
   border-radius: 20px;
-  z-index: 5;
+  z-index: 35;
 }
 
 #deleteQuestionDiv {

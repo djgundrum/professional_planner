@@ -7,9 +7,6 @@ class MenuBar extends Component {
   state = {
     viewUp: true,
     timeframeUp: true,
-    user: {
-      name: "Justin",
-    },
   };
   dropdownView = () => {
     this.setState({ viewUp: !this.state.viewUp });
@@ -163,7 +160,11 @@ class MenuBar extends Component {
           </div>
         </div>
         <NavLink to="/profile" id="accountDiv" className="hoverClass">
-          <p>{this.state.user.name.substring(0, 1)}</p>
+          <p>
+            {this.props.user.name != ""
+              ? this.props.user.name.substring(0, 1)
+              : this.props.user.email.substring(0, 1)}
+          </p>
         </NavLink>
       </div>
     );

@@ -69,6 +69,60 @@ router.get("/email/:email", (req, res) => {
 });
 
 /**
+ * get: /api/user/id/:id
+ *
+ * Will get a user based on their id
+ *
+ * *Required
+ * id (int) id of the user
+ */
+router.get("/id/:id", (req, res) => {
+  try {
+    let db = new query();
+    var rows;
+
+    let id = req.params.id;
+
+    if (isEmpty(id)) {
+      return res.send(
+        new response("The provided id was not valid", false, `id: ${id}`).body
+      );
+    } else {
+      let sql = "select id, name, email from users where id = ?";
+      let p = [id];
+
+      db.query(sql, p, false)
+        .then((result) => {
+          rows = result;
+          return db.end();
+        })
+        .then(
+          () => {
+            if (rows.length === 0)
+              return res.send(
+                new response("There are no users with that id", false).body
+              );
+            else {
+              let r = new response("Successfully got the user").body;
+              r.body.user = rows[0];
+
+              return res.send(r);
+            }
+          },
+          (err) => {
+            console.log(err);
+            throw { message: err.message };
+          }
+        );
+    }
+  } catch (err) {
+    return res.send(
+      new response("Error in returning the user", false, err.message).body
+    );
+  }
+});
+
+/**
  * post: /api/user/forgot_password
  *
  * Will generate and save a hashed token for the user to reset their password with. Then will send them an email with the link to the reset password page.

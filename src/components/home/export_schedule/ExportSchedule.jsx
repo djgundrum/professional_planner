@@ -66,6 +66,7 @@ class ExportSchedule extends Component {
         creator_id: result1.data.body.user.user.id,
         name: this.state.name,
         type: 2,
+        description: "#29abe2",
       };
       axios.post(url2, data).then((result2) => {
         if (result2.data.valid) {
@@ -99,8 +100,8 @@ class ExportSchedule extends Component {
               console.log(result4);
             });
           }
-
-          this.props.loadSchedulesToState();
+          this.props.updateSchedulesInState(result2.data.body.schedule);
+          this.props.toggleExportScreen();
           this.setState({ isEditLoad: true });
         }
       });

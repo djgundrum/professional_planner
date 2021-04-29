@@ -223,6 +223,68 @@ router.get("/user/:id", (req, res) => {
   }
 });
 
+/**
+ * get: /api/events/guests/schedule/:id
+ *
+ * Returns all of the guests that a certain user is a part of
+ *
+ * @param id (int) id of the user
+ */
+router.get("/schedule/:id", (req, res) => {
+  try {
+    let db = new query();
+    var rows;
+
+    let id = req.params.id;
+
+    if (isEmpty(id)) {
+      return res.send(
+        new response(
+          "schedule id was not provided correctly",
+          false,
+          `event_id: ${id}`
+        ).body
+      );
+    } else {
+      let sql = "select * from guests where schedule_id = ?";
+      let p = [id];
+
+      db.query(sql, p, false)
+        .then((results) => {
+          rows = results;
+          return db.end();
+        })
+        .then(
+          () => {
+            let r = new response(
+              "The guests for this user were successfully returned"
+            ).body;
+            r.body.guests = rows;
+
+            return res.send(r);
+          },
+          (err) => {
+            return res.send(
+              new response(
+                "There was an error getting the guest list for this user",
+                false,
+                err.message
+              ).body
+            );
+          }
+        );
+    }
+  } catch (err) {
+    return res.send(
+      new response(
+        "There was an error getting the guests for this user",
+        false,
+        err.message
+      ).body
+    );
+  }
+});
+
 router.get("/", (req, res) => {
   try {
     let db = new query();

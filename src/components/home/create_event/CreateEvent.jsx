@@ -31,6 +31,7 @@ class CreateEvent extends Component {
         type: 1,
       };
       axios.post(url, data).then((result) => {
+        console.log(result);
         if (result.data.valid) {
           this.props.toggleCreateEventScreen(false, {}, false);
           this.setState({
@@ -40,7 +41,8 @@ class CreateEvent extends Component {
             endTime: "",
             editOnLoad: true,
           });
-          this.props.loadSchedulesToState();
+          this.props.updateEventsInState(result.data.body.event);
+          //this.props.loadSchedulesToState();
         }
       });
     }
@@ -76,7 +78,8 @@ class CreateEvent extends Component {
               endTime: "",
               editOnLoad: true,
             });
-            this.props.loadSchedulesToState();
+            this.props.updateEventsInState(result.data.body.event);
+            //this.props.loadSchedulesToState();
           }
         });
       }
@@ -155,8 +158,23 @@ class CreateEvent extends Component {
                 ? this.props.eventInfo.name
                 : this.state.name
             }
+            readOnly={
+              this.props.eventInfo.type_description == "Not happy"
+                ? true
+                : false
+            }
           />
-          <img src={calendarIcon} alt="" id="calendarIcon" />
+          <img
+            src={calendarIcon}
+            alt=""
+            id="calendarIcon"
+            style={{
+              display:
+                this.props.eventInfo.type_description == "Not happy"
+                  ? "none"
+                  : "block",
+            }}
+          />
           <select
             id="calendarSelect"
             onChange={this.updateFields}
@@ -165,6 +183,12 @@ class CreateEvent extends Component {
                 ? this.props.eventInfo.schedule
                 : this.state.calendar
             }
+            style={{
+              display:
+                this.props.eventInfo.type_description == "Not happy"
+                  ? "none"
+                  : "block",
+            }}
           >
             {this.props.mySchedules.map((schedule) => (
               <option value={schedule.id}>{schedule.name}</option>
@@ -225,8 +249,10 @@ class CreateEvent extends Component {
             id="createEventScreenButton"
             onClick={() => {
               let pName = document.getElementById("eventNameInput").value;
-              let pSchedule_id = document.getElementById("calendarSelect")
-                .value;
+              let pSchedule_id =
+                this.props.eventInfo.type_description == "Not happy"
+                  ? this.props.eventInfo.schedule
+                  : document.getElementById("calendarSelect").value;
 
               let pTime1 = document
                 .getElementById("startDateInput")

@@ -280,7 +280,7 @@ router.get("/:id", (req, res) => {
     let schedule_id = req.params.id;
 
     let sql =
-      "select s.id as id, s.name as name, s.description as description, s.time as time, et.name as type, et.description as type_description from schedules s left join event_types et on s.type = et.id where s.id = ?";
+      "select s.id as id, s.name as name, s.description as description, s.time as time, et.name as type, et.description as type_description, s.creator as creator_id from schedules s left join event_types et on s.type = et.id where s.id = ?";
     let p = [schedule_id];
 
     db.query(sql, p, false)

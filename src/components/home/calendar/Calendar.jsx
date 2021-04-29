@@ -63,7 +63,9 @@ class Calendar extends Component {
               this.props.employeeEvents[i].time_end.substring(0, 8) >
                 thisDateString)
           ) {
-            theseEvents = theseEvents.concat(this.props.employeeEvents[i]);
+            let tempEv = this.props.employeeEvents[i];
+            tempEv.id = tempEv.id + "v" + i;
+            theseEvents = theseEvents.concat(tempEv);
           }
         }
         for (let i = 0; i < this.props.generatedEvents.length; i++) {

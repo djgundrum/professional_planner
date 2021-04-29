@@ -25,6 +25,7 @@ class ProfileBody extends Component {
     mySchedules: [],
     myTeamSchedules: [],
     isDeleteCalendarScreen: false,
+    isRemove: false,
     calendarToDelete: ["", ""],
     isEditingName: false,
     isEditingEmail: false,
@@ -41,7 +42,6 @@ class ProfileBody extends Component {
     let teamSchedules = [];
     let isEmpty = true;
     axios.get(url1).then((result1) => {
-      console.log(result1);
       let url2 = `/api/events/guests/user/${result1.data.body.user.user.id}`;
       axios.get(url2).then((guestListResult) => {
         //console.log(guestListResult.data.body.guests.length);
@@ -64,31 +64,9 @@ class ProfileBody extends Component {
                   tempName: result1.data.body.user.user.name,
                   tempEmail: result1.data.body.user.user.email,
                   mySchedules: schedules,
-                  //Change array to 'teamSchedules'
-                  myTeamSchedules: [
-                    {
-                      id: 4,
-                      name: "Team ScheduleScheduleSchedule 1",
-                      time: "CT",
-                      type: 2,
-                      description: "#3fa9f5",
-                    },
-                    {
-                      id: 5,
-                      name: "Team Schedule 2",
-                      time: "CT",
-                      type: 2,
-                      description: "#3fa9f5",
-                    },
-                    {
-                      id: 6,
-                      name: "Team Schedule 3",
-                      time: "CT",
-                      type: 2,
-                      description: "#3fa9f5",
-                    },
-                  ],
+                  myTeamSchedules: teamSchedules,
                 });
+                this.props.isLoadingOff();
               } else {
                 nextFunc(pX + 1, pLength, nextFunc);
               }
@@ -103,27 +81,77 @@ class ProfileBody extends Component {
             tempName: result1.data.body.user.user.name,
             tempEmail: result1.data.body.user.user.email,
             mySchedules: schedules,
-            //Change array to 'teamSchedules'
             myTeamSchedules: teamSchedules,
           });
         }
       });
     });
   };
+  updateSchedulesInState = (schedule) => {
+    if (schedule.type == 1) {
+      for (let i = 0; i < this.state.mySchedules; i++) {
+        if (schedule.id == this.state.mySchedules[i].id) {
+          let tempSchedules = this.state.mySchedules;
+          tempSchedules[i] = schedule;
+          this.setState({ mySchedules: tempSchedules });
+          return;
+        }
+      }
+      let tempSchedules = this.state.mySchedules;
+      tempSchedules.push(schedule);
+      this.setState({ mySchedules: tempSchedules });
+    } else {
+      for (let i = 0; i < this.state.myTeamSchedules; i++) {
+        if (schedule.id == this.state.myTeamSchedules[i].id) {
+          let tempSchedules = this.state.myTeamSchedules;
+          tempSchedules[i] = schedule;
+          this.setState({ myTeamSchedules: tempSchedules });
+          return;
+        }
+      }
+      let tempSchedules = this.state.myTeamSchedules;
+      tempSchedules.push(schedule);
+      this.setState({ myTeamSchedules: tempSchedules });
+    }
+  };
   updateProfileInfo = (pName) => {
     if (pName != "") {
     }
   };
-  askDeleteCalendar = (pId, pName) => {
+  askDeleteCalendar = (pId, pName, pRemove) => {
     this.setState({
       isDeleteCalendarScreen: !this.state.isDeleteCalendarScreen,
       calendarToDelete: [pId, pName],
+      isRemove: pRemove,
     });
   };
-  toggleDeleteCalendar = (pId) => {
+  toggleDeleteCalendar = (pId, isRemove) => {
     if (pId) {
-      let url = "/api/schedules/delete";
-      axios.post(url, { schedule_id: pId }).then((result) => {
+      if (!isRemove) {
+        let url = "/api/schedules/delete";
+        axios.post(url, { schedule_id: pId }).then((result) => {});
+
+        let url2 = `/api/events/guests/schedule/${pId}`;
+        axios.get(url2).then((result2) => {
+          let removeGuest = (i) => {
+            if (i < result2.data.body.guests.length) {
+              let url3 = "/api/events/guests/delete";
+              let data = {
+                schedule_id: pId,
+                user_id: result2.data.body.guests[i].user_id,
+              };
+              axios.post(url3, data).then((result3) => {
+                removeGuest(i + 1);
+              });
+            } else {
+              this.loadSchedulesToState();
+            }
+          };
+          removeGuest(0);
+        });
+        //this.loadSchedulesToState();
+        this.askDeleteCalendar("", "");
+      } else {
         let url2 = "/api/events/guests/delete";
         let data = {
           schedule_id: pId,
@@ -133,7 +161,7 @@ class ProfileBody extends Component {
           this.loadSchedulesToState();
           this.askDeleteCalendar("", "");
         });
-      });
+      }
     } else {
       this.askDeleteCalendar("", "");
     }
@@ -281,12 +309,23 @@ class ProfileBody extends Component {
             isDeleteCalendarScreen={this.state.isDeleteCalendarScreen}
             calendarToDelete={this.state.calendarToDelete}
             loadSchedulesToState={this.loadSchedulesToState}
+            isRemove={this.state.isRemove}
+            user={this.state.user}
+            updateSchedulesInState={this.updateSchedulesInState}
           ></ProfileCalendarBody>
         );
       case "team":
         return (
           <ProfileTeamBody
             myTeamSchedules={this.state.myTeamSchedules}
+            askDeleteCalendar={this.askDeleteCalendar}
+            toggleDeleteCalendar={this.toggleDeleteCalendar}
+            isDeleteCalendarScreen={this.state.isDeleteCalendarScreen}
+            calendarToDelete={this.state.calendarToDelete}
+            loadSchedulesToState={this.loadSchedulesToState}
+            isRemove={this.state.isRemove}
+            user={this.state.user}
+            updateSchedulesInState={this.updateSchedulesInState}
           ></ProfileTeamBody>
         );
       case "contact":
