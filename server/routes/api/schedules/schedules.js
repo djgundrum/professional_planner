@@ -9,15 +9,22 @@ const response = require("../../global/response");
  *
  * Updates an existing schedule
  *
+ * *Required
  * @param name (string) Name of the new schedule
  * @param type (int) The schedule type
  * @param description (string) OPTIONAL description of what the schedule is for
+ *
+ * *Optional
  * @param time (datetime) OPTIONAL Time of the schedule, defaults to n/a
  * @param schedule_id (int) The id fo the schedule to update
+ *
+ * *Return
+ * @schedule Schedule object that was just updated
  */
 router.post("/update", (req, res) => {
   try {
     let db = new query();
+    var rows;
 
     let name = req.body.name;
     let description = req.body.description;
@@ -40,14 +47,21 @@ router.post("/update", (req, res) => {
 
       db.query(sql, p, true)
         .then(() => {
+          sql =
+            "select s.id as id, s.name as name, s.description as description, s.time as time, et.name as type, et.description as type_description, s.creator as creator_id from schedules s left join event_types et on s.type = et.id where s.id = ?";
+          p = [schedule_id];
+
+          return db.query(sql, p, false);
+        })
+        .then(() => {
+          rows = result;
           return db.end();
         })
         .then(
           () => {
-            return res.send(
-              new response(`The schedule: ${name} was updated successfully`)
-                .body
-            );
+            let r = new response("The schedule was successfully updated").body;
+            r.body.schedule = rows[0];
+            return res.send(r);
           },
           (err) => {
             console.log("There was an error updating the schedule");
