@@ -557,3 +557,108 @@ describe("Shifts routes", () => {
     });
   });
 });
+
+describe("Algorithm tests", () => {
+  describe("Basic algorithm", () => {
+    const constraints = {
+      minHrs: 2,
+      maxHrs: 5,
+      minShift: 2,
+      maxShift: 4,
+      normalShift: 2.5,
+      minEmployees: 2,
+      maxEmployees: 4,
+      prefferedNumberOfEmployees: 3,
+      businessHrs: {
+        m: { start: 10, end: 17.5 },
+        t: { start: 10, end: 17.5 },
+        w: { start: 10, end: 17.5 },
+        r: { start: 10, end: 17.5 },
+        f: { start: 10, end: 17.5 },
+      },
+    };
+
+    const employees = {
+      e0001: {
+        preferredMinHrs: 3,
+        preferredMaxHrs: 6,
+        preferredHrs: 10,
+        conflicts: {
+          m: [
+            [10, 12],
+            [4, 5],
+          ],
+          t: [],
+          w: [],
+          r: [],
+          f: [],
+        },
+      },
+      e0002: {
+        preferredMinHrs: 3,
+        preferredMaxHrs: 6,
+        preferredHrs: 10,
+        conflicts: { m: [], t: [], w: [], r: [], f: [] },
+      },
+      e0003: {
+        preferredMinHrs: 3,
+        preferredMaxHrs: 6,
+        preferredHrs: 11,
+        conflicts: { m: [], t: [], w: [], r: [], f: [] },
+      },
+      e0004: {
+        preferredMinHrs: 3,
+        preferredMaxHrs: 6,
+        preferredHrs: 5,
+        conflicts: { m: [], t: [], w: [], r: [], f: [] },
+      },
+      e0005: {
+        preferredMinHrs: 3,
+        preferredMaxHrs: 6,
+        preferredHrs: 5,
+        conflicts: { m: [], t: [], w: [], r: [], f: [] },
+      },
+      e0006: {
+        preferredMinHrs: 3,
+        preferredMaxHrs: 6,
+        preferredHrs: 5,
+        conflicts: { m: [], t: [], w: [], r: [], f: [] },
+      },
+      e0007: {
+        preferredMinHrs: 3,
+        preferredMaxHrs: 6,
+        preferredHrs: 5,
+        conflicts: { m: [], t: [], w: [], r: [], f: [] },
+      },
+      e0008: {
+        preferredMinHrs: 3,
+        preferredMaxHrs: 6,
+        preferredHrs: 5,
+        conflicts: { m: [], t: [], w: [], r: [], f: [] },
+      },
+      e0009: {
+        preferredMinHrs: 3,
+        preferredMaxHrs: 6,
+        preferredHrs: 5,
+        conflicts: { m: [], t: [], w: [], r: [], f: [] },
+      },
+      e0010: {
+        preferredMinHrs: 3,
+        preferredMaxHrs: 6,
+        preferredHrs: 5,
+        conflicts: { m: [], t: [], w: [], r: [], f: [] },
+      },
+    };
+    it("returns valid schedule", (done) => {
+      chai
+        .request(server)
+        .post("/api/algorithm")
+        .send({ constraints, employees })
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.have.property("valid").eql(true);
+          done();
+        });
+    });
+  });
+});
