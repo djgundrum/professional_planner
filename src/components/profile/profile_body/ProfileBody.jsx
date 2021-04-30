@@ -87,31 +87,55 @@ class ProfileBody extends Component {
       });
     });
   };
-  updateSchedulesInState = (schedule) => {
-    if (schedule.type == 1 || schedule.type == "Calendar") {
-      for (let i = 0; i < this.state.mySchedules.length; i++) {
-        if (schedule.id == this.state.mySchedules[i].id) {
-          let tempSchedules = this.state.mySchedules;
-          tempSchedules[i] = schedule;
-          this.setState({ mySchedules: tempSchedules });
-          return;
+  updateSchedulesInState = (schedule, isDelete) => {
+    console.log(schedule);
+    console.log(isDelete);
+    if (isDelete === true) {
+      if (schedule.type == 1 || schedule.type == "Calendar") {
+        for (let i = 0; i < this.state.mySchedules.length; i++) {
+          if (schedule == this.state.mySchedules[i].id) {
+            let tempSchedules = this.state.mySchedules;
+            tempSchedules.splice(i, 1);
+            this.setState({ mySchedules: tempSchedules });
+            return;
+          }
+        }
+      } else {
+        for (let i = 0; i < this.state.myTeamSchedules.length; i++) {
+          if (schedule == this.state.myTeamSchedules[i].id) {
+            let tempSchedules = this.state.myTeamSchedules;
+            tempSchedules.splice(i, 1);
+            this.setState({ myTeamSchedules: tempSchedules });
+            return;
+          }
         }
       }
-      let tempSchedules = this.state.mySchedules;
-      tempSchedules.push(schedule);
-      this.setState({ mySchedules: tempSchedules });
     } else {
-      for (let i = 0; i < this.state.myTeamSchedules; i++) {
-        if (schedule.id == this.state.myTeamSchedules[i].id) {
-          let tempSchedules = this.state.myTeamSchedules;
-          tempSchedules[i] = schedule;
-          this.setState({ myTeamSchedules: tempSchedules });
-          return;
+      if (schedule.type == 1 || schedule.type == "Calendar") {
+        for (let i = 0; i < this.state.mySchedules.length; i++) {
+          if (schedule.id == this.state.mySchedules[i].id) {
+            let tempSchedules = this.state.mySchedules;
+            tempSchedules[i] = schedule;
+            this.setState({ mySchedules: tempSchedules });
+            return;
+          }
         }
+        let tempSchedules = this.state.mySchedules;
+        tempSchedules.push(schedule);
+        this.setState({ mySchedules: tempSchedules });
+      } else {
+        for (let i = 0; i < this.state.myTeamSchedules.length; i++) {
+          if (schedule.id == this.state.myTeamSchedules[i].id) {
+            let tempSchedules = this.state.myTeamSchedules;
+            tempSchedules[i] = schedule;
+            this.setState({ myTeamSchedules: tempSchedules });
+            return;
+          }
+        }
+        let tempSchedules = this.state.myTeamSchedules;
+        tempSchedules.push(schedule);
+        this.setState({ myTeamSchedules: tempSchedules });
       }
-      let tempSchedules = this.state.myTeamSchedules;
-      tempSchedules.push(schedule);
-      this.setState({ myTeamSchedules: tempSchedules });
     }
   };
   updateProfileInfo = (pName) => {
@@ -144,7 +168,8 @@ class ProfileBody extends Component {
                 removeGuest(i + 1);
               });
             } else {
-              this.loadSchedulesToState();
+              //this.loadSchedulesToState();
+              this.updateSchedulesInState(pId, true);
             }
           };
           removeGuest(0);
@@ -158,7 +183,7 @@ class ProfileBody extends Component {
           user_id: this.state.user.id,
         };
         axios.post(url2, data).then((result2) => {
-          this.loadSchedulesToState();
+          this.updateSchedulesInState(pId, true);
           this.askDeleteCalendar("", "");
         });
       }
