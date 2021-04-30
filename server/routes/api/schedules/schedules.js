@@ -53,7 +53,7 @@ router.post("/update", (req, res) => {
 
           return db.query(sql, p, false);
         })
-        .then(() => {
+        .then((result) => {
           rows = result;
           return db.end();
         })
