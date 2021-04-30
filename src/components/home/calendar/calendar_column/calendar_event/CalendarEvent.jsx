@@ -4,6 +4,30 @@ import "./calendarEvent.css";
 class CalendarEvent extends Component {
   state = {};
   render() {
+    const convert_time = (start, end) => {
+      let start_first = parseInt(start.substring(9, 11));
+      let start_second = start.substring(12, 14);
+
+      let end_first = parseInt(end.substring(9, 11));
+      let end_second = end.substring(12, 14);
+
+      let time = "";
+
+      if (start_first === 0) time += `12:${start_second} AM`;
+      else if (start_first < 12) time += `${start_first}:${start_second} AM`;
+      else if (start_first === 12) time += `12:${start_second} PM`;
+      else time += `${start_first % 12}:${start_second} PM`;
+
+      time += " - ";
+
+      if (end_first === 0) time += `12:${end_second} AM`;
+      else if (end_first < 12) time += `${end_first}:${end_second} AM`;
+      else if (end_first === 12) time += `12:${end_second} PM`;
+      else time += `${end_first % 12}:${end_second} PM`;
+
+      return time;
+    };
+
     return (
       <div
         className="calendarEvent"
@@ -45,7 +69,15 @@ class CalendarEvent extends Component {
                 }
               }
         }
-      ></div>
+      >
+        <div>{this.props.eventInfo.name}</div>
+        <div>
+          {convert_time(
+            this.props.eventInfo.time,
+            this.props.eventInfo.time_end
+          )}
+        </div>
+      </div>
     );
   }
 }

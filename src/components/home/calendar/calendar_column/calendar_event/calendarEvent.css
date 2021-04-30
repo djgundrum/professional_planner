@@ -7,4 +7,10 @@
   margin-top: 0px;
   border-radius: 10px;
   cursor: pointer;
+  /* display: grid;
+  place-items: center; */
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.2rem;
 }
