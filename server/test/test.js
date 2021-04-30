@@ -175,25 +175,25 @@ describe("Event routes", () => {
     });
   });
 
-  describe("/POST create new event", () => {
-    it("create a new event in the database", (done) => {
-      chai
-        .request(server)
-        .post("/api/events/create")
-        .send({
-          name: "Test event",
-          capacity: 100,
-          duration: 2000,
-          schedule_id: 3,
-          type: 4,
-        })
-        .end((err, res) => {
-          res.should.have.status(200);
-          res.body.should.have.property("valid").eql(true);
-          done();
-        });
-    });
-  });
+  // describe.skip("/POST create new event", () => {
+  //   it("create a new event in the database", (done) => {
+  //     chai
+  //       .request(server)
+  //       .post("/api/events/create")
+  //       .send({
+  //         name: "Test event",
+  //         capacity: 100,
+  //         duration: 2000,
+  //         schedule_id: 3,
+  //         type: 4,
+  //       })
+  //       .end((err, res) => {
+  //         res.should.have.status(200);
+  //         res.body.should.have.property("valid").eql(true);
+  //         done();
+  //       });
+  //   });
+  // });
   describe("/GET all events", () => {
     it("Get all the events that are in the database", (done) => {
       chai
@@ -262,19 +262,19 @@ describe("Guest routes", () => {
         });
     });
   });
-  describe("/POST delete", () => {
-    it("api that deletes a user off of a guest list", (done) => {
-      chai
-        .request(server)
-        .post("/api/events/guests/delete")
-        .send({ user_id: 2, event_id: 2, schedule_id: null })
-        .end((err, res) => {
-          res.should.have.status(200);
-          res.body.should.have.property("valid").eql(true);
-          done();
-        });
-    });
-  });
+  // describe.skip("/POST delete", () => {
+  //   it("api that deletes a user off of a guest list", (done) => {
+  //     chai
+  //       .request(server)
+  //       .post("/api/events/guests/delete")
+  //       .send({ user_id: 2, event_id: 2, schedule_id: null })
+  //       .end((err, res) => {
+  //         res.should.have.status(200);
+  //         res.body.should.have.property("valid").eql(true);
+  //         done();
+  //       });
+  //   });
+  // });
   describe("/GET by event_id", () => {
     it("api that returns all the guests given a certain event", (done) => {
       chai
@@ -292,7 +292,87 @@ describe("Guest routes", () => {
     it("api that returns all the events that a person is invited to", (done) => {
       chai
         .request(server)
-        .get("/api/events/guests/2")
+        .get("/api/events/guests/user/2")
+        .send({})
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.have.property("valid").eql(true);
+          done();
+        });
+    });
+  });
+  describe("/GET all guest", () => {
+    it("api that returns all rows in the guest list table", (done) => {
+      chai
+        .request(server)
+        .get("/api/events/guests")
+        .send({})
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.have.property("valid").eql(true);
+          done();
+        });
+    });
+  });
+  describe("/GET all guest", () => {
+    it("api that returns all guests by schedule", (done) => {
+      chai
+        .request(server)
+        .get("/api/events/guests/schedule/1")
+        .send({})
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.have.property("valid").eql(true);
+          done();
+        });
+    });
+  });
+
+  // Bad input tests
+  describe("/POST add a user to a given event/schedule", () => {
+    it("api that adds a user to an existing event", (done) => {
+      chai
+        .request(server)
+        .post("/api/events/guests/add")
+        .send({ user_id: -2, event_id: null, schedule_id: -1 })
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.have.property("valid").eql(true);
+          done();
+        });
+    });
+  });
+  describe("/POST delete", () => {
+    it("api that deletes a user off of a guest list", (done) => {
+      chai
+        .request(server)
+        .post("/api/events/guests/delete")
+        .send({ user_id: -2222, event_id: 2222, schedule_id: null })
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.have.property("valid").eql(false);
+          done();
+        });
+    });
+  });
+  describe("/GET by event_id", () => {
+    it("api that returns all the guests given a certain event", (done) => {
+      chai
+        .request(server)
+        .get("/api/events/guests/-1")
+        .send({})
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.have.property("valid").eql(true);
+          done();
+        });
+    });
+  });
+  describe("/GET by user_id", () => {
+    it("api that returns all the events that a person is invited to", (done) => {
+      chai
+        .request(server)
+        .get("/api/events/guests/user/-1")
         .send({})
         .end((err, res) => {
           res.should.have.status(200);
@@ -343,23 +423,23 @@ describe("Preference routes", () => {
         });
     });
   });
-  describe("/POST create new preferences", () => {
-    it("api that creates a new pereference type in the database", (done) => {
-      chai
-        .request(server)
-        .post("/api/preferences/create")
-        .send({
-          category: "Theme",
-          name: "Dark",
-          description: "Make the theme of your website dark",
-        })
-        .end((err, res) => {
-          res.should.have.status(200);
-          res.body.should.have.property("valid").eql(true);
-          done();
-        });
-    });
-  });
+  // describe.skip("/POST create new preferences", () => {
+  //   it("api that creates a new pereference type in the database", (done) => {
+  //     chai
+  //       .request(server)
+  //       .post("/api/preferences/create")
+  //       .send({
+  //         category: "Theme",
+  //         name: "Dark",
+  //         description: "Make the theme of your website dark",
+  //       })
+  //       .end((err, res) => {
+  //         res.should.have.status(200);
+  //         res.body.should.have.property("valid").eql(true);
+  //         done();
+  //       });
+  //   });
+  // });
   describe("/POST delete", () => {
     it("api that deletes a given preference from the database", (done) => {
       chai
