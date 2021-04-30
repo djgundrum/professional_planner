@@ -132,7 +132,9 @@ class CreateCalendar extends Component {
       type: this.props.calendarType,
       schedule_id: this.props.calendarId,
     };
+
     axios.post(url, data).then((result) => {
+      console.log(result);
       if (result.data.valid) {
         let url2 = `/api/events/guests/schedule/${this.props.calendarId}`;
         axios.get(url2).then((result2) => {
@@ -156,7 +158,7 @@ class CreateCalendar extends Component {
             }
           }
           this.props.toggleCreateCalendarScreen();
-          this.props.loadSchedulesToState();
+          this.props.updateSchedulesInState(result.data.body.schedule);
           this.setState({ isEditLoad: true });
         });
       }

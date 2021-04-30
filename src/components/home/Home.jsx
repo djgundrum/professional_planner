@@ -171,7 +171,7 @@ class Home extends Component {
     });
   };
   updateSchedulesInState = (schedule) => {
-    if (schedule.type == 1) {
+    if (schedule.type == 1 || schedule.type == "Calendar") {
       for (let i = 0; i < this.state.mySchedules; i++) {
         if (schedule.id == this.state.mySchedules[i].id) {
           let tempSchedules = this.state.mySchedules;
