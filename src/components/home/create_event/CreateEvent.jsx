@@ -2,6 +2,7 @@ import "./createEvent.css";
 import xIcon from "../../images/x.svg";
 import calendarIcon from "../../images/calendarIcon.svg";
 import timezoneIcon from "../../images/timezoneIcon.svg";
+import addPerson from "../../images/addPerson.svg";
 
 import React, { Component } from "react";
 import axios from "axios";
@@ -33,7 +34,7 @@ class CreateEvent extends Component {
       axios.post(url, data).then((result) => {
         console.log(result);
         if (result.data.valid) {
-          this.props.toggleCreateEventScreen(false, {}, false);
+          this.props.toggleCreateEventScreen(false, {}, false, false, false);
           this.setState({
             startDate: "",
             startTime: "",
@@ -47,6 +48,10 @@ class CreateEvent extends Component {
       });
     }
   };
+  addEvent2 = (pName, pSchedule_id, pTime, pTimeEnd) => {
+    this.props.addGeneratedEvent(pName, pSchedule_id, pTime, pTimeEnd);
+    this.props.toggleCreateEventScreen(false, {}, false, false, false);
+  };
   updateEvent = (pName, pSchedule_id, pTime, pTimeEnd, pId) => {
     if (pName && pTimeEnd && pSchedule_id && pTime) {
       if (this.props.isUpdatingGenerated) {
@@ -58,7 +63,7 @@ class CreateEvent extends Component {
           pId,
           false
         );
-        this.props.toggleCreateEventScreen(false, {}, false);
+        this.props.toggleCreateEventScreen(false, {}, false, false, false);
       } else {
         let url = "/api/events/update";
         let data = {
@@ -70,7 +75,7 @@ class CreateEvent extends Component {
         };
         axios.post(url, data).then((result) => {
           if (result.data.valid) {
-            this.props.toggleCreateEventScreen(false, {}, false);
+            this.props.toggleCreateEventScreen(false, {}, false, false, false);
             this.setState({
               startDate: "",
               startTime: "",
@@ -86,17 +91,31 @@ class CreateEvent extends Component {
     }
   };
   updateFields = () => {
-    this.setState({
-      name: document.getElementById("eventNameInput").value,
-      calendar: document.getElementById("calendarSelect").value,
-      startDate: document.getElementById("startDateInput").value,
-      startTime: document.getElementById("startTimeInput").value,
-      endDate: document.getElementById("endDateInput").value,
-      endTime: document.getElementById("endTimeInput").value,
-      editOnLoad: false,
-      // timezone: document.getElementById("timezoneSelect").value,
-      // timezoneOffset: "",
-    });
+    if (!this.props.isAddShift) {
+      this.setState({
+        name: document.getElementById("eventNameInput").value,
+        calendar: document.getElementById("calendarSelect").value,
+        startDate: document.getElementById("startDateInput").value,
+        startTime: document.getElementById("startTimeInput").value,
+        endDate: document.getElementById("endDateInput").value,
+        endTime: document.getElementById("endTimeInput").value,
+        editOnLoad: false,
+        // timezone: document.getElementById("timezoneSelect").value,
+        // timezoneOffset: "",
+      });
+    } else {
+      this.setState({
+        name: document.getElementById("employeeSelect").value,
+        calendar: this.props.eventInfo.schedule,
+        startDate: document.getElementById("startDateInput").value,
+        startTime: document.getElementById("startTimeInput").value,
+        endDate: document.getElementById("endDateInput").value,
+        endTime: document.getElementById("endTimeInput").value,
+        editOnLoad: false,
+        // timezone: document.getElementById("timezoneSelect").value,
+        // timezoneOffset: "",
+      });
+    }
   };
   render() {
     let editStartDate = this.state.startDate;
@@ -142,7 +161,13 @@ class CreateEvent extends Component {
             alt=""
             id="xIcon"
             onClick={() => {
-              this.props.toggleCreateEventScreen(false, {}, false);
+              this.props.toggleCreateEventScreen(
+                false,
+                {},
+                false,
+                false,
+                false
+              );
               this.setState({
                 name: "",
                 calendar: "",
@@ -154,64 +179,92 @@ class CreateEvent extends Component {
               });
             }}
           />
-          <input
-            type="text"
-            id="eventNameInput"
-            placeholder="Event Name..."
-            onChange={this.updateFields}
-            value={
-              this.props.isCreateEventEdit && this.state.editOnLoad
-                ? this.props.eventInfo.name
-                : this.state.name
-            }
-            readOnly={
-              this.props.eventInfo.type_description == "Not happy"
-                ? true
-                : false
-            }
-          />
-          <img
-            src={calendarIcon}
-            alt=""
-            id="calendarIcon"
-            style={{
-              display:
+          {this.props.isAddShift ? (
+            <></>
+          ) : (
+            <input
+              type="text"
+              id="eventNameInput"
+              placeholder="Event Name..."
+              onChange={this.updateFields}
+              value={
+                this.props.isCreateEventEdit && this.state.editOnLoad
+                  ? this.props.eventInfo.name
+                  : this.state.name
+              }
+              readOnly={
                 this.props.eventInfo.type_description == "Not happy"
-                  ? "none"
-                  : "block",
-            }}
-          />
-          <select
-            id="calendarSelect"
-            onChange={this.updateFields}
-            value={
-              this.props.isCreateEventEdit && this.state.editOnLoad
-                ? this.props.eventInfo.schedule
-                : this.state.calendar
-            }
-            style={{
-              display:
-                this.props.eventInfo.type_description == "Not happy"
-                  ? "none"
-                  : "block",
-            }}
-          >
-            {selectOptions.map((schedule) => (
-              <option value={schedule.id}>{schedule.name}</option>
-            ))}
-          </select>
+                  ? true
+                  : false
+              }
+            />
+          )}
+          {this.props.isAddShift ? (
+            <img src={addPerson} alt="" id="employeeIcon" />
+          ) : (
+            <img
+              src={calendarIcon}
+              alt=""
+              id="calendarIcon"
+              style={{
+                display:
+                  this.props.eventInfo.type_description == "Not happy"
+                    ? "none"
+                    : "block",
+              }}
+            />
+          )}
+
+          {this.props.isAddShift ? (
+            <select id="employeeSelect">
+              {this.props.employees.map((employee) => (
+                <option value={employee.name}>{employee.name}</option>
+              ))}
+            </select>
+          ) : (
+            <select
+              id="calendarSelect"
+              onChange={this.updateFields}
+              value={
+                this.props.isCreateEventEdit && this.state.editOnLoad
+                  ? this.props.eventInfo.schedule
+                  : this.state.calendar
+              }
+              style={{
+                display:
+                  this.props.eventInfo.type_description == "Not happy"
+                    ? "none"
+                    : "block",
+              }}
+            >
+              {selectOptions.map((schedule) => (
+                <option value={schedule.id}>{schedule.name}</option>
+              ))}
+            </select>
+          )}
+
           <p id="startText">Start: </p>
           <input
             type="date"
             id="startDateInput"
             onChange={this.updateFields}
             value={editStartDate}
+            readOnly={
+              this.props.eventInfo.type_description == "Not happy"
+                ? true
+                : false
+            }
           />
           <input
             type="time"
             id="startTimeInput"
             onChange={this.updateFields}
             value={editStartTime}
+            readOnly={
+              this.props.eventInfo.type_description == "Not happy"
+                ? true
+                : false
+            }
           />
           <p id="endText">End: </p>
           <input
@@ -219,12 +272,22 @@ class CreateEvent extends Component {
             id="endDateInput"
             onChange={this.updateFields}
             value={editEndDate}
+            readOnly={
+              this.props.eventInfo.type_description == "Not happy"
+                ? true
+                : false
+            }
           />
           <input
             type="time"
             id="endTimeInput"
             onChange={this.updateFields}
             value={editEndTime}
+            readOnly={
+              this.props.eventInfo.type_description == "Not happy"
+                ? true
+                : false
+            }
           />
           {/* <img src={timezoneIcon} alt="" id="timezoneIcon" />
           <select id="timezoneSelect">
@@ -235,7 +298,11 @@ class CreateEvent extends Component {
           <div
             id="removeEventButton"
             style={{
-              display: this.props.isCreateEventEdit ? "block" : "none",
+              display:
+                this.props.isCreateEventEdit &&
+                this.props.eventInfo.type_description != "Not happy"
+                  ? "block"
+                  : "none",
             }}
             onClick={
               this.props.isUpdatingGenerated
@@ -248,7 +315,13 @@ class CreateEvent extends Component {
                       this.props.eventInfo.id,
                       true
                     );
-                    this.props.toggleCreateEventScreen(false, {}, false);
+                    this.props.toggleCreateEventScreen(
+                      false,
+                      {},
+                      false,
+                      false,
+                      false
+                    );
                   }
                 : () => {
                     let url = "/api/events/delete";
@@ -260,7 +333,13 @@ class CreateEvent extends Component {
                         this.props.eventInfo.id,
                         true
                       );
-                      this.props.toggleCreateEventScreen(false, {}, false);
+                      this.props.toggleCreateEventScreen(
+                        false,
+                        {},
+                        false,
+                        false,
+                        false
+                      );
                     });
                   }
             }
@@ -269,38 +348,71 @@ class CreateEvent extends Component {
           </div>
           <div
             id="createEventScreenButton"
-            onClick={() => {
-              let pName = document.getElementById("eventNameInput").value;
-              let pSchedule_id =
+            style={{
+              display:
                 this.props.eventInfo.type_description == "Not happy"
-                  ? this.props.eventInfo.schedule
-                  : document.getElementById("calendarSelect").value;
-
-              let pTime1 = document
-                .getElementById("startDateInput")
-                .value.replaceAll("-", "");
-              let pTime2 = document.getElementById("startTimeInput").value;
-              let pTime = pTime1 + " " + pTime2;
-
-              let pTimeEnd1 = document
-                .getElementById("endDateInput")
-                .value.replaceAll("-", "");
-              let pTimeEnd2 = document.getElementById("endTimeInput").value;
-              let pTimeEnd = pTimeEnd1 + " " + pTimeEnd2;
-              if (this.props.isCreateEventEdit) {
-                this.updateEvent(
-                  pName,
-                  pSchedule_id,
-                  pTime,
-                  pTimeEnd,
-                  this.props.eventInfo.id
-                );
-              } else {
-                this.addEvent(pName, pSchedule_id, pTime, pTimeEnd);
-              }
+                  ? "none"
+                  : "block",
             }}
+            onClick={
+              this.props.isAddShift
+                ? () => {
+                    let pName = document.getElementById("employeeSelect").value;
+                    let pSchedule_id = this.props.eventInfo.schedule;
+                    let pTime1 = document
+                      .getElementById("startDateInput")
+                      .value.replaceAll("-", "");
+                    let pTime2 = document.getElementById("startTimeInput")
+                      .value;
+                    let pTime = pTime1 + " " + pTime2;
+
+                    let pTimeEnd1 = document
+                      .getElementById("endDateInput")
+                      .value.replaceAll("-", "");
+                    let pTimeEnd2 = document.getElementById("endTimeInput")
+                      .value;
+                    let pTimeEnd = pTimeEnd1 + " " + pTimeEnd2;
+                    this.addEvent2(pName, pSchedule_id, pTime, pTimeEnd);
+                  }
+                : () => {
+                    let pName = document.getElementById("eventNameInput").value;
+                    let pSchedule_id =
+                      this.props.eventInfo.type_description == "Not happy"
+                        ? this.props.eventInfo.schedule
+                        : document.getElementById("calendarSelect").value;
+
+                    let pTime1 = document
+                      .getElementById("startDateInput")
+                      .value.replaceAll("-", "");
+                    let pTime2 = document.getElementById("startTimeInput")
+                      .value;
+                    let pTime = pTime1 + " " + pTime2;
+
+                    let pTimeEnd1 = document
+                      .getElementById("endDateInput")
+                      .value.replaceAll("-", "");
+                    let pTimeEnd2 = document.getElementById("endTimeInput")
+                      .value;
+                    let pTimeEnd = pTimeEnd1 + " " + pTimeEnd2;
+                    if (this.props.isCreateEventEdit) {
+                      this.updateEvent(
+                        pName,
+                        pSchedule_id,
+                        pTime,
+                        pTimeEnd,
+                        this.props.eventInfo.id
+                      );
+                    } else {
+                      this.addEvent(pName, pSchedule_id, pTime, pTimeEnd);
+                    }
+                  }
+            }
           >
-            {this.props.isCreateEventEdit ? "Edit Event" : "Create Event"}
+            {this.props.isAddShift
+              ? "Add Shift"
+              : this.props.isCreateEventEdit
+              ? "Edit Event"
+              : "Create Event"}
           </div>
         </div>
       </div>

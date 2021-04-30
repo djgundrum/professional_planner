@@ -50,6 +50,7 @@ class Home extends Component {
       description: "#ff3200",
       time: "",
     },
+    isReadOnly: false,
     isCreateEventEdit: false,
     isCreateEventInfo: {},
     isAddEmployeeScreen: false,
@@ -136,7 +137,6 @@ class Home extends Component {
                   }
 
                   if (pX == pLength - 1) {
-                    this.getNameColors(tEvents);
                     this.setState({
                       user: result1.data.body.user.user,
                       isLoading: false,
@@ -170,6 +170,53 @@ class Home extends Component {
       });
     });
   };
+  clearGenerated = () => {
+    document.getElementById("maxHrsInput").value = "";
+    document.getElementById("minHrsInput").value = "";
+    document.getElementById("prefHrsInput").value = "";
+    document.getElementById("maxShiftInput").value = "";
+    document.getElementById("minShiftInput").value = "";
+    document.getElementById("prefShiftInput").value = "";
+    document.getElementById("maxEmployInput").value = "";
+    document.getElementById("minEmployInput").value = "";
+    document.getElementById("prefEmployInput").value = "";
+    this.setState({
+      generatedEvents: [],
+      employees: [],
+      employeeEvents: [],
+      isSave: false,
+      hours: [
+        {
+          start: "",
+          end: "",
+        },
+        {
+          start: "",
+          end: "",
+        },
+        {
+          start: "",
+          end: "",
+        },
+        {
+          start: "",
+          end: "",
+        },
+        {
+          start: "",
+          end: "",
+        },
+        {
+          start: "",
+          end: "",
+        },
+        {
+          start: "",
+          end: "",
+        },
+      ],
+    });
+  };
   updateSchedulesInState = (schedule) => {
     if (schedule.type == 1 || schedule.type == "Calendar") {
       for (let i = 0; i < this.state.mySchedules; i++) {
@@ -195,6 +242,14 @@ class Home extends Component {
       let tempSchedules = this.state.myTeamSchedules;
       tempSchedules.push(schedule);
       this.setState({ myTeamSchedules: tempSchedules });
+
+      //update events
+      let url = `/api/events/schedule/${schedule.id}`;
+      axios.get(url).then((result) => {
+        for (let i = 0; i < result.data.body.events.length; i++) {
+          this.updateEventsInState(result.data.body.events[i], false);
+        }
+      });
     }
   };
   updateEventsInState = (event, isDelete) => {
@@ -398,6 +453,48 @@ class Home extends Component {
       activeEvents: aEvents,
     });
   };
+  addGeneratedEvent = (pName, pSchedule_id, pTime, pTimeEnd) => {
+    let colors = [
+      "#ff3200",
+      "#ff7f0a",
+      "#ffe174",
+      "#4bdf00",
+      "#009f1a",
+      "#0acbff",
+      "#5f71ff",
+      "#dd5fff",
+      "#ff7bd5",
+      "#777777",
+    ];
+    let tempEvents = this.state.generatedEvents;
+    let lastId = 0;
+    if (this.state.generatedEvents.length > 0) {
+      lastId = parseInt(
+        this.state.generatedEvents[this.state.generatedEvents.length - 1].id
+      );
+    }
+    let desc = "#111111";
+    for (let i = 0; i < this.state.employees.length; i++) {
+      if (this.state.employees[i].name === pName) {
+        desc = colors[parseInt(this.state.employees[i].id - 1) % 10];
+      }
+    }
+    let tempEvent = {
+      capacity: 1,
+      description: desc,
+      end: 0,
+      id: lastId + 1,
+      name: pName,
+      schedule_id: pSchedule_id,
+      start: 0,
+      time: pTime,
+      time_end: pTimeEnd,
+      type: "TeamSchedule",
+      type_description: "generatedEvent",
+    };
+    tempEvents.push(tempEvent);
+    this.setState({ generatedEvents: tempEvents });
+  };
   updateGeneratedEvent = (
     pName,
     pSchedule_id,
@@ -477,12 +574,20 @@ class Home extends Component {
       ? this.setState({ timeframe: "Month" })
       : this.setState({ timeframe: "Week" });
   };
-  toggleCreateEventScreen = (isEdit, eventInfo, isGenerated) => {
+  toggleCreateEventScreen = (
+    isEdit,
+    eventInfo,
+    isGenerated,
+    isAddShift,
+    isReadOnly
+  ) => {
     this.setState({
       isUpdatingGenerated: isGenerated,
       isCreateEventScreen: !this.state.isCreateEventScreen,
       isCreateEventEdit: isEdit ? true : false,
       isCreateEventInfo: eventInfo,
+      isAddShift: isAddShift,
+      isReadOnly: isReadOnly,
     });
   };
   toggleExportScreen = () => {
@@ -609,33 +714,43 @@ class Home extends Component {
       calendar_name: newEmployee.calendar_name,
       calendar_description: newEmployee.calendar_description,
     };
-    this.toggleAddEmployeeScreen(false);
-    let newEmployeeList = this.state.employees.concat(newnewEmployee);
 
-    let employeeEvents = [];
-    let loadEmployeeEvents = (i) => {
-      if (i == newEmployeeList.length) {
-        this.setState({
-          employees: newEmployeeList,
-          employeeIdCount: this.state.employeeIdCount + 1,
-          employeeEvents: employeeEvents,
-        });
-      } else {
-        let url = `/api/events/schedule/${newEmployeeList[i].calendar_id}`;
-        axios.get(url).then((result) => {
-          if (result.data.valid) {
-            for (let e = 0; e < result.data.body.events.length; e++) {
-              let tempE = result.data.body.events[e];
-              tempE.description = newEmployeeList[i].description;
-              tempE.type_description = "employeeEvent";
-              employeeEvents.push(tempE);
-            }
-            loadEmployeeEvents(i + 1);
-          }
-        });
+    let newEmployeeList = this.state.employees;
+    let isDuplicate = false;
+    for (let i = 0; i < newEmployeeList.length; i++) {
+      if (newEmployeeList[i].name === newEmployee.name) {
+        isDuplicate = true;
       }
-    };
-    loadEmployeeEvents(0);
+    }
+    if (!isDuplicate) {
+      this.toggleAddEmployeeScreen(false);
+      let newEmployeeList = this.state.employees.concat(newnewEmployee);
+
+      let employeeEvents = [];
+      let loadEmployeeEvents = (i) => {
+        if (i == newEmployeeList.length) {
+          this.setState({
+            employees: newEmployeeList,
+            employeeIdCount: this.state.employeeIdCount + 1,
+            employeeEvents: employeeEvents,
+          });
+        } else {
+          let url = `/api/events/schedule/${newEmployeeList[i].calendar_id}`;
+          axios.get(url).then((result) => {
+            if (result.data.valid) {
+              for (let e = 0; e < result.data.body.events.length; e++) {
+                let tempE = result.data.body.events[e];
+                tempE.description = newEmployeeList[i].description;
+                tempE.type_description = "employeeEvent";
+                employeeEvents.push(tempE);
+              }
+              loadEmployeeEvents(i + 1);
+            }
+          });
+        }
+      };
+      loadEmployeeEvents(0);
+    }
   };
   editEmployee = (editEmployee) => {
     let index = 0;
@@ -1030,6 +1145,10 @@ class Home extends Component {
           updateGeneratedEvent={this.updateGeneratedEvent}
           updateEventsInState={this.updateEventsInState}
           user={this.state.user}
+          isAddShift={this.state.isAddShift}
+          employees={this.state.employees}
+          addGeneratedEvent={this.addGeneratedEvent}
+          isReadOnly={this.state.isReadOnly}
         />
         <CreateCalendar
           mySchedules={this.state.mySchedules}
@@ -1067,6 +1186,7 @@ class Home extends Component {
           generatedEvents={this.state.generatedEvents}
           loadSchedulesToState={this.loadSchedulesToState}
           updateSchedulesInState={this.updateSchedulesInState}
+          clearGenerated={this.clearGenerated}
         ></ExportSchedule>
         <Loading loading={this.state.isLoading}></Loading>
       </div>

@@ -203,6 +203,9 @@ class CalendarColumn extends Component {
               <CalendarEvent
                 eventInfo={eventsById[groupStructure[g][gg][ggg]]}
                 toggleCreateEventScreen={this.props.toggleCreateEventScreen}
+                isCreateTeamScheduleScreen={
+                  this.props.isCreateTeamScheduleScreen
+                }
               ></CalendarEvent>
             </div>
           );

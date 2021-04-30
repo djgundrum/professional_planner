@@ -20,6 +20,19 @@
   font-size: 20px;
   text-align: center;
   color: #999999;
+  cursor: pointer;
+}
+.calendarControlsButtonDisabled {
+  width: 250px;
+  height: 40px;
+  border: 1px solid #eeeeee;
+  border-radius: 20px;
+  margin: 25px auto auto auto;
+  line-height: 40px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  text-align: center;
+  color: #dddddd;
 }
 .calendarControlsBottom1 {
   margin-bottom: 200px;

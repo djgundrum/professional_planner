@@ -100,6 +100,7 @@ class ExportSchedule extends Component {
               console.log(result4);
             });
           }
+          this.props.clearGenerated();
           this.props.updateSchedulesInState(result2.data.body.schedule);
           this.props.toggleExportScreen();
           this.setState({ isEditLoad: true });

@@ -13,19 +13,33 @@ class CalendarEvent extends Component {
             this.props.eventInfo.type_description == "employeeEvent" ? 0.25 : 1,
         }}
         onClick={
-          this.props.eventInfo.type_description == "employeeEvent"
-            ? () => {}
+          this.props.eventInfo.type_description == "employeeEvent" ||
+          (!this.props.isCreateTeamScheduleScreen &&
+            this.props.eventInfo.type_description == "Not happy")
+            ? () => {
+                this.props.toggleCreateEventScreen(
+                  true,
+                  this.props.eventInfo,
+                  true,
+                  false,
+                  true
+                );
+              }
             : () => {
                 if (this.props.eventInfo.type_description == "generatedEvent") {
                   this.props.toggleCreateEventScreen(
                     true,
                     this.props.eventInfo,
-                    true
+                    true,
+                    false,
+                    false
                   );
                 } else {
                   this.props.toggleCreateEventScreen(
                     true,
                     this.props.eventInfo,
+                    false,
+                    false,
                     false
                   );
                 }

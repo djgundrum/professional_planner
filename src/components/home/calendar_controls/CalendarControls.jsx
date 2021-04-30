@@ -82,13 +82,29 @@ class CalendarControls extends Component {
               >
                 Add Employees
               </div>
-              {/* <div
-                id="addMeetingButton"
-                className="calendarControlsButton hoverClass"
-                onClick={this.props.toggleCreateCalendarScreen}
+              <div
+                id="addShiftButton"
+                className={
+                  this.props.isSave && this.props.employees.length > 0
+                    ? "calendarControlsButton"
+                    : "calendarControlsButtonDisabled"
+                }
+                onClick={
+                  this.props.isSave && this.props.employees.length > 0
+                    ? () => {
+                        this.props.toggleCreateEventScreen(
+                          false,
+                          {},
+                          true,
+                          true,
+                          false
+                        );
+                      }
+                    : () => {}
+                }
               >
-                Add Meeting Block
-              </div> */}
+                Add Shift
+              </div>
             </>
           ) : (
             <>
@@ -96,7 +112,13 @@ class CalendarControls extends Component {
                 id="addEventButton"
                 className="calendarControlsButton hoverClass"
                 onClick={() => {
-                  this.props.toggleCreateEventScreen(false, {}, false);
+                  this.props.toggleCreateEventScreen(
+                    false,
+                    {},
+                    false,
+                    false,
+                    false
+                  );
                 }}
               >
                 Create Event

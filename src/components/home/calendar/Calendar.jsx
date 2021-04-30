@@ -16,6 +16,7 @@ class Calendar extends Component {
     activeEvents: [],
   };
   render() {
+    console.log(this.props);
     let names = this.props.getNameColors(this.props.activeEvents);
 
     var times = [];
@@ -54,7 +55,7 @@ class Calendar extends Component {
           }
         }
         for (let i = 0; i < theseEvents.length; i++) {
-          if ((theseEvents[i].type = "Schedule")) {
+          if (theseEvents[i].type == "Schedule") {
             theseEvents[i].description = names[theseEvents[i].name];
           }
         }
@@ -112,6 +113,7 @@ class Calendar extends Component {
           isToday={isToday}
           theseEvents={theseEvents}
           toggleCreateEventScreen={this.props.toggleCreateEventScreen}
+          isCreateTeamScheduleScreen={this.props.isCreateTeamScheduleScreen}
         />
       );
     }
