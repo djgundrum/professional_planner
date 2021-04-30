@@ -127,8 +127,8 @@ function algorithm(managerialConstraints, employees) {
   //iterate through week
   for (day of weekdays) {
     //iterate through number of employees per shift (default to 1)
-    var startTime = managerialConstraints["businessHrs"]["m"]["start"];
-    var endTime = managerialConstraints["businessHrs"]["m"]["end"];
+    var startTime = managerialConstraints["businessHrs"][day]["start"];
+    var endTime = managerialConstraints["businessHrs"][day]["end"];
 
     for (var j = numEmployeesPerShift; j > 0; j--) {
       //iterate through day (per shift block 0.25 hrs)
