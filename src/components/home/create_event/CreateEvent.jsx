@@ -32,7 +32,6 @@ class CreateEvent extends Component {
         type: 1,
       };
       axios.post(url, data).then((result) => {
-        console.log(result);
         if (result.data.valid) {
           this.props.toggleCreateEventScreen(false, {}, false, false, false);
           this.setState({

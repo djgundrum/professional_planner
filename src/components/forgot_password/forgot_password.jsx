@@ -41,7 +41,6 @@ const Password = () => {
 
     axios.post(url, data).then(
       (result) => {
-        console.log(result);
         if (!result.data.valid) {
           setError({ error: true, message: result.data.body.message });
         } else {
@@ -50,7 +49,6 @@ const Password = () => {
         setLoading(false);
       },
       (err) => {
-        console.log(err.message);
         setLoading(false);
       }
     );

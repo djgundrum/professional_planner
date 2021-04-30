@@ -10,7 +10,24 @@
   /* display: grid;
   place-items: center; */
   text-align: center;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   font-weight: 500;
   padding: 0.2rem;
+  color: #11111100;
+}
+.calendarEvent:hover {
+  color: #11111160;
+}
+.calendarEvent:hover::before {
+  position: absolute;
+  content: attr(data-before-content);
+  background-color: var(--tooltip-color);
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  z-index: 50;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: #333333 0px 0px 3px;
+  display: var(--tooltip-display);
 }

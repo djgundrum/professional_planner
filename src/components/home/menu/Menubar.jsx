@@ -162,8 +162,8 @@ class MenuBar extends Component {
         <NavLink to="/profile" id="accountDiv" className="hoverClass">
           <p>
             {this.props.user.name != ""
-              ? this.props.user.name.substring(0, 1)
-              : this.props.user.email.substring(0, 1)}
+              ? this.props.user.name.substring(0, 1).toUpperCase()
+              : this.props.user.email.substring(0, 1).toUpperCase()}
           </p>
         </NavLink>
       </div>

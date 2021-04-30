@@ -134,7 +134,6 @@ class CreateCalendar extends Component {
     };
 
     axios.post(url, data).then((result) => {
-      console.log(result);
       if (result.data.valid) {
         let url2 = `/api/events/guests/schedule/${this.props.calendarId}`;
         axios.get(url2).then((result2) => {
@@ -152,6 +151,26 @@ class CreateCalendar extends Component {
               let url3 = "/api/events/guests/delete";
               let data3 = {
                 user_id: result2.data.body.guests[x].user_id,
+                schedule_id: this.props.calendarId,
+              };
+              axios.post(url3, data3).then((result3) => {});
+            }
+          }
+
+          for (let y = 0; y < this.props.calendarContacts.length; y++) {
+            let isNew = true;
+            for (let x = 0; x < result2.data.body.guests.length; x++) {
+              if (
+                result2.data.body.guests[x].user_id ==
+                this.props.calendarContacts[y].id
+              ) {
+                isNew = false;
+              }
+            }
+            if (isNew) {
+              let url3 = "/api/events/guests/add";
+              let data3 = {
+                user_id: this.props.calendarContacts[y].id,
                 schedule_id: this.props.calendarId,
               };
               axios.post(url3, data3).then((result3) => {});

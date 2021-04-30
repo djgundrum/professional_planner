@@ -16,7 +16,6 @@ class Calendar extends Component {
     activeEvents: [],
   };
   render() {
-    console.log(this.props);
     let names = this.props.getNameColors(this.props.activeEvents);
 
     var times = [];

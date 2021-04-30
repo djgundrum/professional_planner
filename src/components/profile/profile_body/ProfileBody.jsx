@@ -83,31 +83,27 @@ class ProfileBody extends Component {
             mySchedules: schedules,
             myTeamSchedules: teamSchedules,
           });
+          this.props.isLoadingOff();
         }
       });
     });
   };
   updateSchedulesInState = (schedule, isDelete) => {
-    console.log(schedule);
-    console.log(isDelete);
     if (isDelete === true) {
-      if (schedule.type == 1 || schedule.type == "Calendar") {
-        for (let i = 0; i < this.state.mySchedules.length; i++) {
-          if (schedule == this.state.mySchedules[i].id) {
-            let tempSchedules = this.state.mySchedules;
-            tempSchedules.splice(i, 1);
-            this.setState({ mySchedules: tempSchedules });
-            return;
-          }
+      for (let i = 0; i < this.state.mySchedules.length; i++) {
+        if (schedule == this.state.mySchedules[i].id) {
+          let tempSchedules = this.state.mySchedules;
+          tempSchedules.splice(i, 1);
+          this.setState({ mySchedules: tempSchedules });
+          return;
         }
-      } else {
-        for (let i = 0; i < this.state.myTeamSchedules.length; i++) {
-          if (schedule == this.state.myTeamSchedules[i].id) {
-            let tempSchedules = this.state.myTeamSchedules;
-            tempSchedules.splice(i, 1);
-            this.setState({ myTeamSchedules: tempSchedules });
-            return;
-          }
+      }
+      for (let i = 0; i < this.state.myTeamSchedules.length; i++) {
+        if (schedule == this.state.myTeamSchedules[i].id) {
+          let tempSchedules = this.state.myTeamSchedules;
+          tempSchedules.splice(i, 1);
+          this.setState({ myTeamSchedules: tempSchedules });
+          return;
         }
       }
     } else {
@@ -234,7 +230,6 @@ class ProfileBody extends Component {
         role: this.state.user.role,
       };
       axios.post(url, data).then((result) => {
-        console.log(result);
         if (result.data.valid) {
         }
       });

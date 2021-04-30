@@ -11,9 +11,7 @@ import styles from "./success.module.css";
  * @param close (callback function) function that closes the window
  */
 const Success = (props) => {
-  useEffect(() => {
-    console.log(styles);
-  }, []);
+  useEffect(() => {}, []);
   return (
     <React.Fragment>
       {props.success == false ? null : (

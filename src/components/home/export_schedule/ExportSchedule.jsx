@@ -40,7 +40,6 @@ class ExportSchedule extends Component {
             });
           }
           if (errorNames.length > 0) {
-            console.log("Email does not exist");
             //error here
           }
         }
@@ -96,9 +95,7 @@ class ExportSchedule extends Component {
               time_end: this.props.generatedEvents[x].time_end,
               type: 2,
             };
-            axios.post(url4, data4).then((result4) => {
-              console.log(result4);
-            });
+            axios.post(url4, data4).then((result4) => {});
           }
           this.props.clearGenerated();
           this.props.updateSchedulesInState(result2.data.body.schedule);

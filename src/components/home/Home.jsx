@@ -165,6 +165,7 @@ class Home extends Component {
             tempEmail: result1.data.body.user.user.email,
             mySchedules: schedules,
             myTeamSchedules: teamSchedules,
+            isLoading: false,
           });
         }
       });
@@ -1160,6 +1161,7 @@ class Home extends Component {
           clearCreateCalendarInfo={this.clearCreateCalendarInfo}
           loadSchedulesToState={this.loadSchedulesToState}
           updateSchedulesInState={this.updateSchedulesInState}
+          user={this.state.user}
         />
         <AddEmployee
           mySchedules={this.state.mySchedules}

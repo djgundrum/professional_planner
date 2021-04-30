@@ -36,14 +36,11 @@ class Login extends Component {
     let data = { email: email };
 
     axios.post(url, data).then((result) => {
-      console.log(result);
-
       if (!result.data.valid) {
         this.setState({
           error: { error: true, message: result.data.body.message },
         });
       } else {
-        console.log("Successfully did everything");
       }
     });
   };

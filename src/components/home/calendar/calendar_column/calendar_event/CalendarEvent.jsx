@@ -35,7 +35,17 @@ class CalendarEvent extends Component {
           backgroundColor: this.props.eventInfo.description,
           opacity:
             this.props.eventInfo.type_description == "employeeEvent" ? 0.25 : 1,
+          "--tooltip-color": this.props.eventInfo.description,
+          "--tooltip-display":
+            this.props.eventInfo.type_description == "employeeEvent"
+              ? "none"
+              : "block",
         }}
+        data-before-content={`${this.props.eventInfo.name}
+          ${convert_time(
+            this.props.eventInfo.time,
+            this.props.eventInfo.time_end
+          )}`}
         onClick={
           this.props.eventInfo.type_description == "employeeEvent" ||
           (!this.props.isCreateTeamScheduleScreen &&
@@ -69,15 +79,7 @@ class CalendarEvent extends Component {
                 }
               }
         }
-      >
-        <div>{this.props.eventInfo.name}</div>
-        <div>
-          {convert_time(
-            this.props.eventInfo.time,
-            this.props.eventInfo.time_end
-          )}
-        </div>
-      </div>
+      ></div>
     );
   }
 }
