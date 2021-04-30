@@ -41,7 +41,7 @@ class CreateEvent extends Component {
             endTime: "",
             editOnLoad: true,
           });
-          this.props.updateEventsInState(result.data.body.event);
+          this.props.updateEventsInState(result.data.body.event, false);
           //this.props.loadSchedulesToState();
         }
       });
@@ -78,7 +78,7 @@ class CreateEvent extends Component {
               endTime: "",
               editOnLoad: true,
             });
-            this.props.updateEventsInState(result.data.body.event);
+            this.props.updateEventsInState(result.data.body.event, false);
             //this.props.loadSchedulesToState();
           }
         });
@@ -119,6 +119,12 @@ class CreateEvent extends Component {
         "-" +
         this.props.eventInfo.time_end.substring(6, 8);
       editEndTime = this.props.eventInfo.time_end.substring(9);
+    }
+    let selectOptions = [];
+    for (let i = 0; i < this.props.mySchedules.length; i++) {
+      if (this.props.mySchedules[i].creator_id === this.props.user.id) {
+        selectOptions.push(this.props.mySchedules[i]);
+      }
     }
     return (
       <div
@@ -190,7 +196,7 @@ class CreateEvent extends Component {
                   : "block",
             }}
           >
-            {this.props.mySchedules.map((schedule) => (
+            {selectOptions.map((schedule) => (
               <option value={schedule.id}>{schedule.name}</option>
             ))}
           </select>
@@ -229,21 +235,37 @@ class CreateEvent extends Component {
           <div
             id="removeEventButton"
             style={{
-              display: this.props.isUpdatingGenerated ? "block" : "none",
+              display: this.props.isCreateEventEdit ? "block" : "none",
             }}
-            onClick={() => {
-              this.props.updateGeneratedEvent(
-                "",
-                "",
-                "",
-                "",
-                this.props.eventInfo.id,
-                true
-              );
-              this.props.toggleCreateEventScreen(false, {}, false);
-            }}
+            onClick={
+              this.props.isUpdatingGenerated
+                ? () => {
+                    this.props.updateGeneratedEvent(
+                      "",
+                      "",
+                      "",
+                      "",
+                      this.props.eventInfo.id,
+                      true
+                    );
+                    this.props.toggleCreateEventScreen(false, {}, false);
+                  }
+                : () => {
+                    let url = "/api/events/delete";
+                    let data = {
+                      event_id: this.props.eventInfo.id,
+                    };
+                    axios.post(url, data).then((result) => {
+                      this.props.updateEventsInState(
+                        this.props.eventInfo.id,
+                        true
+                      );
+                      this.props.toggleCreateEventScreen(false, {}, false);
+                    });
+                  }
+            }
           >
-            Remove Event
+            {this.props.isUpdatingGenerated ? "Remove Event" : "Delete Event"}
           </div>
           <div
             id="createEventScreenButton"

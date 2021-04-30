@@ -16,6 +16,8 @@ class Calendar extends Component {
     activeEvents: [],
   };
   render() {
+    let names = this.props.getNameColors(this.props.activeEvents);
+
     var times = [];
     var columns = [];
     var days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -49,6 +51,11 @@ class Calendar extends Component {
                 thisDateString)
           ) {
             theseEvents = theseEvents.concat(this.props.activeEvents[i]);
+          }
+        }
+        for (let i = 0; i < theseEvents.length; i++) {
+          if ((theseEvents[i].type = "Schedule")) {
+            theseEvents[i].description = names[theseEvents[i].name];
           }
         }
       } else {
@@ -115,6 +122,7 @@ class Calendar extends Component {
         ? times.push((t % 12) + " pm")
         : times.push("12 pm");
     }
+
     return (
       <div id="calendarDiv">
         <div id="timeColumn">

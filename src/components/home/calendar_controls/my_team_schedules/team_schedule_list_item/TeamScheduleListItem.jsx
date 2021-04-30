@@ -67,7 +67,23 @@ class TeamScheduleListItem extends Component {
       width: "16px",
       height: "16px",
     };
-
+    let memberEvents = [];
+    for (let i = 0; i < this.props.teamEvents.length; i++) {
+      if (this.props.propId === this.props.teamEvents[i].schedule_id) {
+        memberEvents.push(this.props.teamEvents[i]);
+      }
+    }
+    let names = this.props.getNameColors(memberEvents);
+    let ind = 0;
+    let members = [];
+    for (let key in names) {
+      members.push({
+        id: ind,
+        name: key,
+        color: names[key],
+      });
+      ind += 1;
+    }
     return (
       <div style={{ marginBottom: "20px" }}>
         <div key={"div" + this.state.calendar.id} className="scheduleListItem">
@@ -99,7 +115,7 @@ class TeamScheduleListItem extends Component {
           <></>
         ) : (
           <div className="scheduleMembers">
-            {this.state.members.map((member) => (
+            {members.map((member) => (
               <div className="memberListItem">
                 <div
                   key={member.id}

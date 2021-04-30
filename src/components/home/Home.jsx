@@ -136,7 +136,7 @@ class Home extends Component {
                   }
 
                   if (pX == pLength - 1) {
-                    console.log(result1.data.body.user.user);
+                    this.getNameColors(tEvents);
                     this.setState({
                       user: result1.data.body.user.user,
                       isLoading: false,
@@ -197,64 +197,114 @@ class Home extends Component {
       this.setState({ myTeamSchedules: tempSchedules });
     }
   };
-  updateEventsInState = (event) => {
-    console.log(event);
-    let url = `/api/schedules/${event.schedule_id}`;
-    axios.get(url).then((result) => {
-      event.description = result.data.body.schedules.description;
-      if (event.type == "Calendar") {
-        for (let i = 0; i < this.state.calendarEvents.length; i++) {
-          if (event.id == this.state.calendarEvents[i].id) {
-            let tempEvents = this.state.calendarEvents;
-            tempEvents[i] = event;
-            let aEvents = [];
-            for (let e = 0; e < tempEvents.length; e++) {
-              for (let a = 0; a < this.state.activeCalendars.length; a++) {
-                if (
-                  tempEvents[e].schedule_id === this.state.activeCalendars[a][0]
-                ) {
-                  aEvents = aEvents.concat(tempEvents[e]);
-                }
+  updateEventsInState = (event, isDelete) => {
+    if (isDelete) {
+      for (let i = 0; i < this.state.calendarEvents.length; i++) {
+        if (event == this.state.calendarEvents[i].id) {
+          let tempEvents = this.state.calendarEvents;
+          tempEvents.splice(i, 1);
+          let aEvents = [];
+          for (let e = 0; e < tempEvents.length; e++) {
+            for (let a = 0; a < this.state.activeCalendars.length; a++) {
+              if (
+                tempEvents[e].schedule_id === this.state.activeCalendars[a][0]
+              ) {
+                aEvents = aEvents.concat(tempEvents[e]);
               }
             }
-            this.setState({
-              calendarEvents: tempEvents,
-              activeEvents: aEvents,
-            });
-            return;
           }
+          this.setState({
+            calendarEvents: tempEvents,
+            activeEvents: aEvents,
+          });
+          return;
         }
-        // let tempEvents = this.state.calendarEvents;
-        // tempEvents.push(event);
-
-        // let aEvents = [];
-        // for (let e = 0; e < tempEvents.length; e++) {
-        //   for (let a = 0; a < this.state.activeCalendars.length; a++) {
-        //     if (
-        //       tempEvents[e].schedule_id === this.state.activeCalendars[a][0]
-        //     ) {
-        //       aEvents = aEvents.concat(tempEvents[e]);
-        //     }
-        //   }
-        // }
-        // this.setState({
-        //   calendarEvents: tempEvents,
-        //   activeEvents: aEvents,
-        // });
-      } else {
-        for (let i = 0; i < this.state.teamEvents; i++) {
-          if (event.id == this.state.teamEvents[i].id) {
-            let tempEvents = this.state.teamEvents;
-            tempEvents[i] = event;
-            this.setState({ teamEvents: tempEvents });
-            return;
-          }
-        }
-        let tempEvents = this.state.teamEvents;
-        tempEvents.push(event);
-        this.setState({ teamEvents: tempEvents });
       }
-    });
+    } else {
+      let url = `/api/schedules/${event.schedule_id}`;
+      axios.get(url).then((result) => {
+        event.description = result.data.body.schedules.description;
+        if (event.type == "Calendar") {
+          for (let i = 0; i < this.state.calendarEvents.length; i++) {
+            if (event.id == this.state.calendarEvents[i].id) {
+              let tempEvents = this.state.calendarEvents;
+              tempEvents[i] = event;
+              let aEvents = [];
+              for (let e = 0; e < tempEvents.length; e++) {
+                for (let a = 0; a < this.state.activeCalendars.length; a++) {
+                  if (
+                    tempEvents[e].schedule_id ===
+                    this.state.activeCalendars[a][0]
+                  ) {
+                    aEvents = aEvents.concat(tempEvents[e]);
+                  }
+                }
+              }
+              this.setState({
+                calendarEvents: tempEvents,
+                activeEvents: aEvents,
+              });
+              return;
+            }
+          }
+          let tempEvents = this.state.calendarEvents;
+          tempEvents.push(event);
+
+          let aEvents = [];
+          for (let e = 0; e < tempEvents.length; e++) {
+            for (let a = 0; a < this.state.activeCalendars.length; a++) {
+              if (
+                tempEvents[e].schedule_id === this.state.activeCalendars[a][0]
+              ) {
+                aEvents = aEvents.concat(tempEvents[e]);
+              }
+            }
+          }
+          this.setState({
+            calendarEvents: tempEvents,
+            activeEvents: aEvents,
+          });
+        } else {
+          for (let i = 0; i < this.state.teamEvents; i++) {
+            if (event.id == this.state.teamEvents[i].id) {
+              let tempEvents = this.state.teamEvents;
+              tempEvents[i] = event;
+              this.setState({ teamEvents: tempEvents });
+              return;
+            }
+          }
+          let tempEvents = this.state.teamEvents;
+          tempEvents.push(event);
+          this.setState({ teamEvents: tempEvents });
+        }
+      });
+    }
+  };
+  getNameColors = (events) => {
+    //139
+    let colors = [
+      "#ff3200",
+      "#ff7f0a",
+      "#ffe174",
+      "#4bdf00",
+      "#009f1a",
+      "#0acbff",
+      "#5f71ff",
+      "#dd5fff",
+      "#ff7bd5",
+      "#777777",
+    ];
+    let colorCount = 0;
+    let names = {};
+    for (let i = 0; i < events.length; i++) {
+      if (names[events[i].name]) {
+        continue;
+      } else {
+        names[events[i].name] = colors[colorCount % 10];
+        colorCount += 1;
+      }
+    }
+    return names;
   };
   updateCreateCalendarInfo = (pName, pDescription) => {
     this.setState({
@@ -942,6 +992,7 @@ class Home extends Component {
           employees={this.state.employees}
           employeeEvents={this.state.employeeEvents}
           generatedEvents={this.state.generatedEvents}
+          getNameColors={this.getNameColors}
         />
         <CalendarControls
           updateCalendars={this.updateCalendars}
@@ -963,6 +1014,8 @@ class Home extends Component {
           generateSchedules={this.generateSchedules}
           isSave={this.state.isSave}
           toggleExportScreen={this.toggleExportScreen}
+          teamEvents={this.state.teamEvents}
+          getNameColors={this.getNameColors}
         />
         <CreateEvent
           mySchedules={this.state.mySchedules}
@@ -976,6 +1029,7 @@ class Home extends Component {
           generatedEvents={this.state.generatedEvents}
           updateGeneratedEvent={this.updateGeneratedEvent}
           updateEventsInState={this.updateEventsInState}
+          user={this.state.user}
         />
         <CreateCalendar
           mySchedules={this.state.mySchedules}

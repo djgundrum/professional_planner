@@ -24,6 +24,8 @@ class MyTeamSchedules extends Component {
               updateTeamSchedule={this.props.updateTeamSchedule}
               activeTeamSchedule={this.props.activeTeamSchedule}
               view={this.props.view}
+              teamEvents={this.props.teamEvents}
+              getNameColors={this.props.getNameColors}
             />
           </div>
         ))}

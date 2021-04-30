@@ -274,6 +274,8 @@ class CalendarControls extends Component {
                     activeTeamSchedule={this.props.activeTeamSchedule}
                     myTeamSchedules={this.props.myTeamSchedules}
                     view={this.props.view}
+                    teamEvents={this.props.teamEvents}
+                    getNameColors={this.props.getNameColors}
                   />
                 )}
 
